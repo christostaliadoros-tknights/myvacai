@@ -1328,25 +1328,25 @@ function renderDashboard() {
     .map(
       b => `
       <tr>
-        <td><span class="code-badge">${b.reservationCode}</span></td>
-        <td>
+        <td data-label="Res Code"><span class="code-badge">${b.reservationCode}</span></td>
+        <td data-label="Guest & Phone">
           <strong>${b.guestName}</strong>
           <div style="font-size:0.73rem; color:#64748b;">${b.phone} (${b.language})</div>
         </td>
-        <td><span style="font-size:0.77rem; font-weight:600;">${b.channel}</span></td>
-        <td>
+        <td data-label="Channel Path"><span style="font-size:0.77rem; font-weight:600;">${b.channel}</span></td>
+        <td data-label="Room & Stay">
           <strong>${b.roomName}</strong>
           <div style="font-size:0.73rem; color:#64748b;">${b.nights} Nights (${b.checkIn})</div>
         </td>
-        <td>
+        <td data-label="Concierge Upsells">
           ${
             b.addons && b.addons.length
               ? b.addons.map(a => `<div style="font-size:0.74rem; color:#0369a1; font-weight:600;">+ ${a}</div>`).join("")
               : `<span style="color:#94a3b8; font-size:0.74rem;">None yet</span>`
           }
         </td>
-        <td><strong style="font-size:0.9rem;">€${b.totalPaid}</strong></td>
-        <td><span class="status-confirmed">Saved €${b.otaSaved}</span></td>
+        <td data-label="Total Paid"><strong style="font-size:0.9rem;">€${b.totalPaid}</strong></td>
+        <td data-label="OTA Saved"><span class="status-confirmed">Saved €${b.otaSaved}</span></td>
       </tr>
     `
     )
