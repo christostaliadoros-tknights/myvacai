@@ -1402,3 +1402,73 @@ window.addEventListener("DOMContentLoaded", () => {
     switchTab(tab);
   }
 });
+
+
+// Brand Logo Switcher (Bell & Wave vs Golden Key Crest) with localStorage persistence
+const BRAND_LOGOS = {
+  bell: {
+    icon: "./assets/logo-bell-icon.png",
+    lockup: "./assets/logo-bell-wave.jpg",
+    badge: "Active: logo-bell-wave.jpg"
+  },
+  crest: {
+    icon: "./assets/logo-crest-icon.png",
+    lockup: "./assets/logo-key-crest.jpg",
+    badge: "Active: logo-key-crest.jpg"
+  },
+  headphones: {
+    icon: "./assets/logo-headphones-icon.png",
+    lockup: "./assets/logo-headphones.jpg",
+    badge: "Active: logo-headphones.jpg"
+  }
+};
+
+function setBrandLogo(key) {
+  const cfg = BRAND_LOGOS[key] || BRAND_LOGOS.bell;
+  const activeKey = BRAND_LOGOS[key] ? key : "bell";
+
+  const topImg = document.getElementById("topbar-logo-img");
+  if (topImg) topImg.src = cfg.icon;
+
+  const waImg = document.getElementById("wa-logo-img");
+  if (waImg) waImg.src = cfg.icon;
+
+  const fav = document.querySelector("link[rel=\"icon\"]");
+  if (fav) fav.href = cfg.icon;
+
+  const btnBell = document.getElementById("btn-logo-bell");
+  const btnCrest = document.getElementById("btn-logo-crest");
+  if (btnBell) btnBell.classList.toggle("active", activeKey === "bell");
+  if (btnCrest) btnCrest.classList.toggle("active", activeKey === "crest");
+
+  const cardBell = document.getElementById("drawer-card-bell");
+  const cardCrest = document.getElementById("drawer-card-crest");
+  if (cardBell) cardBell.classList.toggle("active", activeKey === "bell");
+  if (cardCrest) cardCrest.classList.toggle("active", activeKey === "crest");
+
+  const badgeEl = document.getElementById("active-logo-badge");
+  if (badgeEl) badgeEl.textContent = cfg.badge;
+
+  document.querySelectorAll(".logo-gallery-item[data-logo-key]").forEach(el => {
+    el.classList.toggle("active", el.getAttribute("data-logo-key") === activeKey);
+  });
+
+  try {
+    localStorage.setItem("myvacai_brand_logo", activeKey);
+  } catch (e) {}
+}
+
+function toggleLogoDrawer() {
+  const drawer = document.getElementById("logo-preview-drawer");
+  if (!drawer) return;
+  drawer.hidden = !drawer.hidden;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  try {
+    const savedLogo = localStorage.getItem("myvacai_brand_logo");
+    if (savedLogo && BRAND_LOGOS[savedLogo]) {
+      setBrandLogo(savedLogo);
+    }
+  } catch (e) {}
+});

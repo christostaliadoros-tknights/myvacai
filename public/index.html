@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MyVacAI — AI Hotel Receptionist, Call-to-WhatsApp 3DS Checkout & Vacation Concierge</title>
+  <title>MyVacAI — INTELLIGENT HOSPITALITY • AI Voice & WhatsApp Receptionist</title>
   <link rel="icon" type="image/png" href="./assets/favicon.png" />
   <link rel="apple-touch-icon" href="./assets/logo-icon.png" />
   <link rel="stylesheet" href="./styles.css" />
@@ -12,11 +12,27 @@
   <!-- Top Navigation Bar -->
   <header class="topbar">
     <div class="brand-cluster">
-      <div class="brand-logo">
-        <img src="./assets/logo-icon.png" alt="MyVacAI Logo" class="brand-logo-img" />
-        <span>MyVacAI</span>
+      <div class="brand-logo" onclick="toggleLogoDrawer()" title="Tap to preview full MyVacAI logo lockups" style="cursor:pointer;">
+        <img src="./assets/logo-bell-icon.png" alt="MyVacAI Logo" class="brand-logo-img" id="topbar-logo-img" />
+        <div class="brand-title-wrap">
+          <div class="brand-title-row">
+            <span>MyVacAI</span>
+            <span class="domain-pill">myvacai.com</span>
+          </div>
+          <div class="brand-tagline">INTELLIGENT HOSPITALITY • AI Voice &amp; WhatsApp Receptionist</div>
+        </div>
       </div>
-      <span class="domain-pill">myvacai.com</span>
+      <div class="logo-switcher-pill" role="group" aria-label="Switch MyVacAI Logo">
+        <button type="button" class="logo-switch-btn active" id="btn-logo-bell" onclick="setBrandLogo('bell')">
+          🔔 Bell &amp; Wave
+        </button>
+        <button type="button" class="logo-switch-btn" id="btn-logo-crest" onclick="setBrandLogo('crest')">
+          🗝️ Key Crest
+        </button>
+        <button type="button" class="logo-drawer-trigger" id="btn-logo-drawer" onclick="toggleLogoDrawer()" title="Compare full logo lockups">
+          🖼️ Full Logos
+        </button>
+      </div>
       <div class="property-badge">
         <span>🇨🇾</span>
         <strong>Aphrodite Bay Resort &amp; Spa</strong>
@@ -41,6 +57,37 @@
       <span>Voice + WhatsApp + WebHotelier Live</span>
     </div>
   </header>
+
+  <!-- Quick Topbar Full Logo Lockup Comparison Drawer -->
+  <section id="logo-preview-drawer" class="logo-preview-drawer" hidden>
+    <div class="logo-drawer-inner">
+      <div class="logo-drawer-header">
+        <div>
+          <strong>✨ MyVacAI — "INTELLIGENT HOSPITALITY" Official Logo Lockups</strong>
+          <span>Tap either design below to set it as the active site icon &amp; WhatsApp avatar</span>
+        </div>
+        <button type="button" class="logo-drawer-close" onclick="toggleLogoDrawer()">✕ Close</button>
+      </div>
+      <div class="logo-drawer-cards">
+        <div class="logo-lockup-card active" id="drawer-card-bell" onclick="setBrandLogo('bell')">
+          <img src="./assets/logo-bell-wave.jpg" alt="MyVacAI Reception Bell, Ocean Wave &amp; Voice Waveform Logo" />
+          <div class="logo-lockup-meta">
+            <span class="logo-lockup-badge">★ Primary Default</span>
+            <strong>🔔 Reception Bell, Ocean Wave &amp; Voice Waveform</strong>
+            <span>INTELLIGENT HOSPITALITY • Modern Sans Lockup</span>
+          </div>
+        </div>
+        <div class="logo-lockup-card" id="drawer-card-crest" onclick="setBrandLogo('crest')">
+          <img src="./assets/logo-key-crest.jpg" alt="MyVacAI Golden Key, Turquoise Wave &amp; North Star Crest Logo" />
+          <div class="logo-lockup-meta">
+            <span class="logo-lockup-badge secondary">★ Alternate Favorite</span>
+            <strong>🗝️ Golden Key, Turquoise Wave &amp; North Star Crest</strong>
+            <span>INTELLIGENT HOSPITALITY • Luxury Serif Crest</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <main class="main-container">
     <!-- TAB 1: LIVE INTERACTIVE SIMULATOR -->
@@ -104,7 +151,7 @@
         <div class="whatsapp-card">
           <div class="wa-header">
             <div class="wa-header-left">
-              <img src="./assets/logo-icon.png" alt="MyVacAI" class="wa-avatar-img" />
+              <img src="./assets/logo-bell-icon.png" alt="MyVacAI" class="wa-avatar-img" id="wa-logo-img" />
               <div>
                 <div class="wa-title">
                   Aphrodite Bay Resort
@@ -300,18 +347,32 @@ VIVA_WALLET_SOURCE_CODE=8492</pre>
       <div class="section-card" style="margin-top: 18px;">
         <div class="section-header">
           <div>
-            <div class="section-title">🎨 MyVacAI Official Brand Identity &amp; Logo Assets</div>
+            <div class="section-title">🎨 MyVacAI — "INTELLIGENT HOSPITALITY" Official Brand Identity</div>
             <div style="font-size:0.78rem; color:#64748b;">
-              Active primary emblem (Headphones + Hotel + Palm + Sun) plus preserved brand variations in <code>/assets/</code>
+              Christos's two selected flagship logos (Reception Bell &amp; Wave + Golden Key Crest) and preserved concepts in <code>/assets/</code>. Tap any card to activate.
             </div>
           </div>
-          <span class="code-badge">Active: logo-headphones.jpg</span>
+          <span class="code-badge" id="active-logo-badge">Active: logo-bell-wave.jpg</span>
         </div>
         <div class="logo-gallery-grid">
-          <div class="logo-gallery-item active">
-            <img src="./assets/logo-headphones.jpg" alt="MyVacAI Primary Logo - Headphones &amp; Hotel" />
+          <div class="logo-gallery-item active" data-logo-key="bell" onclick="setBrandLogo('bell')" style="cursor:pointer;">
+            <img src="./assets/logo-bell-wave.jpg" alt="MyVacAI Primary Logo - Reception Bell, Ocean Wave &amp; Voice Waveform" />
             <div class="logo-gallery-caption">
-              <strong>Primary Logo (Active)</strong>
+              <strong>🔔 Bell, Wave &amp; Voice (Default)</strong>
+              <span>logo-bell-wave.jpg</span>
+            </div>
+          </div>
+          <div class="logo-gallery-item" data-logo-key="crest" onclick="setBrandLogo('crest')" style="cursor:pointer;">
+            <img src="./assets/logo-key-crest.jpg" alt="MyVacAI Second Favorite - Golden Key, Turquoise Wave &amp; North Star Crest" />
+            <div class="logo-gallery-caption">
+              <strong>🗝️ Golden Key &amp; Wave Crest (#2)</strong>
+              <span>logo-key-crest.jpg</span>
+            </div>
+          </div>
+          <div class="logo-gallery-item" data-logo-key="headphones" onclick="setBrandLogo('headphones')" style="cursor:pointer;">
+            <img src="./assets/logo-headphones.jpg" alt="MyVacAI Headphones &amp; Hotel Emblem" />
+            <div class="logo-gallery-caption">
+              <strong>🎧 Headphones &amp; Resort</strong>
               <span>logo-headphones.jpg</span>
             </div>
           </div>
@@ -323,24 +384,10 @@ VIVA_WALLET_SOURCE_CODE=8492</pre>
             </div>
           </div>
           <div class="logo-gallery-item">
-            <img src="./assets/logo-crest.jpg" alt="MyVacAI Resort Crest" />
-            <div class="logo-gallery-caption">
-              <strong>Hospitality Badge Crest</strong>
-              <span>logo-crest.jpg</span>
-            </div>
-          </div>
-          <div class="logo-gallery-item">
             <img src="./assets/logo-waves.jpg" alt="MyVacAI Minimalist Waves" />
             <div class="logo-gallery-caption">
               <strong>Minimalist Sun &amp; Waves</strong>
               <span>logo-waves.jpg</span>
-            </div>
-          </div>
-          <div class="logo-gallery-item">
-            <img src="./assets/logo-3d-cutout.jpg" alt="MyVacAI 3D Paper Cutout" />
-            <div class="logo-gallery-caption">
-              <strong>3D Layered Resort Art</strong>
-              <span>logo-3d-cutout.jpg</span>
             </div>
           </div>
         </div>
