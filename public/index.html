@@ -12,7 +12,7 @@
   <!-- Top Navigation Bar -->
   <header class="topbar">
     <div class="brand-cluster">
-      <div class="brand-logo" onclick="toggleLogoDrawer()" title="Tap to preview full MyVacAI logo lockups" style="cursor:pointer;">
+      <div class="brand-logo">
         <img src="./assets/logo-bell-icon.png" alt="MyVacAI Logo" class="brand-logo-img" id="topbar-logo-img" />
         <div class="brand-title-wrap">
           <div class="brand-title-row">
@@ -21,17 +21,6 @@
           </div>
           <div class="brand-tagline">INTELLIGENT HOSPITALITY • AI Voice &amp; WhatsApp Receptionist</div>
         </div>
-      </div>
-      <div class="logo-switcher-pill" role="group" aria-label="Switch MyVacAI Logo">
-        <button type="button" class="logo-switch-btn active" id="btn-logo-bell" onclick="setBrandLogo('bell')">
-          🔔 Bell &amp; Wave
-        </button>
-        <button type="button" class="logo-switch-btn" id="btn-logo-crest" onclick="setBrandLogo('crest')">
-          🗝️ Key Crest
-        </button>
-        <button type="button" class="logo-drawer-trigger" id="btn-logo-drawer" onclick="toggleLogoDrawer()" title="Compare full logo lockups">
-          🖼️ Full Logos
-        </button>
       </div>
       <div class="property-badge">
         <span>🇨🇾</span>
@@ -57,37 +46,6 @@
       <span>Voice + WhatsApp + WebHotelier Live</span>
     </div>
   </header>
-
-  <!-- Quick Topbar Full Logo Lockup Comparison Drawer -->
-  <section id="logo-preview-drawer" class="logo-preview-drawer" hidden>
-    <div class="logo-drawer-inner">
-      <div class="logo-drawer-header">
-        <div>
-          <strong>✨ MyVacAI — "INTELLIGENT HOSPITALITY" Official Logo Lockups</strong>
-          <span>Tap either design below to set it as the active site icon &amp; WhatsApp avatar</span>
-        </div>
-        <button type="button" class="logo-drawer-close" onclick="toggleLogoDrawer()">✕ Close</button>
-      </div>
-      <div class="logo-drawer-cards">
-        <div class="logo-lockup-card active" id="drawer-card-bell" onclick="setBrandLogo('bell')">
-          <img src="./assets/logo-bell-wave.jpg" alt="MyVacAI Reception Bell, Ocean Wave &amp; Voice Waveform Logo" />
-          <div class="logo-lockup-meta">
-            <span class="logo-lockup-badge">★ Primary Default</span>
-            <strong>🔔 Reception Bell, Ocean Wave &amp; Voice Waveform</strong>
-            <span>INTELLIGENT HOSPITALITY • Modern Sans Lockup</span>
-          </div>
-        </div>
-        <div class="logo-lockup-card" id="drawer-card-crest" onclick="setBrandLogo('crest')">
-          <img src="./assets/logo-key-crest.jpg" alt="MyVacAI Golden Key, Turquoise Wave &amp; North Star Crest Logo" />
-          <div class="logo-lockup-meta">
-            <span class="logo-lockup-badge secondary">★ Alternate Favorite</span>
-            <strong>🗝️ Golden Key, Turquoise Wave &amp; North Star Crest</strong>
-            <span>INTELLIGENT HOSPITALITY • Luxury Serif Crest</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <main class="main-container">
     <!-- TAB 1: LIVE INTERACTIVE SIMULATOR -->

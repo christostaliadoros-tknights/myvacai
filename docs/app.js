@@ -1466,9 +1466,6 @@ function toggleLogoDrawer() {
 
 window.addEventListener("DOMContentLoaded", () => {
   try {
-    const savedLogo = localStorage.getItem("myvacai_brand_logo");
-    if (savedLogo && BRAND_LOGOS[savedLogo]) {
-      setBrandLogo(savedLogo);
-    }
+    localStorage.removeItem("myvacai_brand_logo");
   } catch (e) {}
 });
