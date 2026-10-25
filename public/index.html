@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyVacAI — AI Hotel Receptionist, Call-to-WhatsApp 3DS Checkout & Vacation Concierge</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="brand-cluster">
+      <div class="brand-logo">
+        <div class="brand-logo-icon">🌴</div>
+        <span>MyVacAI</span>
+      </div>
+      <span class="domain-pill">myvacai.com</span>
+      <div class="property-badge">
+        <span>🇨🇾</span>
+        <strong>Aphrodite Bay Resort &amp; Spa</strong>
+        <span style="opacity:0.7">• Limassol, Cyprus (5★ Demo)</span>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="simulator" onclick="switchTab('simulator')">
+        📞 Live Call-to-WhatsApp Simulator
+      </button>
+      <button class="nav-tab" data-tab="dashboard" onclick="switchTab('dashboard')">
+        📊 Hotelier Reception &amp; PMS Dashboard
+      </button>
+      <button class="nav-tab" data-tab="setup" onclick="switchTab('setup')">
+        ⚙️ Production Setup &amp; API Wiring
+      </button>
+    </nav>
+
+    <div class="live-status-pill">
+      <span class="pulse-dot"></span>
+      <span>Voice + WhatsApp + WebHotelier Live</span>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- TAB 1: LIVE INTERACTIVE SIMULATOR -->
+    <section id="tab-simulator" class="tab-panel active">
+      <div class="scenario-bar">
+        <div class="scenario-bar-left">
+          <span class="scenario-label">Interactive Scenarios:</span>
+          <button class="scenario-btn active" id="btn-scen-en" onclick="triggerScenario('en_seaview', this)">
+            🇬🇧 UK Caller: Sea View Deluxe (3 Nights)
+          </button>
+          <button class="scenario-btn" id="btn-scen-el" onclick="triggerScenario('el_swimup', this)">
+            🇬🇷/🇨🇾 Ελληνικά: Swim-Up Suite (2 Βράδια)
+          </button>
+          <button class="scenario-btn" id="btn-scen-vn" onclick="triggerScenario('wa_voicenote_villa', this)">
+            🎙️ WhatsApp Voice Note: Pool Villa + Airport Van
+          </button>
+        </div>
+        <div class="scenario-bar-right">
+          <button class="tts-btn" id="tts-toggle-btn" onclick="toggleVoiceAudio()">
+            🔊 Voice Audio: Off (Click to Speak)
+          </button>
+        </div>
+      </div>
+
+      <div class="simulator-grid">
+        <!-- Column 1: Live Phone Call -->
+        <div class="phone-card">
+          <div class="phone-notch">5G • +357 CY SIP</div>
+          <div class="call-header">
+            <div class="call-status-tag">
+              <span class="pulse-dot"></span>
+              <span id="call-status-label">LIVE INBOUND CALL • 00:18</span>
+            </div>
+            <div class="call-hotel-title">Aphrodite Bay Front Desk AI</div>
+            <div class="call-sub" id="caller-phone-display">Caller: +357 99 482 190</div>
+          </div>
+
+          <div class="waveform-box">
+            <span>🎙️ Elena (AI Receptionist • EN/EL/RU)</span>
+            <div class="wave-bars">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="call-transcript" id="call-transcript-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <form class="call-input-area" onsubmit="sendCustomTurn(event, 'voice')">
+            <input
+              type="text"
+              id="voice-custom-input"
+              class="call-input"
+              placeholder="Say something on the call (e.g. 'Do you have a Villa for 4 nights?')..."
+            />
+            <button type="submit" class="call-send-btn">Speak</button>
+          </form>
+        </div>
+
+        <!-- Column 2: Instant WhatsApp Business Thread -->
+        <div class="whatsapp-card">
+          <div class="wa-header">
+            <div class="wa-header-left">
+              <div class="wa-avatar">AB</div>
+              <div>
+                <div class="wa-title">
+                  Aphrodite Bay Resort
+                  <span class="wa-verified">✓ Official</span>
+                </div>
+                <div class="wa-subtitle">MyVacAI Instant Checkout &amp; Vacation Concierge</div>
+              </div>
+            </div>
+            <span style="font-size:0.74rem; opacity:0.9;">+357 25 000 890</span>
+          </div>
+
+          <div class="wa-handoff-banner">
+            <span>⚡ In-Call 3DS Checkout Handoff Active</span>
+            <span>JCC Smart / Apple Pay</span>
+          </div>
+
+          <div class="wa-messages" id="wa-messages-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <form class="call-input-area" style="background:#f0f2f5; padding:10px 12px; margin:0;" onsubmit="sendCustomTurn(event, 'whatsapp')">
+            <input
+              type="text"
+              id="wa-custom-input"
+              class="call-input"
+              style="background:#ffffff; color:#0f172a; border-color:#cbd5e1;"
+              placeholder="Reply on WhatsApp (e.g. 'Add airport pickup from Larnaca')..."
+            />
+            <button type="submit" class="call-send-btn" style="background:#128c7e;">Send</button>
+          </form>
+        </div>
+
+        <!-- Column 3: Real-Time Receptionist Brain & PMS Execution Log -->
+        <div class="brain-panel">
+          <div class="brain-header">
+            <div>
+              <div class="brain-title">🧠 Receptionist Brain &amp; Live PMS Execution Trace</div>
+              <div style="font-size:0.75rem; color:#64748b;">
+                Unified Voice + WhatsApp session memory with two-way WebHotelier &amp; Protel sync
+              </div>
+            </div>
+            <div class="latency-badges">
+              <span class="latency-badge">ASR: 310ms</span>
+              <span class="latency-badge">CRS: 112ms</span>
+            </div>
+          </div>
+
+          <div class="memory-card">
+            <div class="memory-card-title">
+              <span>UNIFIED GUEST MEMORY (KEYED BY E.164 PHONE)</span>
+              <span id="mem-session-id" style="font-family:monospace; color:#0284c7;">sess_35799482190</span>
+            </div>
+            <div class="memory-grid" id="memory-grid-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="logs-list" id="execution-logs-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: HOTELIER RECEPTION & PMS DASHBOARD -->
+    <section id="tab-dashboard" class="tab-panel">
+      <div class="kpi-grid" id="kpi-grid-box">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="dashboard-split">
+        <div>
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">📋 Live Direct Reservations &amp; Call-to-WhatsApp Conversions</div>
+                <div style="font-size:0.78rem; color:#64748b;">
+                  Every booking below was closed automatically via Voice/WhatsApp and written back to Protel PMS
+                </div>
+              </div>
+              <span class="code-badge">0% OTA Commission</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Res Code</th>
+                  <th>Guest &amp; Phone</th>
+                  <th>Channel Path</th>
+                  <th>Room &amp; Stay</th>
+                  <th>Concierge Upsells</th>
+                  <th>Total Paid</th>
+                  <th>OTA Saved</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-table-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">🏨 Live Room Inventory &amp; Direct Rate Control</div>
+                <div style="font-size:0.76rem; color:#64748b;">
+                  Adjust room count or rate — MyVacAI immediately quotes the updated inventory on calls
+                </div>
+              </div>
+            </div>
+            <div id="inventory-list-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">🔌 Cyprus &amp; Greece Hospitality Stack Connectors</div>
+                <div style="font-size:0.76rem; color:#64748b;">
+                  Plug-and-play regional CRS, PMS, and 3DS2 payment gateways
+                </div>
+              </div>
+            </div>
+            <div class="integrations-grid" id="integrations-grid-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: PRODUCTION SETUP & API WIRING GUIDE -->
+    <section id="tab-setup" class="tab-panel">
+      <div class="setup-grid">
+        <div class="section-card">
+          <div class="section-title">🚀 Deploying `myvacai.com` to Production</div>
+          <p style="font-size:0.84rem; color:#475569; margin:8px 0 12px;">
+            This full-stack backend scaffold exposes production-ready REST &amp; Webhook endpoints for Voice SIP AI, Meta WhatsApp Business Cloud API, WebHotelier/Protel PMS, and JCC/Viva 3DS Checkout.
+          </p>
+
+          <div style="font-size:0.8rem; font-weight:700; margin-top:10px;">1. Environment Variables (`.env`)</div>
+          <pre class="code-block">PORT=3456
+PUBLIC_DOMAIN=https://myvacai.com
+
+# Voice AI (Vapi / Retell / Twilio Cyprus +357 & Greece +30 SIP)
+VOICE_WEBHOOK_SECRET=whsec_myvacai_voice_live
+CYPRUS_DID_NUMBER=+35725000890
+
+# Meta WhatsApp Business Cloud API
+WHATSAPP_PHONE_NUMBER_ID=109482910481920
+WHATSAPP_ACCESS_TOKEN=EAAGm0PX4ZCps...
+WHATSAPP_VERIFY_TOKEN=myvacai_cyprus_verify_2026
+
+# Regional PMS & CRS (WebHotelier + Protel)
+WEBHOTELIER_PROPERTY_CODE=APHRODITEBAY_CY
+WEBHOTELIER_API_KEY=wh_live_cy_9948102a
+PROTEL_PMS_ENDPOINT=https://pms.aphroditebay.com.cy/api/v2
+
+# 3DS2 Payment Gateways (JCC Smart Cyprus / Viva Wallet)
+JCC_MERCHANT_ID=0049281900
+VIVA_WALLET_SOURCE_CODE=8492</pre>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">🔗 Live Webhook Endpoints &amp; cURL Verification</div>
+          <p style="font-size:0.84rem; color:#475569; margin:8px 0 12px;">
+            Point your Voice provider and Meta WhatsApp App Dashboard to these endpoints on `https://myvacai.com`:
+          </p>
+
+          <div style="font-size:0.8rem; font-weight:700;">Inbound Voice Call Turn (`POST /api/webhooks/voice`)</div>
+          <pre class="code-block">curl -X POST http://localhost:3456/api/webhooks/voice \
+  -H "Content-Type: application/json" \
+  -d '{
+    "caller": "+357 99 482 190",
+    "transcript": "Do you have a Swim-Up Suite for 3 nights?"
+  }'</pre>
+
+          <div style="font-size:0.8rem; font-weight:700; margin-top:12px;">Inbound WhatsApp Message (`POST /api/webhooks/whatsapp`)</div>
+          <pre class="code-block">curl -X POST http://localhost:3456/api/webhooks/whatsapp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "from": "+357 99 482 190",
+    "text": "Can we also book the Blue Lagoon yacht cruise?"
+  }'</pre>
+
+          <div style="font-size:0.8rem; font-weight:700; margin-top:12px;">Live WebHotelier Availability Check (`GET /api/pms/availability`)</div>
+          <pre class="code-block">curl "http://localhost:3456/api/pms/availability?roomId=sea-view-deluxe&nights=3&guests=2"</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
