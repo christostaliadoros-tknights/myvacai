@@ -40,6 +40,9 @@
       <button type="button" class="nav-tab" data-tab="logos" onclick="switchTab('logos')">
         🎨 4. Official MyDocDesk Logos
       </button>
+      <button type="button" class="nav-tab" data-tab="onepager" onclick="switchTab('onepager')">
+        📄 5. Doctor 1-Pager &amp; Pitch
+      </button>
     </nav>
   </header>
 
@@ -69,6 +72,9 @@
             <button type="button" class="live-mic-hero-btn" id="btn-live-mic-hero" onclick="startLiveMicSpeech()">
               🎙️ Speak as Patient (Mic)
             </button>
+            <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" download="MyDocDesk_Doctor_Leave_Behind.pdf" class="hero-pdf-btn" onclick="switchTab('onepager')">
+              📄 Doctor 1-Pager PDF (EN &amp; GR)
+            </a>
           </div>
         </div>
 
@@ -575,6 +581,160 @@
         </div>
       </div>
     </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: DOCTOR 1-PAGER LEAVE-BEHIND & PITCH (ENGLISH & GREEK)        -->
+    <!-- =================================================================== -->
+    <section id="tab-onepager" class="tab-panel">
+      <div class="onepager-hero-card">
+        <div class="onepager-hero-top">
+          <div>
+            <div class="guided-eyebrow">
+              <span class="pulse-dot"></span>
+              <span>EXECUTIVE LEAVE-BEHIND FOR CYPRUS DOCTORS, GeSY CLINICS &amp; DENTISTS (EN &amp; EL)</span>
+            </div>
+            <h2 class="onepager-hero-title">
+              📄 MyDocDesk 1-Page Doctor Leave-Behind &amp; Founding Clinic Offer
+            </h2>
+            <p class="onepager-hero-sub">
+              Print-ready 2-page executive PDF (Page 1: <strong>English Edition</strong> • Page 2: <strong>Ελληνική Έκδοση</strong>) designed to hand to doctors and dentists in Cyprus or send directly via WhatsApp/Email.
+            </p>
+          </div>
+          <div class="onepager-cta-cluster">
+            <a
+              href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf"
+              download="MyDocDesk_Doctor_Leave_Behind.pdf"
+              class="onepager-download-btn"
+            >
+              ⬇ Download 1-Page Doctor PDF (EN &amp; GR)
+            </a>
+            <a
+              href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf"
+              target="_blank"
+              rel="noopener"
+              class="onepager-open-btn"
+            >
+              🔍 Open Print-Ready PDF
+            </a>
+          </div>
+        </div>
+
+        <div class="onepager-toolbar">
+          <div class="onepager-lang-btns" role="group" aria-label="1-Pager Language View">
+            <button type="button" class="op-lang-btn active" id="op-btn-both" onclick="setOnePagerLang('both')">
+              🌍 Side-by-Side (EN + GR)
+            </button>
+            <button type="button" class="op-lang-btn" id="op-btn-en" onclick="setOnePagerLang('en')">
+              🇬🇧 English Edition Only
+            </button>
+            <button type="button" class="op-lang-btn" id="op-btn-el" onclick="setOnePagerLang('el')">
+              🇬🇷/🇨🇾 Ελληνική Έκδοση
+            </button>
+          </div>
+          <div class="onepager-contact-pill">
+            <span>🤝 Founding Doctor Pilot (14 Days Free → <strong>€99/mo</strong>):</span>
+            <strong>Christos Taliadoros</strong> • <a href="mailto:christos@t-knights.com">christos@t-knights.com</a> • <a href="tel:+35799429249">+357 99 429249</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side-by-Side / Toggleable English & Greek 1-Pager Sheets -->
+      <div class="onepager-DualGrid" id="onepager-dual-grid">
+        <!-- PAGE 1: ENGLISH EDITION -->
+        <article class="onepager-sheet" id="onepager-sheet-en">
+          <div class="op-sheet-topbar">
+            <span class="op-sheet-badge">🇬🇧 PAGE 1 • ENGLISH EDITION (CYPRUS CLINICS &amp; DENTISTS)</span>
+            <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" download="MyDocDesk_Doctor_Leave_Behind.pdf" class="op-mini-dl">⬇ Download PDF</a>
+          </div>
+
+          <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" target="_blank" rel="noopener" title="Click to open full print-ready PDF">
+            <img
+              src="./assets/onepager-page1-en.png"
+              alt="MyDocDesk 1-Page Doctor Leave-Behind — English Edition"
+              class="op-preview-img"
+            />
+          </a>
+
+          <div class="op-structured-body">
+            <div class="op-sec-block">
+              <div class="op-sec-title">⚠️ The Problem in Every Clinic</div>
+              <p class="op-sec-text">
+                <strong>40–100+ daily calls &amp; WhatsApp messages</strong> interrupt examinations and chairside dental procedures; missed calls mean lost <strong>€60–€500+ private treatments</strong>, while routine GeSY prescription renewals clog up the phone line.
+              </p>
+            </div>
+
+            <div class="op-sec-block">
+              <div class="op-sec-title">⚡ How Sofia (Your AI Receptionist) Works in 4 Steps</div>
+              <ol class="op-step-list">
+                <li><strong>1. Answers Normal Calls &amp; WhatsApp 24/7 (EL / EN / RU):</strong> Works with your existing Cyta/Epic/Cablenet landline or mobile via simple "Forward When Busy / Unanswered (<code>*67*</code> / <code>*61*</code>)"—patients call your normal number or message on WhatsApp/SMS.</li>
+                <li><strong>2. 3-Tier Clinical &amp; Dental Priority Triage:</strong>
+                  <ul class="op-tier-sublist">
+                    <li><span class="op-dot-red">🔴 Priority 1 (Urgent Same-Day):</span> High pediatric fever, acute pain, broken crown/toothache → Unlocks your protected <strong>Emergency Buffer Slot</strong>.</li>
+                    <li><span class="op-dot-amber">🟡 Priority 2 (Standard 24–48h + Photo Intake):</span> Rashes, lab reviews, fillings/implants → Requests a WhatsApp photo/PDF and books the right slot duration (15m / 30m / 45m / 60m).</li>
+                    <li><span class="op-dot-green">🟢 Priority 3 (Routine &amp; GeSY Async Queue):</span> Repeat GeSY prescriptions, referrals (παραπεμπτικά), routine cleanings → Logged into your <strong>5-Minute End-of-Day Batch Queue</strong> without wasting an exam slot.</li>
+                  </ul>
+                </li>
+                <li><strong>3. 3-Bullet Pre-Visit Case Note on Your Calendar:</strong> Syncs directly to Google, Apple, or Outlook Calendar with symptoms, red-flag checks, and photos attached before the patient walks in.</li>
+                <li><strong>4. Phase 2 Network Advantage:</strong> Founding clinics get priority placement in the upcoming <strong>MyDocDesk Patient Discovery &amp; Booking App</strong>.</li>
+              </ol>
+            </div>
+
+            <div class="op-roi-footer">
+              <div><strong>Full-Time Secretary:</strong> €1,400+/month</div>
+              <div class="op-roi-highlight"><strong>MyDocDesk Founding Doctor Pilot:</strong> 14-Day Free Trial, then <strong>€99/month</strong> (locked-in Founding Rate; standard €149/month)</div>
+              <div><strong>Live Demo &amp; Contact:</strong> <a href="https://mydocdesk.com">mydocdesk.com</a> • Christos Taliadoros (<code>christos@t-knights.com</code> • <code>+357 99 429249</code>)</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PAGE 2: GREEK EDITION -->
+        <article class="onepager-sheet" id="onepager-sheet-el" lang="el">
+          <div class="op-sheet-topbar">
+            <span class="op-sheet-badge">🇬🇷/🇨🇾 ΣΕΛΙΔΑ 2 • ΕΛΛΗΝΙΚΗ ΕΚΔΟΣΗ (ΙΑΤΡΕΙΑ ΓεΣΥ &amp; ΟΔΟΝΤΙΑΤΡΕΙΑ)</span>
+            <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" download="MyDocDesk_Doctor_Leave_Behind.pdf" class="op-mini-dl">⬇ Λήψη PDF</a>
+          </div>
+
+          <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" target="_blank" rel="noopener" title="Κλικ για άνοιγμα του PDF">
+            <img
+              src="./assets/onepager-page2-el.png"
+              alt="MyDocDesk 1-Page Doctor Leave-Behind — Ελληνική Έκδοση"
+              class="op-preview-img"
+            />
+          </a>
+
+          <div class="op-structured-body">
+            <div class="op-sec-block">
+              <div class="op-sec-title">⚠️ Το Καθημερινό Πρόβλημα σε Κάθε Ιατρείο &amp; Οδοντιατρείο</div>
+              <p class="op-sec-text">
+                <strong>40–100+ κλήσεις και μηνύματα WhatsApp την ημέρα</strong> διακόπτουν την εξέταση και τις οδοντιατρικές πράξεις· οι αναπάντητες κλήσεις σημαίνουν απώλεια <strong>€60–€500+ σε ιδιωτικές θεραπείες</strong>, ενώ οι ανανεώσεις συνταγών ΓεΣΥ μπλοκάρουν το τηλέφωνο.
+              </p>
+            </div>
+
+            <div class="op-sec-block">
+              <div class="op-sec-title">⚡ Πώς Λειτουργεί η «Σοφία» (AI Γραμματέας) σε 4 Βήματα</div>
+              <ol class="op-step-list">
+                <li><strong>1. Απαντά Κανονικές Κλήσεις &amp; WhatsApp 24/7 (EL / EN / RU):</strong> Λειτουργεί με το υπάρχον σταθερό ή κινητό σας (Cyta/Epic/Cablenet) μέσω απλής εκτροπής όταν είστε κατειλημμένοι ή δεν απαντάτε (<code>*67*</code> / <code>*61*</code>)—οι ασθενείς καλούν κανονικά ή στέλνουν στο WhatsApp/SMS.</li>
+                <li><strong>2. Κλινική &amp; Οδοντιατρική Διαλογή 3 Επιπέδων:</strong>
+                  <ul class="op-tier-sublist">
+                    <li><span class="op-dot-red">🔴 Προτεραιότητα 1 (Επείγον Αυθημερόν):</span> Υψηλός παιδιατρικός πυρετός, οξύς πόνος, σπασμένη θήκη/πονόδοντος → Ξεκλειδώνει το προστατευμένο <strong>Επείγον Κενό (Emergency Buffer Slot)</strong>.</li>
+                    <li><span class="op-dot-amber">🟡 Προτεραιότητα 2 (Ραντεβού 24–48ώ + Φωτογραφία):</span> Εξανθήματα, αναλύσεις, σφραγίσματα/εμφυτεύματα → Ζητά φωτογραφία/PDF στο WhatsApp και κλείνει τη σωστή διάρκεια (15' / 30' / 45' / 60').</li>
+                    <li><span class="op-dot-green">🟢 Προτεραιότητα 3 (Ρουτίνα &amp; Λίστα ΓεΣΥ):</span> Επαναλαμβανόμενες συνταγές ΓεΣΥ, παραπεμπτικά, καθαρισμοί → Καταχωρούνται στη <strong>Λίστα 5 Λεπτών Τέλους Ημέρας (Batch Queue)</strong> χωρίς σπατάλη ραντεβού.</li>
+                  </ul>
+                </li>
+                <li><strong>3. Σημείωση Περιστατικού (3-Bullet Case Note) στο Ημερολόγιο:</strong> Συγχρονίζεται αυτόματα με Google, Apple ή Outlook Calendar με συμπτώματα, έλεγχο ασφαλείας (red-flags) και φωτογραφίες πριν μπει ο ασθενής.</li>
+                <li><strong>4. Πλεονέκτημα Δικτύου Phase 2:</strong> Τα ιδρυτικά ιατρεία αποκτούν προτεραιότητα στην επερχόμενη εφαρμογή <strong>MyDocDesk Patient Discovery &amp; Booking App</strong>.</li>
+              </ol>
+            </div>
+
+            <div class="op-roi-footer">
+              <div><strong>Γραμματέας Πλήρους Απασχόλησης:</strong> €1.400+/μήνα</div>
+              <div class="op-roi-highlight"><strong>MyDocDesk Founding Doctor Pilot:</strong> 14 Ημέρες Δωρεάν Δοκιμή, στη συνέχεια <strong>€99/μήνα</strong> (κλειδωμένη τιμή Ιδρυτικού Μέλους· κανονική €149/μήνα)</div>
+              <div><strong>Ζωντανή Προσομοίωση &amp; Επικοινωνία:</strong> <a href="https://mydocdesk.com">mydocdesk.com</a> • Χρίστος Ταλιαδώρος (<code>christos@t-knights.com</code> • <code>+357 99 429249</code>)</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
 
   <!-- Sticky Mobile Quick-Jump Pill Bar -->
@@ -590,6 +750,9 @@
     </button>
     <button type="button" class="mjump-btn" onclick="switchTab('marketplace')">
       🌍 4. App
+    </button>
+    <button type="button" class="mjump-btn" onclick="switchTab('onepager')">
+      📄 5. 1-Pager
     </button>
   </nav>
 

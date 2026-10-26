@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MyDocDesk — Doctor 1-Page Leave-Behind (EN & EL)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    html, body {
+      width: 210mm;
+      background: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "DejaVu Sans", "Noto Sans", sans-serif;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 9mm 11mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #ffffff;
+      page-break-after: always;
+      overflow: hidden;
+      position: relative;
+    }
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* Top Header Banner */
+    .header-banner {
+      background: linear-gradient(135deg, #0a192f 0%, #112240 65%, #0f3d3e 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 3px solid #d97706;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .logo-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 2px solid #14b8a6;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+    .brand-title {
+      font-size: 21pt;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .brand-mydoc { color: #ffffff; }
+    .brand-desk { color: #2dd4bf; }
+    .domain-badge {
+      background: rgba(20, 184, 166, 0.2);
+      border: 1px solid #2dd4bf;
+      color: #5eead4;
+      font-size: 8.5pt;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .edition-badge {
+      background: rgba(217, 119, 6, 0.25);
+      border: 1px solid #fbbf24;
+      color: #fde68a;
+      font-size: 7.5pt;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .brand-eyebrow {
+      font-size: 8pt;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .brand-subtitle {
+      font-size: 9.2pt;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 7px 11px;
+      border-radius: 9px;
+    }
+    .header-right-top {
+      font-size: 7.2pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+    .header-right-main {
+      font-size: 9.5pt;
+      font-weight: 800;
+      color: #2dd4bf;
+      margin-top: 2px;
+    }
+    .header-right-sub {
+      font-size: 7.5pt;
+      color: #cbd5e1;
+      margin-top: 1px;
+    }
+
+    /* Problem Box */
+    .problem-strip {
+      background: #fffbeb;
+      border: 1.5px solid #fcd34d;
+      border-left: 5px solid #d97706;
+      border-radius: 10px;
+      padding: 9px 13px;
+    }
+    .section-kicker {
+      font-size: 7.8pt;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b45309;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 4px;
+    }
+    .problem-item {
+      background: #ffffff;
+      border: 1px solid #fde68a;
+      border-radius: 7px;
+      padding: 6px 9px;
+      font-size: 8.1pt;
+      color: #334155;
+    }
+    .problem-item strong {
+      display: block;
+      color: #0f172a;
+      font-size: 8.5pt;
+      margin-bottom: 1px;
+    }
+
+    /* Section Title */
+    .sec-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #0d9488;
+      padding-bottom: 3px;
+      margin-bottom: 6px;
+    }
+    .sec-heading h2 {
+      font-size: 10.5pt;
+      font-weight: 900;
+      color: #0a192f;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .sec-heading span {
+      font-size: 7.8pt;
+      font-weight: 700;
+      color: #0d9488;
+    }
+
+    /* 4 Steps Grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .step-card {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 9px;
+      padding: 8px 11px;
+    }
+    .step-card.highlight {
+      background: #f0fdfa;
+      border-color: #0d9488;
+    }
+    .step-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+    .step-num {
+      background: #0a192f;
+      color: #2dd4bf;
+      font-size: 7.2pt;
+      font-weight: 900;
+      padding: 2px 6px;
+      border-radius: 5px;
+      letter-spacing: 0.04em;
+    }
+    .step-title {
+      font-size: 9pt;
+      font-weight: 800;
+      color: #0a192f;
+    }
+    .step-body {
+      font-size: 8pt;
+      color: #334155;
+      line-height: 1.34;
+    }
+
+    /* 3-Tier Triage Section */
+    .triage-box {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 11px;
+    }
+    .triage-tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 5px;
+    }
+    .tier-card {
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 7.9pt;
+    }
+    .tier-p1 {
+      background: #fef2f2;
+      border: 1.5px solid #fca5a5;
+      color: #7f1d1d;
+    }
+    .tier-p2 {
+      background: #fffbeb;
+      border: 1.5px solid #fcd34d;
+      color: #78350f;
+    }
+    .tier-p3 {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #14532d;
+    }
+    .tier-badge {
+      display: inline-block;
+      font-size: 7.4pt;
+      font-weight: 900;
+      padding: 1.5px 6px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+    .tier-p1 .tier-badge { background: #dc2626; color: #ffffff; }
+    .tier-p2 .tier-badge { background: #d97706; color: #ffffff; }
+    .tier-p3 .tier-badge { background: #16a34a; color: #ffffff; }
+    .tier-title {
+      font-weight: 800;
+      font-size: 8.4pt;
+      margin-bottom: 2px;
+      color: #0f172a;
+    }
+    .tier-outcome {
+      margin-top: 3px;
+      padding-top: 3px;
+      border-top: 1px dashed rgba(15, 23, 42, 0.18);
+      font-weight: 700;
+      font-size: 7.7pt;
+    }
+
+    /* Split Middle: Calendar Case Note Sample + Specialties & GDPR */
+    .split-row {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 9px;
+    }
+    .sample-note-card {
+      background: #0a192f;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 9px 11px;
+      border: 1.5px solid #0d9488;
+    }
+    .sample-note-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 7.6pt;
+      font-weight: 800;
+      color: #2dd4bf;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+    }
+    .sample-bullets {
+      list-style: none;
+      font-size: 7.9pt;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5px;
+    }
+    .sample-bullets strong {
+      color: #fbbf24;
+    }
+    .spec-gdpr-card {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 5px;
+    }
+    .spec-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+    .spec-pill {
+      background: #ffffff;
+      border: 1px solid #0d9488;
+      color: #0f766e;
+      font-size: 7.3pt;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+    .gdpr-mini {
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: 6px;
+      padding: 5px 7px;
+      font-size: 7.5pt;
+      color: #134e4a;
+    }
+
+    /* Bottom ROI & Founding Doctor Offer Banner */
+    .roi-offer-card {
+      background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+      color: #ffffff;
+      border-radius: 11px;
+      padding: 10px 14px;
+      border: 2px solid #d97706;
+    }
+    .roi-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+    .compare-box {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 7px 10px;
+    }
+    .compare-box.featured {
+      background: rgba(13, 148, 136, 0.22);
+      border: 1.5px solid #2dd4bf;
+    }
+    .compare-label {
+      font-size: 7.2pt;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+    .compare-price {
+      font-size: 13.5pt;
+      font-weight: 900;
+      margin: 1px 0;
+    }
+    .compare-sub {
+      font-size: 7.4pt;
+      color: #cbd5e1;
+    }
+
+    /* Contact Footer */
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 6px;
+      margin-top: 7px;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 8.2pt;
+    }
+    .footer-cta {
+      color: #fbbf24;
+      font-weight: 800;
+    }
+    .footer-contact {
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .footer-contact span {
+      color: #2dd4bf;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================================================================== -->
+  <!-- PAGE 1: ENGLISH EDITION FOR CYPRUS CLINICS, DOCTORS & DENTISTS        -->
+  <!-- ===================================================================== -->
+  <section class="page">
+    <!-- Header -->
+    <header class="header-banner">
+      <div class="header-left">
+        <img src="./assets/icon-schedule-gold-cross.png" alt="MyDocDesk Logo" class="logo-icon" />
+        <div>
+          <div class="brand-eyebrow">INTELLIGENT MEDICAL RECEPTION • CYPRUS CLINICS &amp; DENTISTS</div>
+          <div class="brand-row">
+            <div class="brand-title"><span class="brand-mydoc">MyDoc</span><span class="brand-desk">Desk</span></div>
+            <span class="domain-badge">mydocdesk.com</span>
+            <span class="edition-badge">🇬🇧 English Edition</span>
+          </div>
+          <div class="brand-subtitle">
+            AI Voice &amp; WhatsApp Triage, Pre-Visit Case Notes &amp; Smart Schedule Protection for Doctors &amp; Dentists
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-right-top">Zero-Risk Clinic Setup</div>
+        <div class="header-right-main">Keep Your Current Number</div>
+        <div class="header-right-sub">Cyta • Epic • Cablenet + WhatsApp</div>
+      </div>
+    </header>
+
+    <!-- The Problem in Every Clinic -->
+    <div class="problem-strip">
+      <div class="section-kicker">
+        <span>⚠️ THE PROBLEM IN EVERY MEDICAL &amp; DENTAL CLINIC IN CYPRUS</span>
+        <span>40–100+ CALLS &amp; MESSAGES / DAY</span>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-item">
+          <strong>1. Constant Exam Interruptions</strong>
+          40–100+ daily calls &amp; WhatsApp messages interrupt consultations, sterile dental procedures, and family time after hours.
+        </div>
+        <div class="problem-item">
+          <strong>2. Missed Calls = Lost Private Revenue</strong>
+          When your line is busy or unanswered, private patients &amp; dental cases (€60–€500+ treatments) hang up and call the next clinic.
+        </div>
+        <div class="problem-item">
+          <strong>3. GeSY Admin Clogs Your Schedule</strong>
+          Routine GeSY repeat prescriptions, referrals (παραπεμπτικά), and lab checks flood the phone line and consume urgent slots.
+        </div>
+      </div>
+    </div>
+
+    <!-- How Sofia Works in 4 Steps -->
+    <div>
+      <div class="sec-heading">
+        <h2>⚡ How Sofia (Your AI Medical Receptionist) Works in 4 Steps</h2>
+        <span>Answers Normal Phone Calls, SMS &amp; WhatsApp in Greek, English &amp; Russian</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card highlight">
+          <div class="step-top">
+            <span class="step-num">STEP 1</span>
+            <span class="step-title">Answers Normal Calls &amp; WhatsApp 24/7 (EL / EN / RU)</span>
+          </div>
+          <div class="step-body">
+            Works with your existing Cyta/Epic/Cablenet landline or mobile via simple <strong>"Forward When Busy / Unanswered (<code>*67*</code> / <code>*61*</code>)"</strong>. Patients call your normal number or message on WhatsApp—elderly landline callers get standard SMS confirmations.
+          </div>
+        </div>
+
+        <div class="step-card highlight">
+          <div class="step-top">
+            <span class="step-num">STEP 2</span>
+            <span class="step-title">3-Tier Clinical &amp; Dental Priority Triage</span>
+          </div>
+          <div class="step-body">
+            Sofia asks 3 doctor-approved intake questions (symptoms, duration, red flags), assigns <strong>🔴 Urgent / 🟡 Standard / 🟢 Async Queue</strong>, and matches the right appointment block length (15m / 30m / 45m / 60m).
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-num">STEP 3</span>
+            <span class="step-title">3-Bullet Pre-Visit Case Note on Your Calendar</span>
+          </div>
+          <div class="step-body">
+            Syncs directly to your <strong>Google, Apple, or Outlook Calendar</strong> with chief complaint, red-flag checks, GeSY ID, and patient-uploaded WhatsApp photos/labs attached before the patient walks in.
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-num">STEP 4</span>
+            <span class="step-title">Phase 2 Network Advantage (Patient Finder App)</span>
+          </div>
+          <div class="step-body">
+            Founding clinics get priority placement in the upcoming <strong>MyDocDesk Patient Discovery &amp; Instant Booking App</strong>—turning unfilled same-day calendar gaps into verified bookings.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Tier Clinical & Dental Triage Matrix -->
+    <div class="triage-box">
+      <div class="sec-heading" style="margin-bottom:4px;">
+        <h2>🩺 Smart 3-Tier Clinical &amp; Dental Schedule Protection</h2>
+        <span>Customizable Rules Per Specialty &amp; Doctor</span>
+      </div>
+      <div class="triage-tiers">
+        <div class="tier-card tier-p1">
+          <span class="tier-badge">🔴 Priority 1 • Urgent Same-Day</span>
+          <div class="tier-title">Acute Medical &amp; Dental Cases</div>
+          <div>High pediatric fever (&gt;39°C), acute ear/abdominal pain, broken crown, acute toothache or swelling.</div>
+          <div class="tier-outcome">🔓 Unlocks Protected Emergency Buffer Slot (e.g. 12:30 / 17:00)</div>
+        </div>
+
+        <div class="tier-card tier-p2">
+          <span class="tier-badge">🟡 Priority 2 • Standard + Photo</span>
+          <div class="tier-title">24–48h Consults &amp; Treatments</div>
+          <div>Spreading skin rashes, dermoscopy, lab/Holter review, dental fillings, root canals, implant consults.</div>
+          <div class="tier-outcome">📷 Requests WhatsApp Photo/PDF &amp; Books 15m/30m/45m/60m Slot</div>
+        </div>
+
+        <div class="tier-card tier-p3">
+          <span class="tier-badge">🟢 Priority 3 • Routine &amp; GeSY Queue</span>
+          <div class="tier-title">Zero Exam Slots Wasted</div>
+          <div>Repeat GeSY prescriptions, specialist referrals (παραπεμπτικά), routine ultrasonic dental cleanings.</div>
+          <div class="tier-outcome">📋 Batched into 5-Min End-of-Day Queue (or Non-Peak Hygiene Slot)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sample Case Note + Specialties & GDPR Compliance -->
+    <div class="split-row">
+      <div class="sample-note-card">
+        <div class="sample-note-hdr">
+          <span>📅 Sample Calendar Event &amp; 3-Bullet Case Note</span>
+          <span>Google / Apple / Outlook Sync</span>
+        </div>
+        <ul class="sample-bullets">
+          <li><strong>🔴 12:30 PM [URGENT BUFFER] — Leo K. (Age 4) • GeSY #948201</strong></li>
+          <li><strong>• Triage Summary:</strong> 39.6°C fever since 22:00 + acute right ear pain. Given Nurofen at 07:30.</li>
+          <li><strong>• Red-Flag Screen:</strong> Breathing normal, responsive, no neck stiffness. (Emergencies directed to 112).</li>
+          <li><strong>• Pre-Visit Attachment:</strong> 📷 Tympanic thermometer / tooth / rash photo attached via WhatsApp.</li>
+        </ul>
+      </div>
+
+      <div class="spec-gdpr-card">
+        <div>
+          <div style="font-size:7.8pt; font-weight:900; color:#0a192f; text-transform:uppercase;">Built for High-Volume Cyprus Specialties:</div>
+          <div class="spec-pills">
+            <span class="spec-pill">👶 Pediatrics</span>
+            <span class="spec-pill">🩺 GeSY Personal Doctors</span>
+            <span class="spec-pill">🦷 Dentists &amp; Implants</span>
+            <span class="spec-pill">🔬 Dermatology</span>
+            <span class="spec-pill">❤️ Cardiology</span>
+            <span class="spec-pill">👂 ENT / OB-GYN</span>
+          </div>
+        </div>
+        <div class="gdpr-mini">
+          <strong>🔒 100% GDPR Compliant &amp; Safe Administrative Intake:</strong> Sofia never diagnoses or prescribes. EU-encrypted servers (Frankfurt) with automatic 112 red-flag escalation.
+        </div>
+      </div>
+    </div>
+
+    <!-- Clinic ROI & Founding Doctor Offer -->
+    <footer class="roi-offer-card">
+      <div class="roi-compare-grid">
+        <div class="compare-box">
+          <div class="compare-label">Full-Time Receptionist</div>
+          <div class="compare-price" style="color:#fca5a5;">€1,400+ <span style="font-size:8.5pt; font-weight:600;">/ month</span></div>
+          <div class="compare-sub">9am–5pm only • 1 call at a time • Sick leave &amp; social insurance</div>
+        </div>
+
+        <div class="compare-box featured">
+          <div class="compare-label" style="color:#fde68a;">⭐ Founding Doctor Pilot Offer (First 20 Clinics)</div>
+          <div class="compare-price" style="color:#2dd4bf;">14-Day Free Trial → €99<span style="font-size:8.5pt; font-weight:700; color:#ffffff;">/mo</span></div>
+          <div class="compare-sub">Locked-in Founding Rate (Standard €149/mo) • 24/7 EL/EN/RU • Cancel anytime</div>
+        </div>
+
+        <div class="compare-box">
+          <div class="compare-label">Immediate Clinic ROI</div>
+          <div class="compare-price" style="color:#fbbf24;">1 Saved Visit = Paid</div>
+          <div class="compare-sub">Saves 40+ doctor hours/mo &amp; recovers €1,500–€3,500/mo in missed calls</div>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <div class="footer-cta">👉 Try the 60-Second Live Interactive Simulator Now: <span style="color:#2dd4bf; text-decoration:underline;">https://mydocdesk.com</span></div>
+        <div class="footer-contact">Pilot Setup: <span>Christos Taliadoros</span> • christos@t-knights.com • <span>+357 99 429249</span></div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- PAGE 2: GREEK EDITION — ΕΛΛΗΝΙΚΗ ΕΚΔΟΣΗ ΓΙΑ ΙΑΤΡΕΙΑ & ΟΔΟΝΤΙΑΤΡΕΙΑ    -->
+  <!-- ===================================================================== -->
+  <section class="page" lang="el">
+    <!-- Header -->
+    <header class="header-banner">
+      <div class="header-left">
+        <img src="./assets/icon-schedule-gold-cross.png" alt="MyDocDesk Logo" class="logo-icon" />
+        <div>
+          <div class="brand-eyebrow">INTELLIGENT MEDICAL RECEPTION • ΙΑΤΡΕΙΑ ΓεΣΥ, ΕΙΔΙΚΟΙ ΙΑΤΡΟΙ &amp; ΟΔΟΝΤΙΑΤΡΕΙΑ</div>
+          <div class="brand-row">
+            <div class="brand-title"><span class="brand-mydoc">MyDoc</span><span class="brand-desk">Desk</span></div>
+            <span class="domain-badge">mydocdesk.com</span>
+            <span class="edition-badge">🇬🇷/🇨🇾 Ελληνική Έκδοση</span>
+          </div>
+          <div class="brand-subtitle">
+            Έξυπνη Τηλεφωνική &amp; WhatsApp Διαλογή (Triage), Προ-Εξεταστικό Ιστορικό &amp; Προστασία Προγράμματος Ιατρείου
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-right-top">Εγκατάσταση Σε 15 Λεπτά</div>
+        <div class="header-right-main">Κρατάτε τον Αριθμό Σας</div>
+        <div class="header-right-sub">Cyta • Epic • Cablenet + WhatsApp</div>
+      </div>
+    </header>
+
+    <!-- Το Πρόβλημα σε Κάθε Ιατρείο -->
+    <div class="problem-strip">
+      <div class="section-kicker">
+        <span>⚠️ ΤΟ ΚΑΘΗΜΕΡΙΝΟ ΠΡΟΒΛΗΜΑ ΣΕ ΚΑΘΕ ΙΑΤΡΕΙΟ &amp; ΟΔΟΝΤΙΑΤΡΕΙΟ ΣΤΗΝ ΚΥΠΡΟ</span>
+        <span>40–100+ ΚΛΗΣΕΙΣ &amp; ΜΗΝΥΜΑΤΑ / ΗΜΕΡΑ</span>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-item">
+          <strong>1. Διακοπές Κατά την Εξέταση</strong>
+          40–100+ κλήσεις και μηνύματα WhatsApp την ημέρα διακόπτουν την κλινική εξέταση ή τις οδοντιατρικές πράξεις την ώρα που φοράτε γάντια.
+        </div>
+        <div class="problem-item">
+          <strong>2. Αναπάντητες = Χαμένα Ραντεβού</strong>
+          Κάθε αναπάντητη κλήση από ιδιώτη ασθενή ή επείγον οδοντιατρικό περιστατικό σημαίνει απώλεια €60–€500+ σε θεραπείες.
+        </div>
+        <div class="problem-item">
+          <strong>3. Υπερφόρτωση από Συνταγές ΓεΣΥ</strong>
+          Οι επαναλαμβανόμενες συνταγές ΓεΣΥ και τα παραπεμπτικά μπλοκάρουν το τηλέφωνο και κλείνουν πολύτιμα κλινικά ραντεβού.
+        </div>
+      </div>
+    </div>
+
+    <!-- Πώς Λειτουργεί η Σοφία σε 4 Βήματα -->
+    <div>
+      <div class="sec-heading">
+        <h2>⚡ Πώς Λειτουργεί η «Σοφία» (Η AI Ιατρική Γραμματέας Σας) σε 4 Βήματα</h2>
+        <span>Απαντά Κανονικές Τηλεφωνικές Κλήσεις, SMS &amp; WhatsApp σε Ελληνικά, Αγγλικά &amp; Ρωσικά</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card highlight">
+          <div class="step-top">
+            <span class="step-num">ΒΗΜΑ 1</span>
+            <span class="step-title">Απαντά Κανονικές Κλήσεις &amp; WhatsApp 24/7 (EL/EN/RU)</span>
+          </div>
+          <div class="step-body">
+            Λειτουργεί με το υπάρχον σταθερό ή κινητό σας (Cyta/Epic/Cablenet) μέσω απλής εκτροπής όταν είστε κατειλημμένοι ή δεν απαντάτε (<code>*67*</code> / <code>*61*</code>). Οι ασθενείς καλούν κανονικά ή στέλνουν στο WhatsApp/SMS.
+          </div>
+        </div>
+
+        <div class="step-card highlight">
+          <div class="step-top">
+            <span class="step-num">ΒΗΜΑ 2</span>
+            <span class="step-title">Κλινική &amp; Οδοντιατρική Διαλογή 3 Επιπέδων</span>
+          </div>
+          <div class="step-body">
+            Η Σοφία κάνει 3 στοχευμένες ερωτήσεις ιστορικού, αξιολογεί την προτεραιότητα (<strong>🔴 Επείγον / 🟡 Σύντομα / 🟢 Λίστα ΓεΣΥ</strong>) και δεσμεύει τη σωστή διάρκεια ραντεβού (15' / 30' / 45' / 60').
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-num">ΒΗΜΑ 3</span>
+            <span class="step-title">Σημείωση Περιστατικού (Case Note) στο Ημερολόγιό Σας</span>
+          </div>
+          <div class="step-body">
+            Συγχρονίζεται αυτόματα με <strong>Google, Apple ή Outlook Calendar</strong>, καταγράφοντας σε 3 σημεία τα συμπτώματα, τον έλεγχο red-flags, τον κωδικό ΓεΣΥ και τυχόν φωτογραφίες πριν μπει ο ασθενής.
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-num">ΒΗΜΑ 4</span>
+            <span class="step-title">Πλεονέκτημα Δικτύου Phase 2 (Εφαρμογή Ασθενών)</span>
+          </div>
+          <div class="step-body">
+            Τα ιδρυτικά ιατρεία αποκτούν προτεραιότητα προβολής στη νέα εφαρμογή <strong>MyDocDesk Patient Finder App</strong>, γεμίζοντας αυτόματα τα κενά της ημέρας με επιβεβαιωμένα ραντεβού.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Κλινική & Οδοντιατρική Διαλογή 3 Επιπέδων -->
+    <div class="triage-box">
+      <div class="sec-heading" style="margin-bottom:4px;">
+        <h2>🩺 Έξυπνη Διαλογή 3 Επιπέδων &amp; Προστασία Κλινικού Χρόνου</h2>
+        <span>Πλήρως Προσαρμοσμένοι Κανόνες ανά Ιατρό &amp; Ειδικότητα</span>
+      </div>
+      <div class="triage-tiers">
+        <div class="tier-card tier-p1">
+          <span class="tier-badge">🔴 Προτεραιότητα 1 • Αυθημερόν</span>
+          <div class="tier-title">Οξέα Ιατρικά &amp; Οδοντιατρικά</div>
+          <div>Υψηλός παιδιατρικός πυρετός (&gt;39°C), οξύς πόνος, σπασμένη θήκη/δόντι, οξύς πονόδοντος ή οίδημα.</div>
+          <div class="tier-outcome">🔓 Ξεκλειδώνει το Κρυφό Επείγον Κενό (Emergency Buffer Slot)</div>
+        </div>
+
+        <div class="tier-card tier-p2">
+          <span class="tier-badge">🟡 Προτεραιότητα 2 • 24–48ώ + Φωτο</span>
+          <div class="tier-title">Εξετάσεις &amp; Θεραπείες</div>
+          <div>Εξανθήματα, δερματοσκόπηση, αξιολόγηση αναλύσεων, σφραγίσματα, ενδοδοντία, εμφυτεύματα.</div>
+          <div class="tier-outcome">📷 Ζητά Φωτογραφία/PDF στο WhatsApp &amp; Κλείνει 15'/30'/45'/60'</div>
+        </div>
+
+        <div class="tier-card tier-p3">
+          <span class="tier-badge">🟢 Προτεραιότητα 3 • Ουρά ΓεΣΥ</span>
+          <div class="tier-title">Μηδενική Σπατάλη Ραντεβού</div>
+          <div>Ανανεώσεις συνταγών ΓεΣΥ, παραπεμπτικά, προληπτικός οδοντιατρικός καθαρισμός 6μήνου.</div>
+          <div class="tier-outcome">📋 Ομαδοποίηση στη Λίστα 5 Λεπτών Τέλους Ημέρας (Batch Queue)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Δείγμα Κάρτας Ημερολογίου + Ειδικότητες & GDPR -->
+    <div class="split-row">
+      <div class="sample-note-card">
+        <div class="sample-note-hdr">
+          <span>📅 Δείγμα Καταχώρησης Ημερολογίου &amp; Case Note</span>
+          <span>Google / Apple / Outlook Sync</span>
+        </div>
+        <ul class="sample-bullets">
+          <li><strong>🔴 12:30 μ.μ. [ΕΠΕΙΓΟΝ BUFFER] — Λεωνίδας Κ. (4 ετών) • ΓεΣΥ #948201</strong></li>
+          <li><strong>• Σύνοψη Διαλογής:</strong> Πυρετός 39.6°C από τις 22:00 + οξύς πόνος στο δεξί αυτί. Έλαβε Nurofen 07:30.</li>
+          <li><strong>• Έλεγχος Ασφαλείας:</strong> Χωρίς δύσπνοια ή δυσκαμψία αυχένα. (Κρίσιμα περιστατικά παραπέμπονται στο 112).</li>
+          <li><strong>• Συνημμένο Αρχείο:</strong> 📷 Φωτογραφία θερμομέτρου / δοντιού / εξανθήματος μέσω WhatsApp.</li>
+        </ul>
+      </div>
+
+      <div class="spec-gdpr-card">
+        <div>
+          <div style="font-size:7.8pt; font-weight:900; color:#0a192f; text-transform:uppercase;">Ιδανικό για Ιατρεία Υψηλού Φόρτου στην Κύπρο:</div>
+          <div class="spec-pills">
+            <span class="spec-pill">👶 Παιδίατροι</span>
+            <span class="spec-pill">🩺 Προσωπικοί Ιατροί ΓεΣΥ</span>
+            <span class="spec-pill">🦷 Οδοντίατροι</span>
+            <span class="spec-pill">🔬 Δερματολόγοι</span>
+            <span class="spec-pill">❤️ Καρδιολόγοι</span>
+            <span class="spec-pill">👂 ΩΡΛ / Γυναικολόγοι</span>
+          </div>
+        </div>
+        <div class="gdpr-mini">
+          <strong>🔒 100% Συμβατό με GDPR &amp; Ιατρική Δεοντολογία:</strong> Η Σοφία εκτελεί αποκλειστικά γραμματειακή διαλογή (όχι διάγνωση). Κρυπτογραφημένοι servers στην Ε.Ε.
+        </div>
+      </div>
+    </div>
+
+    <!-- Σύγκριση Κόστους & Προσφορά Ιδρυτικών Ιατρείων -->
+    <footer class="roi-offer-card">
+      <div class="roi-compare-grid">
+        <div class="compare-box">
+          <div class="compare-label">Γραμματέας Πλήρους Απασχόλησης</div>
+          <div class="compare-price" style="color:#fca5a5;">€1.400+ <span style="font-size:8.5pt; font-weight:600;">/ μήνα</span></div>
+          <div class="compare-sub">Μόνο 09:00–17:00 • 1 κλήση τη φορά • Κοινωνικές ασφαλίσεις &amp; άδειες</div>
+        </div>
+
+        <div class="compare-box featured">
+          <div class="compare-label" style="color:#fde68a;">⭐ Προσφορά Founding Doctor Pilot (Πρώτα 20 Ιατρεία)</div>
+          <div class="compare-price" style="color:#2dd4bf;">14 Ημέρες Δωρεάν → €99<span style="font-size:8.5pt; font-weight:700; color:#ffffff;">/μήνα</span></div>
+          <div class="compare-sub">Κλειδωμένη Τιμή Ιδρυτικού Μέλους (Κανονική €149/μήνα) • 24/7 EL/EN/RU</div>
+        </div>
+
+        <div class="compare-box">
+          <div class="compare-label">Άμεση Απόσβεση Ιατρείου</div>
+          <div class="compare-price" style="color:#fbbf24;">1 Ραντεβού = Απόσβεση</div>
+          <div class="compare-sub">Εξοικονομεί 40+ ώρες/μήνα &amp; ανακτά €1.500–€3.500/μήνα από αναπάντητες</div>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <div class="footer-cta">👉 Δοκιμάστε τη Ζωντανή Προσομοίωση σε 60 Δευτερόλεπτα: <span style="color:#2dd4bf; text-decoration:underline;">https://mydocdesk.com</span></div>
+        <div class="footer-contact">Επικοινωνία Pilot: <span>Χρίστος Ταλιαδώρος</span> • christos@t-knights.com • <span>+357 99 429249</span></div>
+      </div>
+    </footer>
+  </section>
+
+</body>
+</html>

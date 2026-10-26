@@ -1427,4 +1427,30 @@ document.addEventListener("DOMContentLoaded", () => {
   renderDoctorSchedule();
   renderGesyQueue();
   renderMarketplaceDoctors();
+
+  const hashTab = (window.location.hash || "").replace("#", "").trim();
+  const urlTab = new URLSearchParams(window.location.search).get("tab");
+  const initialTab = urlTab || hashTab;
+  if (["simulator", "schedule", "marketplace", "logos", "onepager"].includes(initialTab)) {
+    switchTab(initialTab);
+  }
 });
+
+
+// ============================================================================
+// Tab 5: Doctor 1-Pager Language View Switcher (Side-by-Side / EN / EL)
+// ============================================================================
+function setOnePagerLang(mode) {
+  const sheetEn = document.getElementById("onepager-sheet-en");
+  const sheetEl = document.getElementById("onepager-sheet-el");
+  const grid = document.getElementById("onepager-dual-grid");
+  if (!sheetEn || !sheetEl || !grid) return;
+
+  sheetEn.hidden = mode === "el";
+  sheetEl.hidden = mode === "en";
+  grid.classList.toggle("single-col", mode !== "both");
+
+  ["both", "en", "el"].forEach((k) => {
+    document.getElementById(`op-btn-${k}`)?.classList.toggle("active", k === mode);
+  });
+}
