@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MyDocDesk / MyDocDeskAI — INTELLIGENT MEDICAL RECEPTION • AI Doctor Receptionist &amp; Priority Triage</title>
+  <title>MyDocDesk — INTELLIGENT MEDICAL RECEPTION • AI Voice &amp; WhatsApp Triage</title>
   <link rel="icon" type="image/png" href="./assets/favicon.png" />
-  <link rel="apple-touch-icon" href="./assets/icon-bell.png" />
+  <link rel="apple-touch-icon" href="./assets/icon-schedule-gold-navy.png" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -13,32 +13,28 @@
   <header class="topbar">
     <div class="brand-cluster">
       <div class="brand-logo">
-        <img src="./assets/icon-bell.png" alt="MyDocDesk Logo" class="brand-logo-img" id="topbar-logo-img" />
+        <img src="./assets/icon-schedule-gold-navy.png" alt="MyDocDesk Logo" class="brand-logo-img" id="topbar-logo-img" />
         <div class="brand-title-wrap">
           <div class="brand-title-row">
             <span id="topbar-brand-html"><span class="brand-name-mydoc">MyDoc</span><span class="brand-name-desk">Desk</span></span>
             <span class="domain-pill" id="topbar-domain-pill">mydocdesk.com</span>
             <a href="https://myvacai.com" class="sister-pill" title="Sister Brand: MyVacAI">🔗 Sister: MyVacAI</a>
           </div>
-          <div class="brand-tagline" id="topbar-tagline">INTELLIGENT MEDICAL RECEPTION • AI Triage &amp; Doctor Scheduling</div>
+          <div class="brand-tagline" id="topbar-tagline">INTELLIGENT MEDICAL RECEPTION • AI Voice &amp; WhatsApp Triage</div>
         </div>
       </div>
 
-      <!-- 1-Tap Name & Emblem Switcher -->
-      <div class="brand-toggle-cluster" aria-label="Live Brand Name and Logo Switcher">
-        <span class="toggle-mini-label">Brand:</span>
-        <button type="button" class="brand-switch-btn active" id="btn-name-mydocdesk" onclick="setBrandVariant('mydocdesk', null)">
-          MyDocDesk
+      <!-- 1-Tap MyDocDesk Blended Schedule Emblem Switcher -->
+      <div class="brand-toggle-cluster" aria-label="MyDocDesk Emblem Switcher">
+        <span class="toggle-mini-label">Logo Style:</span>
+        <button type="button" class="brand-switch-btn active" id="btn-icon-schedule_navy" onclick="setBrandVariant('mydocdesk', 'schedule_navy')">
+          🗓️ Schedule + Gold/Navy (v1)
         </button>
-        <button type="button" class="brand-switch-btn" id="btn-name-mydocdeskai" onclick="setBrandVariant('mydocdeskai', null)">
-          MyDocDeskAI
+        <button type="button" class="brand-switch-btn" id="btn-icon-schedule_gold" onclick="setBrandVariant('mydocdesk', 'schedule_gold')">
+          ✨ Gold Cross + Schedule (v2)
         </button>
-        <span class="toggle-mini-label">Icon:</span>
-        <button type="button" class="brand-switch-btn active" id="btn-icon-bell" onclick="setBrandVariant(null, 'bell')">
-          🔔 Bell + Stethoscope
-        </button>
-        <button type="button" class="brand-switch-btn" id="btn-icon-cross" onclick="setBrandVariant(null, 'cross')">
-          ➕ Cross + Calendar
+        <button type="button" class="brand-switch-btn" id="btn-icon-bell" onclick="setBrandVariant('mydocdesk', 'bell')">
+          🔔 Bell
         </button>
       </div>
     </div>
@@ -54,60 +50,12 @@
         🌍 3. Phase 2: Patient Finder App
       </button>
       <button type="button" class="nav-tab" data-tab="logos" onclick="switchTab('logos')">
-        🎨 4. Brand &amp; Logo Compare (4)
+        🎨 4. Official MyDocDesk Logos
       </button>
     </nav>
   </header>
 
   <main class="main-container">
-    <!-- Live 4-Way Brand & Logo Comparison Strip (Always accessible to compare MyDocDesk vs MyDocDeskAI) -->
-    <div class="brand-comparison-strip" id="brand-comparison-strip">
-      <div class="brand-strip-header">
-        <div class="brand-strip-title">
-          <span>✨ Compare Brand &amp; Logo Options Live:</span>
-          <span class="brand-strip-sub">Tap any of the 4 generated logos below to preview that exact name &amp; icon across the entire platform</span>
-        </div>
-        <span class="code-badge" id="active-brand-pill">Active: MyDocDesk • Bell + Stethoscope (mydocdesk.com)</span>
-      </div>
-      <div class="brand-switcher-grid">
-        <button type="button" class="brand-option-card active" id="card-opt-mydocdesk-bell" onclick="setBrandVariant('mydocdesk', 'bell')">
-          <img src="./assets/logo-mydocdesk-bell.jpg" alt="MyDocDesk Bell Logo" class="brand-option-thumb" />
-          <div class="brand-option-meta">
-            <div class="brand-option-name">1. MyDocDesk <span>🔔</span></div>
-            <div class="brand-option-tag">Intelligent Medical Reception</div>
-            <div class="brand-option-domain">mydocdesk.com (Available)</div>
-          </div>
-        </button>
-
-        <button type="button" class="brand-option-card" id="card-opt-mydocdeskai-bell" onclick="setBrandVariant('mydocdeskai', 'bell')">
-          <img src="./assets/logo-mydocdeskai-bell.jpg" alt="MyDocDeskAI Bell Logo" class="brand-option-thumb" />
-          <div class="brand-option-meta">
-            <div class="brand-option-name">2. MyDocDeskAI <span>🔔</span></div>
-            <div class="brand-option-tag">Intelligent Medical Reception</div>
-            <div class="brand-option-domain">mydocdeskai.com (Available)</div>
-          </div>
-        </button>
-
-        <button type="button" class="brand-option-card" id="card-opt-mydocdesk-cross" onclick="setBrandVariant('mydocdesk', 'cross')">
-          <img src="./assets/logo-mydocdesk-cross.jpg" alt="MyDocDesk Cross Shield Logo" class="brand-option-thumb" />
-          <div class="brand-option-meta">
-            <div class="brand-option-name">3. MyDocDesk <span>➕</span></div>
-            <div class="brand-option-tag">Smart Triage &amp; Scheduling</div>
-            <div class="brand-option-domain">mydocdesk.com (Available)</div>
-          </div>
-        </button>
-
-        <button type="button" class="brand-option-card" id="card-opt-mydocdeskai-cross" onclick="setBrandVariant('mydocdeskai', 'cross')">
-          <img src="./assets/logo-mydocdeskai-cross.jpg" alt="MyDocDeskAI Cross Shield Logo" class="brand-option-thumb" />
-          <div class="brand-option-meta">
-            <div class="brand-option-name">4. MyDocDeskAI <span>➕</span></div>
-            <div class="brand-option-tag">Smart Triage &amp; Scheduling</div>
-            <div class="brand-option-domain">mydocdeskai.com (Available)</div>
-          </div>
-        </button>
-      </div>
-    </div>
-
     <!-- =================================================================== -->
     <!-- TAB 1: LIVE AI RECEPTIONIST, PRIORITY TRIAGE & CASE-NOTE SIMULATOR -->
     <!-- =================================================================== -->
@@ -290,7 +238,7 @@
         <div class="whatsapp-card" id="card-whatsapp-chat">
           <div class="wa-header">
             <div class="wa-header-left">
-              <img src="./assets/icon-bell.png" alt="MyDocDesk" class="wa-avatar-img" id="wa-logo-img" />
+              <img src="./assets/icon-schedule-gold-navy.png" alt="MyDocDesk" class="wa-avatar-img" id="wa-logo-img" />
               <div>
                 <div class="wa-title">
                   <span id="wa-clinic-title">Dr. Andreas Nicolaou Clinic</span>
@@ -588,62 +536,62 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 4: BRAND & LOGO STUDIO (4 GENERATED LOGOS SIDE-BY-SIDE)         -->
+    <!-- TAB 4: OFFICIAL MYDOCDESK LOGO STUDIO                               -->
     <!-- =================================================================== -->
     <section id="tab-logos" class="tab-panel">
       <div class="section-card">
         <div class="section-header">
           <div>
-            <div class="section-title">🎨 Official Brand &amp; Logo Comparison: `MyDocDesk` vs `MyDocDeskAI`</div>
+            <div class="section-title">🎨 Official Brand Identity: MyDocDesk (mydocdesk.com)</div>
             <div style="font-size:0.8rem; color:#64748b;">
-              Both <code>mydocdesk.com</code> and <code>mydocdeskai.com</code> are available (~€10–€12/year) and connect directly with <code>myvacai.com</code>. Tap any logo below to set it live across the page.
+              Combining the <strong>Schedule + Medical Cross + Voice Waveform</strong> icon from #3 &amp; #4 with the warm <strong>Champagne-Gold, Deep Navy &amp; Vibrant Cyan-Teal</strong> palette from #1 &amp; #2 (<code>INTELLIGENT MEDICAL RECEPTION</code>).
             </div>
           </div>
-          <span class="code-badge">All 4 Concepts Ready</span>
+          <span class="code-badge" id="active-brand-pill">Active: MyDocDesk • Schedule Shield + Gold/Navy/Teal (mydocdesk.com)</span>
         </div>
 
         <div class="logo-studio-grid">
-          <div class="logo-studio-card active" id="studio-card-mydocdesk-bell">
-            <img src="./assets/logo-mydocdesk-bell.jpg" alt="MyDocDesk Reception Bell + Stethoscope + Speech Bubble ECG" class="logo-studio-img" />
-            <h3 style="font-size:1.05rem; font-weight:800;">Option 1: MyDocDesk — Reception Bell + Stethoscope + ECG</h3>
+          <div class="logo-studio-card active" id="studio-card-schedule_navy">
+            <img src="./assets/logo-mydocdesk-schedule-gold-navy-teal.jpg" alt="MyDocDesk Blended Logo 1 — Navy Cross + Gold Calendar Header & Star + Cyan-Teal Schedule Shield" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Blended Design 1 (Active): Navy Cross + Gold Calendar Header &amp; Star + Cyan-Teal Schedule Shield</h3>
             <p style="font-size:0.79rem; color:#475569;">
-              Direct visual sibling to <strong>MyVacAI</strong>'s golden reception bell, swapping ocean waves for a navy medical stethoscope and teal ECG heartbeat speech bubble. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
+              Uses the exact schedule shield, checkmark, medical cross, and voice equalizer bars from #3 &amp; #4 rendered in the warm champagne-gold, deep navy, and cyan-teal palette of #1 &amp; #2. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
+            </p>
+            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdesk', 'schedule_navy')">
+              ✓ Active Default (`MyDocDesk` • Blended v1)
+            </button>
+          </div>
+
+          <div class="logo-studio-card" id="studio-card-schedule_gold">
+            <img src="./assets/logo-mydocdesk-schedule-gold-cross-teal.jpg" alt="MyDocDesk Blended Logo 2 — Champagne-Gold Cross + Cyan-Teal Schedule Shield + Stethoscope Curve" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Blended Design 2: Champagne-Gold Cross + Cyan-Teal Schedule Shield + Stethoscope</h3>
+            <p style="font-size:0.79rem; color:#475569;">
+              Features a warm champagne-gold medical cross behind the navy-and-teal verified schedule shield, AI voice bars, and stethoscope curve. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
+            </p>
+            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdesk', 'schedule_gold')">
+              ✓ Preview Blended v2 (`Gold Cross + Schedule`)
+            </button>
+          </div>
+
+          <div class="logo-studio-card" id="studio-card-bell">
+            <img src="./assets/logo-mydocdesk-bell.jpg" alt="MyDocDesk Reception Bell + Stethoscope + Speech Bubble ECG" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Original Option 1: Reception Bell + Stethoscope + ECG</h3>
+            <p style="font-size:0.79rem; color:#475569;">
+              Golden reception bell with medical stethoscope and teal ECG heartbeat speech bubble. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
             </p>
             <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdesk', 'bell')">
-              ✓ Use Option 1 (`MyDocDesk` • Bell)
+              ✓ Preview Reception Bell Emblem
             </button>
           </div>
 
-          <div class="logo-studio-card" id="studio-card-mydocdeskai-bell">
-            <img src="./assets/logo-mydocdeskai-bell.jpg" alt="MyDocDeskAI Reception Bell + Stethoscope + Speech Bubble ECG" class="logo-studio-img" />
-            <h3 style="font-size:1.05rem; font-weight:800;">Option 2: MyDocDeskAI — Reception Bell + Stethoscope + ECG</h3>
-            <p style="font-size:0.79rem; color:#475569;">
-              Same Reception Bell + Stethoscope + ECG mark with the explicit <strong>AI</strong> suffix in teal, matching the exact <code>My...AI</code> pattern of <code>MyVacAI</code>. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
-            </p>
-            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdeskai', 'bell')">
-              ✓ Use Option 2 (`MyDocDeskAI` • Bell)
-            </button>
-          </div>
-
-          <div class="logo-studio-card" id="studio-card-mydocdesk-cross">
+          <div class="logo-studio-card" id="studio-card-cross">
             <img src="./assets/logo-mydocdesk-cross.jpg" alt="MyDocDesk Medical Cross + Calendar Shield + Voice Waveform" class="logo-studio-img" />
-            <h3 style="font-size:1.05rem; font-weight:800;">Option 3: MyDocDesk — Medical Cross + Calendar Shield + Voice</h3>
+            <h3 style="font-size:1.05rem; font-weight:800;">Original Option 3: Navy/Teal Cross + Calendar Shield</h3>
             <p style="font-size:0.79rem; color:#475569;">
-              Combines a navy Medical Cross, a verified Teal Calendar Shield, and AI Voice Waveform bars—ideal for both Phase 1 scheduling and Phase 2 patient booking app icon. Tagline: <code>SMART TRIAGE AND SCHEDULING</code>.
+              Original cool-toned navy and teal schedule shield before adding the champagne-gold accents. Tagline: <code>SMART TRIAGE AND SCHEDULING</code>.
             </p>
             <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdesk', 'cross')">
-              ✓ Use Option 3 (`MyDocDesk` • Cross Shield)
-            </button>
-          </div>
-
-          <div class="logo-studio-card" id="studio-card-mydocdeskai-cross">
-            <img src="./assets/logo-mydocdeskai-cross.jpg" alt="MyDocDeskAI Medical Cross + Calendar Shield + Voice Waveform" class="logo-studio-img" />
-            <h3 style="font-size:1.05rem; font-weight:800;">Option 4: MyDocDeskAI — Medical Cross + Calendar Shield + Voice</h3>
-            <p style="font-size:0.79rem; color:#475569;">
-              The Medical Cross + Calendar Shield + Voice Waveform emblem paired with <strong>MyDocDeskAI</strong> (`mydocdeskai.com`). Tagline: <code>SMART TRIAGE AND SCHEDULING</code>.
-            </p>
-            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdeskai', 'cross')">
-              ✓ Use Option 4 (`MyDocDeskAI` • Cross Shield)
+              ✓ Preview Original Cool-Toned Shield
             </button>
           </div>
         </div>

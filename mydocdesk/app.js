@@ -4,7 +4,7 @@
 
 const state = {
   brandKey: "mydocdesk", // 'mydocdesk' | 'mydocdeskai'
-  iconKey: "bell", // 'bell' | 'cross'
+  iconKey: "schedule_navy", // 'schedule_navy' | 'schedule_gold' | 'bell' | 'cross'
   voiceAudioEnabled: false,
   guidedTimer: null,
   activeClinic: {
@@ -412,66 +412,65 @@ const SCENARIOS = {
 // Brand & Logo Switcher (MyDocDesk vs MyDocDeskAI + Bell vs Cross Shield)
 // ============================================================================
 function setBrandVariant(newBrandKey, newIconKey) {
-  if (newBrandKey) state.brandKey = newBrandKey;
+  state.brandKey = "mydocdesk";
   if (newIconKey) state.iconKey = newIconKey;
 
-  const isAI = state.brandKey === "mydocdeskai";
-  const isBell = state.iconKey === "bell";
+  const brandPlain = "MyDocDesk";
+  const domainText = "mydocdesk.com";
+  const ICON_META = {
+    schedule_navy: {
+      path: "./assets/icon-schedule-gold-navy.png",
+      label: "Schedule Shield + Gold/Navy/Teal (v1)",
+      tagline: "INTELLIGENT MEDICAL RECEPTION • AI Voice & WhatsApp Triage"
+    },
+    schedule_gold: {
+      path: "./assets/icon-schedule-gold-cross.png",
+      label: "Gold Cross + Schedule Shield (v2)",
+      tagline: "INTELLIGENT MEDICAL RECEPTION • AI Voice & WhatsApp Triage"
+    },
+    bell: {
+      path: "./assets/icon-bell.png",
+      label: "Reception Bell + Stethoscope",
+      tagline: "INTELLIGENT MEDICAL RECEPTION • AI Voice & WhatsApp Triage"
+    },
+    cross: {
+      path: "./assets/icon-cross.png",
+      label: "Cool Navy/Teal Schedule Shield",
+      tagline: "SMART TRIAGE AND SCHEDULING • AI Voice & WhatsApp Triage"
+    }
+  };
 
-  const brandPlain = isAI ? "MyDocDeskAI" : "MyDocDesk";
-  const domainText = isAI ? "mydocdeskai.com" : "mydocdesk.com";
-  const taglineText = isBell
-    ? "INTELLIGENT MEDICAL RECEPTION • AI Triage & Doctor Scheduling"
-    : "SMART TRIAGE AND SCHEDULING • AI Receptionist & Doctor Network";
+  const meta = ICON_META[state.iconKey] || ICON_META.schedule_navy;
 
-  const iconPath = isBell ? "./assets/icon-bell.png" : "./assets/icon-cross.png";
-
-  // Update topbar logo & text
   const topbarImg = document.getElementById("topbar-logo-img");
-  if (topbarImg) topbarImg.src = iconPath;
+  if (topbarImg) topbarImg.src = meta.path;
 
   const waImg = document.getElementById("wa-logo-img");
-  if (waImg) waImg.src = iconPath;
-
-  const topbarBrandHtml = document.getElementById("topbar-brand-html");
-  if (topbarBrandHtml) {
-    topbarBrandHtml.innerHTML = isAI
-      ? `<span class="brand-name-mydoc">MyDoc</span><span class="brand-name-desk">Desk</span><span class="brand-name-ai">AI</span>`
-      : `<span class="brand-name-mydoc">MyDoc</span><span class="brand-name-desk">Desk</span>`;
-  }
+  if (waImg) waImg.src = meta.path;
 
   const domainPill = document.getElementById("topbar-domain-pill");
   if (domainPill) domainPill.textContent = domainText;
 
   const taglineEl = document.getElementById("topbar-tagline");
-  if (taglineEl) taglineEl.textContent = taglineText;
+  if (taglineEl) taglineEl.textContent = meta.tagline;
 
-  document.title = `${brandPlain} (${domainText}) — ${taglineText}`;
+  document.title = `${brandPlain} (${domainText}) — ${meta.tagline}`;
 
-  // Update all inline .js-brand-name references
   document.querySelectorAll(".js-brand-name").forEach((el) => {
     el.textContent = brandPlain;
   });
 
-  // Update topbar toggle buttons
-  document.getElementById("btn-name-mydocdesk")?.classList.toggle("active", !isAI);
-  document.getElementById("btn-name-mydocdeskai")?.classList.toggle("active", isAI);
-  document.getElementById("btn-icon-bell")?.classList.toggle("active", isBell);
-  document.getElementById("btn-icon-cross")?.classList.toggle("active", !isBell);
-
-  // Update 4-way comparison cards
-  const comboKey = `${state.brandKey}-${state.iconKey}`;
-  ["mydocdesk-bell", "mydocdeskai-bell", "mydocdesk-cross", "mydocdeskai-cross"].forEach((k) => {
-    document.getElementById(`card-opt-${k}`)?.classList.toggle("active", k === comboKey);
-    document.getElementById(`studio-card-${k}`)?.classList.toggle("active", k === comboKey);
+  ["schedule_navy", "schedule_gold", "bell", "cross"].forEach((k) => {
+    document.getElementById(`btn-icon-${k}`)?.classList.toggle("active", k === state.iconKey);
+    document.getElementById(`studio-card-${k}`)?.classList.toggle("active", k === state.iconKey);
   });
 
   const activePill = document.getElementById("active-brand-pill");
   if (activePill) {
-    activePill.textContent = `Active: ${brandPlain} • ${isBell ? "Bell + Stethoscope" : "Cross + Calendar Shield"} (${domainText})`;
+    activePill.textContent = `Active: ${brandPlain} • ${meta.label} (${domainText})`;
   }
 
-  showToast(`✨ Brand switched live to ${brandPlain} (${domainText}) with the ${isBell ? "Reception Bell + Stethoscope" : "Medical Cross + Calendar Shield"} emblem!`);
+  showToast(`✨ Active MyDocDesk logo set to: ${meta.label}!`);
 }
 
 // ============================================================================
