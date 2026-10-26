@@ -4,7 +4,7 @@
 
 const state = {
   brandKey: "mydocdesk", // 'mydocdesk' | 'mydocdeskai'
-  iconKey: "schedule_navy", // 'schedule_navy' | 'schedule_gold' | 'bell' | 'cross'
+  iconKey: "schedule_gold", // 'schedule_navy' | 'schedule_gold' | 'bell' | 'cross'
   voiceAudioEnabled: false,
   guidedTimer: null,
   activeClinic: {
@@ -411,7 +411,7 @@ const SCENARIOS = {
 // ============================================================================
 // Brand & Logo Switcher (MyDocDesk vs MyDocDeskAI + Bell vs Cross Shield)
 // ============================================================================
-function setBrandVariant(newBrandKey, newIconKey) {
+function setBrandVariant(newBrandKey, newIconKey, silent) {
   state.brandKey = "mydocdesk";
   if (newIconKey) state.iconKey = newIconKey;
 
@@ -470,7 +470,7 @@ function setBrandVariant(newBrandKey, newIconKey) {
     activePill.textContent = `Active: ${brandPlain} • ${meta.label} (${domainText})`;
   }
 
-  showToast(`✨ Active MyDocDesk logo set to: ${meta.label}!`);
+  if (!silent) showToast(`✨ Active MyDocDesk logo set to: ${meta.label}!`);
 }
 
 // ============================================================================
@@ -1047,7 +1047,7 @@ function showToast(msg) {
 // Initialize on DOMContentLoaded
 // ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  setBrandVariant("mydocdesk", "schedule_navy");
+  setBrandVariant("mydocdesk", "schedule_gold", true);
   triggerScenario("urgent_fever", document.getElementById("btn-scen-urgent"));
   updateClinicRoi();
   renderDoctorSchedule();
