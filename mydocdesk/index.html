@@ -123,6 +123,9 @@
           <button type="button" class="preset-pill active" onclick="selectClinicPreset('pediatrics', this)">
             👶 Dr. Andreas Nicolaou — Pediatrics (Limassol • GeSY &amp; Private)
           </button>
+          <button type="button" class="preset-pill" onclick="selectClinicPreset('dental', this)">
+            🦷 Dr. Nikos Constantinou — Dental &amp; Implant Clinic (Limassol • Private &amp; GeSY)
+          </button>
           <button type="button" class="preset-pill" onclick="selectClinicPreset('dermatology', this)">
             🔬 Dr. Elena Georgiou — Dermatology (Nicosia • GeSY &amp; Private)
           </button>
@@ -148,6 +151,9 @@
           <span class="scenario-label">Interactive Triage Cases:</span>
           <button type="button" class="scenario-btn active" id="btn-scen-urgent" onclick="triggerScenario('urgent_fever', this)">
             🔴 P1 Urgent: Child 39.6°C Fever + Ear Pain (Unlocks 12:30 Slot)
+          </button>
+          <button type="button" class="scenario-btn" id="btn-scen-dental" onclick="triggerScenario('dental_emergency', this)">
+            🦷 Dental Urgent: Broken Crown &amp; Acute Toothache + Photo
           </button>
           <button type="button" class="scenario-btn" id="btn-scen-soon" onclick="triggerScenario('soon_rash', this)">
             🟡 P2 Soon: Spreading Skin Rash + WhatsApp Photo
@@ -199,6 +205,9 @@
           <div class="call-quick-prompts">
             <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'My 4-year-old has a 39.6 fever and severe ear pain since last night.')">
               "39.6°C fever + ear pain"
+            </button>
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'I broke my upper crown biting something hard and have sharp throbbing tooth pain.')">
+              "🦷 Broken tooth &amp; sharp pain"
             </button>
             <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'I need to renew my monthly GeSY blood pressure medication.')">
               "Renew GeSY prescription"
@@ -489,7 +498,8 @@
 
         <div class="marketplace-filter-bar">
           <select id="mp-specialty-filter" class="mp-select" onchange="renderMarketplaceDoctors()" aria-label="Filter by Specialty">
-            <option value="all">🩺 All Specialties (Pediatrics, Derm, Cardio, ENT...)</option>
+            <option value="all">🩺 All Specialties (Pediatrics, Dental, Derm, Cardio, ENT...)</option>
+            <option value="Dental">🦷 Dental &amp; Implantology (Οδοντίατρος)</option>
             <option value="Pediatrics">👶 Pediatrics (Παιδίατρος)</option>
             <option value="Dermatology">🔬 Dermatology (Δερματολόγος)</option>
             <option value="Cardiology">❤️ Cardiology (Καρδιολόγος)</option>

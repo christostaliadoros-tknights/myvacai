@@ -2,6 +2,122 @@
 // MyDocDesk / MyDocDeskAI — Interactive AI Medical Receptionist & Triage Engine
 // ============================================================================
 
+const MEDICAL_SCHEDULE_SLOTS = [
+    {
+      id: "slot-0930",
+      time: "09:30 AM",
+      patient: "Eleni Stavrou (Age 6)",
+      phone: "+357 99 310 422",
+      priority: 2,
+      prioLabel: "🟡 PRIORITY 2 • STANDARD",
+      complaint: "Persistent dry cough (5 days), afebrile, eating well",
+      notes: "GeSY Beneficiary #812044 • Lungs auscultation requested; no shortness of breath.",
+      channel: "WhatsApp Text"
+    },
+    {
+      id: "slot-1030",
+      time: "10:30 AM",
+      patient: "Nikolas Georgiou (Age 2)",
+      phone: "+357 97 820 119",
+      priority: 2,
+      prioLabel: "🟡 PRIORITY 2 • STANDARD",
+      complaint: "18-month scheduled vaccination & growth check",
+      notes: "GeSY Beneficiary #604118 • Child health booklet brought by parents.",
+      channel: "Phone Call"
+    },
+    {
+      id: "slot-1230",
+      time: "12:30 PM (EMERGENCY BUFFER)",
+      patient: "Leo K. (Age 4) — Maria K.",
+      phone: "+357 99 614 280",
+      priority: 1,
+      prioLabel: "🔴 PRIORITY 1 • URGENT BUFFER UNLOCKED",
+      complaint: "39.6°C fever since 22:00 last night + acute right ear pain & lethargy",
+      notes: "GeSY #948201 • Red-flag screen: No neck stiffness, no breathing distress. Given Nurofen at 07:30. Photo of tympanic thermometer attached on WhatsApp.",
+      channel: "Call → WhatsApp Handoff"
+    },
+    {
+      id: "slot-1530",
+      time: "03:30 PM",
+      patient: "Sophia Christodoulou (Age 9)",
+      phone: "+357 99 501 774",
+      priority: 2,
+      prioLabel: "🟡 PRIORITY 2 • PHOTO TRIAGED",
+      complaint: "Spreading erythematous forearm rash (48h) — High-res photo attached",
+      notes: "Private Insurance (Universal Life) • AI attached forearm photo to calendar event so doctor can review before arrival.",
+      channel: "WhatsApp Photo Triage"
+    },
+    {
+      id: "slot-1700",
+      time: "05:00 PM (EMERGENCY BUFFER)",
+      patient: "🔒 Reserved for 🔴 Priority 1 Urgent Cases Only",
+      phone: "Hidden from routine public booking",
+      priority: 0,
+      prioLabel: "🔒 PROTECTED BUFFER SLOT",
+      complaint: "Automatically unlocked by Sofia only if an acute Priority 1 patient calls",
+      notes: "Prevents routine checkups from consuming same-day emergency capacity.",
+      channel: "AI Triage Guard"
+    }
+];
+
+const DENTAL_SCHEDULE_SLOTS = [
+    {
+      id: "slot-0930-dent",
+      time: "09:30 AM (45m TREATMENT BLOCK)",
+      patient: "Kyriakos Andreou (Age 44)",
+      phone: "+357 99 412 880",
+      priority: 2,
+      prioLabel: "🟡 PRIORITY 2 • 45m ROOT CANAL / CROWN PREP",
+      complaint: "Endodontic retreatment & zirconia crown preparation — Lower Left Molar (#36)",
+      notes: "Private Dental (€450) • Pre-visit periapical X-ray attached to chart; local anesthesia tray prepped in Chair 1.",
+      channel: "Phone Call → WhatsApp"
+    },
+    {
+      id: "slot-1100-dent",
+      time: "11:00 AM (60m IMPLANT CONSULT)",
+      patient: "Christina Panayiotou (Age 52)",
+      phone: "+357 97 605 319",
+      priority: 2,
+      prioLabel: "🟡 PRIORITY 2 • 60m IMPLANT & CBCT",
+      complaint: "Single-tooth titanium implant consultation & 3D CBCT scan review (#25)",
+      notes: "Private Dental • CBCT DICOM link received via WhatsApp intake prior to arrival.",
+      channel: "WhatsApp Intake"
+    },
+    {
+      id: "slot-1230-dent",
+      time: "12:30 PM (30m CHAIRSIDE EMERGENCY BUFFER)",
+      patient: "Dimitris A. (Age 38)",
+      phone: "+357 99 845 120",
+      priority: 1,
+      prioLabel: "🔴 PRIORITY 1 • DENTAL EMERGENCY + PHOTO",
+      complaint: "Fractured upper-right premolar porcelain crown (#14) + 8/10 acute thermal toothache",
+      notes: "Private Dental (€120 Emergency / Crown Repair) • Smartphone photo (tooth_fracture_UR4.jpg) attached. No facial swelling or fever. Nurse alerted to prep temporary crown cement & composite bonding tray.",
+      channel: "Call → WhatsApp Photo Handoff"
+    },
+    {
+      id: "slot-1500-dent",
+      time: "03:00 PM (30m HYGIENE & SCALING)",
+      patient: "Natalia Georgiadou (Age 29)",
+      phone: "+357 99 118 402",
+      priority: 2,
+      prioLabel: "🟢 PRIORITY 3 • 30m SCALING (ΚΑΘΑΡΙΣΜΟΣ)",
+      complaint: "6-month routine ultrasonic scaling, airflow polishing & annual GeSY preventive checkup",
+      notes: "GeSY Preventive Dental / Private Airflow • Routed to non-peak afternoon hygiene slot to preserve morning surgery hours.",
+      channel: "WhatsApp Booking"
+    },
+    {
+      id: "slot-1700-dent",
+      time: "05:00 PM (30m CHAIRSIDE EMERGENCY BUFFER)",
+      patient: "🔒 Reserved for 🔴 Priority 1 Acute Dental Trauma / Swelling",
+      phone: "Hidden from routine hygiene booking",
+      priority: 0,
+      prioLabel: "🔒 PROTECTED DENTAL BUFFER",
+      complaint: "Unlocked by Sofia only for acute pulpitis, avulsed/fractured teeth, or facial swelling",
+      notes: "Protects high-margin same-day emergency chair time from routine cleanings.",
+      channel: "AI Triage Guard"
+    }
+];
+
 const state = {
   brandKey: "mydocdesk", // 'mydocdesk' | 'mydocdeskai'
   iconKey: "schedule_gold", // 'schedule_navy' | 'schedule_gold' | 'bell' | 'cross'
@@ -100,6 +216,40 @@ const state = {
     }
   ],
   marketplaceDoctors: [
+    {
+      id: "mp-doc-dental-1",
+      name: "Dr. Nikos Constantinou",
+      specialty: "Dental",
+      specialtyLabel: "🦷 Dental & Implant Clinic (Οδοντίατρος)",
+      city: "Limassol",
+      area: "Makarios Ave, Limassol",
+      coverage: "Private & GeSY Preventive",
+      rating: "5.0 ★ (384 reviews)",
+      aiStatus: "WhatsApp Tooth Photo Triage & Chair Buffer Active",
+      urgentBufferAvailable: true,
+      slots: [
+        { label: "🔴 Today 12:30 PM (30m Emergency Toothache/Crown)", urgent: true },
+        { label: "Tomorrow 11:00 AM (45m Treatment)", urgent: false },
+        { label: "Thu 03:00 PM (30m Scaling / Καθαρισμός)", urgent: false }
+      ]
+    },
+    {
+      id: "mp-doc-dental-2",
+      name: "Dr. Marina Christoforou",
+      specialty: "Dental",
+      specialtyLabel: "🦷 Cosmetic & Pediatric Dental (Οδοντιατρείο)",
+      city: "Nicosia",
+      area: "Engomi, Nicosia",
+      coverage: "Private & GeSY Preventive",
+      rating: "4.9 ★ (290 reviews)",
+      aiStatus: "Live Chairside AI Triage & Photo Intake",
+      urgentBufferAvailable: true,
+      slots: [
+        { label: "🔴 Today 04:00 PM (30m Emergency Relief Slot)", urgent: true },
+        { label: "Tomorrow 09:30 AM (45m Filling / Crown)", urgent: false },
+        { label: "Tomorrow 03:30 PM (30m Hygiene / Checkup)", urgent: false }
+      ]
+    },
     {
       id: "mp-doc-1",
       name: "Dr. Andreas Nicolaou",
@@ -263,6 +413,69 @@ const SCENARIOS = {
       "[10:14:19] CLINICAL_INTAKE extracted: age=4y, temp=39.6C, sx=['acute_otalgia','lethargy'], red_flags=false",
       "[10:14:20] PRIORITY_ENGINE score=P1_URGENT (Rule: Pediatric Fever >39.0C + Acute Pain)",
       "[10:14:21] CALENDAR_GUARD unlocked hidden 12:30 PM Emergency Buffer Slot & pinned SOAP Note #MD-409"
+    ]
+  },
+
+  dental_emergency: {
+    callerDisplay: "Patient Caller: Dimitris A. (+357 99 845 120)",
+    statusLabel: "LIVE CALL + PHOTO • 🔴 DENTAL P1 URGENT",
+    caseId: "Case #MD-415",
+    prioClass: "prio-1",
+    prioPill: "🔴 PRIORITY 1 • 30-MIN EMERGENCY CHAIR SLOT",
+    prioHeadline: "Unlocks 12:30 PM Emergency Relief Slot + Attaches Tooth Photo",
+    coverage: "Private Dental (€120 Emergency / Crown Repair)",
+    callTurns: [
+      {
+        speaker: "Sofia (AI Dental Receptionist)",
+        role: "ai",
+        text: "Good morning, Dr. Nikos Constantinou's Dental & Implant Clinic. Dr. Constantinou currently has both hands chairside in Surgery Chair 1 with gloves on mid-procedure, so I am his AI Receptionist Sofia. How can I help with your teeth today?"
+      },
+      {
+        speaker: "Dimitris A. (Patient)",
+        role: "caller",
+        text: "Hi, I fractured my upper-right premolar crown biting something hard at breakfast and I have sharp throbbing pain—8 out of 10—whenever air or cold water touches it. I have client meetings all day tomorrow, can Dr. Constantinou see me today?"
+      },
+      {
+        speaker: "Sofia (AI Dental Receptionist)",
+        role: "ai",
+        text: "I'm sorry you're in pain, Dimitris—let's get you into the chair today. Quick dental red-flag screen for Dr. Constantinou: Do you have any facial swelling spreading toward your eye or neck, fever, or uncontrolled bleeding? Also, can you snap a quick smartphone photo on WhatsApp so the dentist knows whether to prepare composite bonding or temporary crown cement?"
+      },
+      {
+        speaker: "Dimitris A. (Patient)",
+        role: "caller",
+        text: "No facial swelling, no fever, and no bleeding—just the fractured crown piece and sharp sensitivity. I'll send a smartphone photo on WhatsApp right now."
+      },
+      {
+        speaker: "Sofia (AI Dental Receptionist)",
+        role: "ai",
+        text: "Perfect. I have triaged this as a Priority 1 Dental Emergency, unlocked Dr. Constantinou's protected 12:30 PM 30-Minute Emergency Chair Slot, and sent your WhatsApp confirmation and photo upload prompt so Chair 1 is prepped before you walk in!"
+      }
+    ],
+    waMessages: [
+      {
+        dir: "outgoing",
+        html: `📷 <strong>[Attached Photo: tooth_fracture_UR4.jpg]</strong><br/>Here is the fractured upper-right premolar (#14) and the porcelain crown piece.`
+      },
+      {
+        dir: "incoming",
+        html: `<strong>🦷 Priority 1 Dental Emergency Slot Unlocked (#MD-415)</strong><br/>Thank you Dimitris! I attached <code>tooth_fracture_UR4.jpg</code> to Dr. Constantinou's Chair 1 calendar and locked your emergency relief slot:<div class="wa-slot-card urgent"><div class="wa-slot-title">🔴 Today at 12:30 PM (30-Min Emergency Chair Slot)</div><div style="font-size:0.72rem; color:#475569;">Patient: Dimitris A. • Tooth #14 Crown Fracture &amp; Acute Thermal Pain (8/10)</div><div class="wa-slot-btn-row"><button type="button" class="wa-slot-btn urgent" onclick="confirmSuggestedSlot()">✓ Confirm 12:30 PM Chair Slot</button><button type="button" class="wa-slot-btn secondary" onclick="simulatePatientPhotoUpload()">📷 Upload Extra X-Ray / Photo</button></div></div>`
+      },
+      {
+        dir: "incoming",
+        html: `✅ <strong>3-Bullet Dental SOAP Note Pinned for Dr. Constantinou:</strong><br/>• <strong>Tooth/Site:</strong> Upper Right Premolar (#14) — fractured porcelain crown<br/>• <strong>Pain/Pulp Status:</strong> 8/10 sharp thermal sensitivity, no facial swelling, no fever<br/>• <strong>Tray Prep:</strong> Temporary crown cement / composite bonding tray pre-flagged for nurse`
+      }
+    ],
+    caseFields: [
+      { label: "Patient & Coverage", val: "Dimitris A. (+357 99 845 120) • Private Dental (€120 Emergency / Crown Repair)", full: false },
+      { label: "Chair Slot & Duration", val: "🔴 P1 Urgent → Today 12:30 PM (30m Emergency Chair Slot)", full: false },
+      { label: "Tooth / Site & Photo Intake", val: "Upper Right Premolar (#14) — fractured porcelain crown + 8/10 sharp thermal sensitivity. Smartphone photo attached (tooth_fracture_UR4.jpg).", full: true },
+      { label: "Red-Flag Screen & Tray Prep", val: "✓ No facial swelling, no fever, no bleeding. Temporary crown cement / composite bonding tray pre-flagged for nurse in Chair 1.", full: true }
+    ],
+    logs: [
+      "[10:29:04] SIP_INBOUND +35799845120 → Dentist Chairside (Surgery Chair 1, Gloves On) → AI Sofia answered in 160ms",
+      "[10:29:18] DENTAL_TRIAGE extracted: site=UR4_tooth_14, sx=['crown_fracture','thermal_pain_8_10'], swelling=false",
+      "[10:29:22] WA_MEDIA_INGEST attached intraoral photo 'tooth_fracture_UR4.jpg' to Case #MD-415",
+      "[10:29:23] CHAIR_SCHEDULER unlocked 12:30 PM (30m Emergency Chair Slot) & flagged nurse for Crown/Composite Tray"
     ]
   },
 
@@ -501,22 +714,36 @@ function jumpToMobileSection(elementId, btnEl) {
 // ============================================================================
 const CLINIC_PRESETS = {
   pediatrics: {
+    id: "pediatrics",
     doctorName: "Dr. Andreas Nicolaou",
     clinicTitle: "Dr. Andreas Nicolaou — Pediatrics",
-    specialty: "Pediatrics",
-    city: "Limassol"
+    specialty: "Pediatrics (Παιδίατρος)",
+    city: "Limassol",
+    coverage: "GeSY & Private"
+  },
+  dental: {
+    id: "dental",
+    doctorName: "Dr. Nikos Constantinou",
+    clinicTitle: "Dr. Nikos Constantinou — Dental & Implant Clinic",
+    specialty: "Dental & Implantology (Οδοντιατρείο)",
+    city: "Limassol",
+    coverage: "Private & GeSY Preventive"
   },
   dermatology: {
+    id: "dermatology",
     doctorName: "Dr. Elena Georgiou",
     clinicTitle: "Dr. Elena Georgiou — Dermatology & Laser",
     specialty: "Dermatology",
-    city: "Nicosia"
+    city: "Nicosia",
+    coverage: "GeSY & Private"
   },
   cardiology: {
+    id: "cardiology",
     doctorName: "Dr. Marios Petrou",
     clinicTitle: "Dr. Marios Petrou — Cardiology Center",
     specialty: "Cardiology",
-    city: "Larnaca"
+    city: "Larnaca",
+    coverage: "GeSY & Private"
   }
 };
 
@@ -527,11 +754,22 @@ function selectClinicPreset(presetKey, btnEl) {
   document.querySelectorAll(".preset-pill").forEach((b) => b.classList.remove("active"));
   if (btnEl) btnEl.classList.add("active");
   applyClinicBranding();
-  if (presetKey === "dermatology") {
+  if (presetKey === "dental") {
+    state.scheduleSlots = DENTAL_SCHEDULE_SLOTS.map((s) => ({ ...s }));
+    renderDoctorSchedule();
+    triggerScenario("dental_emergency", document.getElementById("btn-scen-dental"));
+    showToast("🦷 Switched to Dr. Nikos Constantinou — Dental & Implant Clinic (30m Emergency Chair Buffer + Photo Intake Active)!");
+  } else if (presetKey === "dermatology") {
+    state.scheduleSlots = MEDICAL_SCHEDULE_SLOTS.map((s) => ({ ...s }));
+    renderDoctorSchedule();
     triggerScenario("soon_rash", document.getElementById("btn-scen-soon"));
   } else if (presetKey === "cardiology") {
+    state.scheduleSlots = MEDICAL_SCHEDULE_SLOTS.map((s) => ({ ...s }));
+    renderDoctorSchedule();
     triggerScenario("routine_gesy", document.getElementById("btn-scen-gesy"));
   } else {
+    state.scheduleSlots = MEDICAL_SCHEDULE_SLOTS.map((s) => ({ ...s }));
+    renderDoctorSchedule();
     triggerScenario("urgent_fever", document.getElementById("btn-scen-urgent"));
   }
 }
@@ -744,7 +982,9 @@ function sendCustomTurn(e, channel) {
 function handlePatientTurn(channel, text) {
   const lower = text.toLowerCase();
   const isGreek = /[α-ωάέήίόύώ]/i.test(text);
-  const isUrgent = /39|40|fever|ear|pain|urgent|blood|breath|πυρετ|πον|επείγ|σήμερα/.test(lower);
+  const isDental = /tooth|teeth|dentist|dental|toothache|crown|filling|root canal|implant|cleaning|scaling|gum|molar|δόντ|δοντ|οδοντ|σφράγισμ|σφραγισμ|καθαρισμ|απονεύρωσ|ούλ/.test(lower);
+  const isDentalHygiene = /cleaning|scaling|whitening|polish|hygiene|checkup|καθαρισμ|λεύκανσ|έλεγχ/.test(lower);
+  const isUrgent = /39|40|fever|ear|pain|urgent|blood|breath|broke|broken|fractur|swell|throbb|πυρετ|πον|επείγ|σήμερα|έσπασ|πρήξ/.test(lower);
   const isGesy = /gesy|prescription|refill|renew|pills|γεσυ|συνταγ|φάρμακ/.test(lower);
 
   let aiReply = "";
@@ -752,7 +992,30 @@ function handlePatientTurn(channel, text) {
   let prioPill = "🟡 PRIORITY 2 • STANDARD SLOT";
   let prioHeadline = "Booked Next Available Standard Slot (Tomorrow 10:15 AM)";
 
-  if (isUrgent) {
+  if (isDental) {
+    if (isDentalHygiene && !isUrgent) {
+      prioClass = "prio-3";
+      prioPill = "🟢 PRIORITY 3 • 30-MIN HYGIENE / SCALING SLOT";
+      prioHeadline = "Routed to Non-Peak 30m Ultrasonic Scaling (Καθαρισμός) Slot";
+      aiReply = isGreek
+        ? "Καταχώρησα το αίτημά σας για οδοντιατρικό καθαρισμό / προληπτικό έλεγχο (Προτεραιότητα 3 — 30 λεπτά) σε απογευματινό ραντεβού ώστε να προστατευθούν τα επείγοντα χειρουργικά κενά!"
+        : "I have triaged your routine dental scaling & polishing (καθαρισμός) into a 30-minute non-peak hygiene slot so the dentist's morning surgical blocks stay open for emergencies!";
+    } else if (isUrgent) {
+      prioClass = "prio-1";
+      prioPill = "🔴 PRIORITY 1 • 30-MIN EMERGENCY CHAIR SLOT";
+      prioHeadline = "Unlocks 12:30 PM Emergency Chair Buffer + Requests Tooth Photo";
+      aiReply = isGreek
+        ? "Λόγω οξέος οδοντικού πόνου / θραύσης δοντιού, το περιστατικό κατατάσσεται ως Οδοντιατρικό Επείγον (Προτεραιότητα 1). Ξεκλείδωσα το 30λεπτο επείγον κενό στις 12:30 μ.μ. — στείλτε μας μια φωτογραφία στο WhatsApp για να ετοιμάσουμε τον δίσκο εργαλείων!"
+        : `Because you have an acute dental emergency (broken tooth/crown or severe toothache), I unlocked ${state.activeClinic.doctorName}'s 12:30 PM 30-Minute Emergency Chair Slot and flagged the nurse to prep the bonding/crown tray. Please snap a quick tooth photo on WhatsApp!`;
+    } else {
+      prioClass = "prio-2";
+      prioPill = "🟡 PRIORITY 2 • 45–60 MIN DENTAL TREATMENT SLOT";
+      prioHeadline = "Booked 45m Dental Treatment Block (Tomorrow 11:00 AM) + Photo/X-Ray Intake";
+      aiReply = isGreek
+        ? "Κατέγραψα το οδοντιατρικό ιστορικό σας (Προτεραιότητα 2 — 45λεπτο ραντεβού θεραπείας/σφραγίσματος/εμφυτεύματος). Στείλτε μας φωτογραφία ή ακτινογραφία στο WhatsApp!"
+        : "I have logged your dental treatment case (Priority 2 — 45-to-60 minute clinical chair slot for filling, root canal, or implant consult) for Tomorrow at 11:00 AM. Feel free to attach a smartphone photo or X-ray on WhatsApp!";
+    }
+  } else if (isUrgent) {
     prioClass = "prio-1";
     prioPill = "🔴 PRIORITY 1 • URGENT SAME-DAY";
     prioHeadline = "Unlocks Hidden 12:30 PM Emergency Buffer Slot";
@@ -986,7 +1249,8 @@ function renderMarketplaceDoctors() {
       const matchFever = /fever|child|kid|ear|πυρετ/.test(query) && (d.specialty === "Pediatrics" || d.specialty === "ENT");
       const matchRash = /rash|skin|mole|δέρμ/.test(query) && d.specialty === "Dermatology";
       const matchHeart = /heart|bp|chest|καρδ/.test(query) && d.specialty === "Cardiology";
-      if (!hay.includes(query) && !matchFever && !matchRash && !matchHeart) return false;
+      const matchDental = /tooth|teeth|dental|dentist|crown|filling|implant|cleaning|δόντ|δοντ|οδοντ|σφράγισμ|καθαρισμ/.test(query) && d.specialty === "Dental";
+      if (!hay.includes(query) && !matchFever && !matchRash && !matchHeart && !matchDental) return false;
     }
     return true;
   });
