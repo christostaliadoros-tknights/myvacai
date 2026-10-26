@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyDocDesk / MyDocDeskAI — INTELLIGENT MEDICAL RECEPTION • AI Doctor Receptionist &amp; Priority Triage</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="apple-touch-icon" href="./assets/icon-bell.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Top Navigation Bar with Live Brand & Logo Switcher -->
+  <header class="topbar">
+    <div class="brand-cluster">
+      <div class="brand-logo">
+        <img src="./assets/icon-bell.png" alt="MyDocDesk Logo" class="brand-logo-img" id="topbar-logo-img" />
+        <div class="brand-title-wrap">
+          <div class="brand-title-row">
+            <span id="topbar-brand-html"><span class="brand-name-mydoc">MyDoc</span><span class="brand-name-desk">Desk</span></span>
+            <span class="domain-pill" id="topbar-domain-pill">mydocdesk.com</span>
+            <a href="https://myvacai.com" class="sister-pill" title="Sister Brand: MyVacAI">🔗 Sister: MyVacAI</a>
+          </div>
+          <div class="brand-tagline" id="topbar-tagline">INTELLIGENT MEDICAL RECEPTION • AI Triage &amp; Doctor Scheduling</div>
+        </div>
+      </div>
+
+      <!-- 1-Tap Name & Emblem Switcher -->
+      <div class="brand-toggle-cluster" aria-label="Live Brand Name and Logo Switcher">
+        <span class="toggle-mini-label">Brand:</span>
+        <button type="button" class="brand-switch-btn active" id="btn-name-mydocdesk" onclick="setBrandVariant('mydocdesk', null)">
+          MyDocDesk
+        </button>
+        <button type="button" class="brand-switch-btn" id="btn-name-mydocdeskai" onclick="setBrandVariant('mydocdeskai', null)">
+          MyDocDeskAI
+        </button>
+        <span class="toggle-mini-label">Icon:</span>
+        <button type="button" class="brand-switch-btn active" id="btn-icon-bell" onclick="setBrandVariant(null, 'bell')">
+          🔔 Bell + Stethoscope
+        </button>
+        <button type="button" class="brand-switch-btn" id="btn-icon-cross" onclick="setBrandVariant(null, 'cross')">
+          ➕ Cross + Calendar
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav-tabs" aria-label="Platform Sections">
+      <button type="button" class="nav-tab active" data-tab="simulator" onclick="switchTab('simulator')">
+        📞 1. Live AI Receptionist &amp; Triage
+      </button>
+      <button type="button" class="nav-tab" data-tab="schedule" onclick="switchTab('schedule')">
+        🗓️ 2. Doctor Schedule &amp; Case Notes
+      </button>
+      <button type="button" class="nav-tab" data-tab="marketplace" onclick="switchTab('marketplace')">
+        🌍 3. Phase 2: Patient Finder App
+      </button>
+      <button type="button" class="nav-tab" data-tab="logos" onclick="switchTab('logos')">
+        🎨 4. Brand &amp; Logo Compare (4)
+      </button>
+    </nav>
+  </header>
+
+  <main class="main-container">
+    <!-- Live 4-Way Brand & Logo Comparison Strip (Always accessible to compare MyDocDesk vs MyDocDeskAI) -->
+    <div class="brand-comparison-strip" id="brand-comparison-strip">
+      <div class="brand-strip-header">
+        <div class="brand-strip-title">
+          <span>✨ Compare Brand &amp; Logo Options Live:</span>
+          <span class="brand-strip-sub">Tap any of the 4 generated logos below to preview that exact name &amp; icon across the entire platform</span>
+        </div>
+        <span class="code-badge" id="active-brand-pill">Active: MyDocDesk • Bell + Stethoscope (mydocdesk.com)</span>
+      </div>
+      <div class="brand-switcher-grid">
+        <button type="button" class="brand-option-card active" id="card-opt-mydocdesk-bell" onclick="setBrandVariant('mydocdesk', 'bell')">
+          <img src="./assets/logo-mydocdesk-bell.jpg" alt="MyDocDesk Bell Logo" class="brand-option-thumb" />
+          <div class="brand-option-meta">
+            <div class="brand-option-name">1. MyDocDesk <span>🔔</span></div>
+            <div class="brand-option-tag">Intelligent Medical Reception</div>
+            <div class="brand-option-domain">mydocdesk.com (Available)</div>
+          </div>
+        </button>
+
+        <button type="button" class="brand-option-card" id="card-opt-mydocdeskai-bell" onclick="setBrandVariant('mydocdeskai', 'bell')">
+          <img src="./assets/logo-mydocdeskai-bell.jpg" alt="MyDocDeskAI Bell Logo" class="brand-option-thumb" />
+          <div class="brand-option-meta">
+            <div class="brand-option-name">2. MyDocDeskAI <span>🔔</span></div>
+            <div class="brand-option-tag">Intelligent Medical Reception</div>
+            <div class="brand-option-domain">mydocdeskai.com (Available)</div>
+          </div>
+        </button>
+
+        <button type="button" class="brand-option-card" id="card-opt-mydocdesk-cross" onclick="setBrandVariant('mydocdesk', 'cross')">
+          <img src="./assets/logo-mydocdesk-cross.jpg" alt="MyDocDesk Cross Shield Logo" class="brand-option-thumb" />
+          <div class="brand-option-meta">
+            <div class="brand-option-name">3. MyDocDesk <span>➕</span></div>
+            <div class="brand-option-tag">Smart Triage &amp; Scheduling</div>
+            <div class="brand-option-domain">mydocdesk.com (Available)</div>
+          </div>
+        </button>
+
+        <button type="button" class="brand-option-card" id="card-opt-mydocdeskai-cross" onclick="setBrandVariant('mydocdeskai', 'cross')">
+          <img src="./assets/logo-mydocdeskai-cross.jpg" alt="MyDocDeskAI Cross Shield Logo" class="brand-option-thumb" />
+          <div class="brand-option-meta">
+            <div class="brand-option-name">4. MyDocDeskAI <span>➕</span></div>
+            <div class="brand-option-tag">Smart Triage &amp; Scheduling</div>
+            <div class="brand-option-domain">mydocdeskai.com (Available)</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: LIVE AI RECEPTIONIST, PRIORITY TRIAGE & CASE-NOTE SIMULATOR -->
+    <!-- =================================================================== -->
+    <section id="tab-simulator" class="tab-panel active">
+      <div class="guided-hero-banner" id="guided-hero-banner">
+        <div class="guided-hero-top">
+          <div class="guided-hero-copy">
+            <div class="guided-eyebrow">
+              <span class="pulse-dot"></span>
+              <span>PHASE 1: AI VIRTUAL MEDICAL RECEPTIONIST • PHASE 2: LIVE DOCTOR MARKETPLACE</span>
+            </div>
+            <h1 class="guided-title">
+              How <span class="js-brand-name">MyDocDesk</span> Triages Calls &amp; WhatsApp Messages, Writes Case Notes, and Protects the Doctor's Schedule
+            </h1>
+            <p class="guided-sub">
+              While the doctor examines a patient, <strong>Sofia (AI Medical Receptionist)</strong> answers calls &amp; WhatsApp voice notes in Greek/English, scores clinical priority (<strong>🔴 Urgent / 🟡 Soon / 🟢 GeSY Admin</strong>), attaches a <strong>3-bullet Pre-Visit Case Note</strong>, and unlocks emergency buffer slots only when needed.
+            </p>
+          </div>
+          <div class="guided-cta-group">
+            <button type="button" class="guided-demo-btn" id="btn-guided-demo" onclick="startGuidedTour()">
+              ▶ Start Guided Triage Demo
+            </button>
+            <button type="button" class="live-mic-hero-btn" id="btn-live-mic-hero" onclick="startLiveMicSpeech()">
+              🎙️ Speak as Patient (Mic)
+            </button>
+          </div>
+        </div>
+
+        <!-- 4-Step Interactive Walkthrough Cards -->
+        <div class="story-stepper-grid" role="tablist" aria-label="4-Step Interactive Medical Triage Walkthrough">
+          <button type="button" class="story-step-card active" id="step-card-1" onclick="runInteractiveStep(1)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 1</span>
+              <span class="step-action-pill">🔊 Hear Patient Call</span>
+            </div>
+            <div class="step-title">📞 Patient Calls While Doctor Is in Exam</div>
+            <div class="step-desc">Doctor's phone doesn't interrupt the consultation—Sofia answers in <strong id="step1-clinic-label">Dr. Nicolaou's Clinic</strong>.</div>
+          </button>
+
+          <button type="button" class="story-step-card" id="step-card-2" onclick="runInteractiveStep(2)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 2</span>
+              <span class="step-action-pill">🩺 Score Priority</span>
+            </div>
+            <div class="step-title">🧠 Clinical Intake &amp; Priority Triage</div>
+            <div class="step-desc">Asks symptoms, duration &amp; red flags. Assigns <strong>🔴 P1 Urgent</strong>, <strong>🟡 P2 Soon</strong>, or <strong>🟢 P3 GeSY Queue</strong>.</div>
+          </button>
+
+          <button type="button" class="story-step-card" id="step-card-3" onclick="runInteractiveStep(3)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 3</span>
+              <span class="step-action-pill">🔓 Unlock Buffer Slot</span>
+            </div>
+            <div class="step-title">🗓️ Smart Schedule &amp; Buffer Slot Unlock</div>
+            <div class="step-desc">Unlocks hidden <strong>12:30 PM Emergency Buffer Slot</strong> for 🔴 P1 cases (or routes renewals to End-of-Day GeSY queue).</div>
+          </button>
+
+          <button type="button" class="story-step-card" id="step-card-4" onclick="runInteractiveStep(4)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 4</span>
+              <span class="step-action-pill">📋 Attach Case Note</span>
+            </div>
+            <div class="step-title">💬 WhatsApp Pass &amp; Doctor Case Card</div>
+            <div class="step-desc">Sends WhatsApp confirmation + photo upload link to patient &amp; pins the structured SOAP note on the doctor's calendar.</div>
+          </button>
+        </div>
+
+        <div class="live-toast-banner" id="live-toast-banner" hidden>
+          <span id="live-toast-text">✅ Case #MD-409 Triaged as 🔴 PRIORITY 1 — Unlocked 12:30 PM Buffer Slot &amp; pinned Case Note to Dr. Nicolaou's Calendar!</span>
+        </div>
+      </div>
+
+      <!-- Clinic / Doctor Customizer Bar -->
+      <div class="clinic-customizer-bar">
+        <div class="customizer-presets">
+          <span class="customizer-label">🩺 Test With Any Clinic:</span>
+          <button type="button" class="preset-pill active" onclick="selectClinicPreset('pediatrics', this)">
+            👶 Dr. Andreas Nicolaou — Pediatrics (Limassol • GeSY &amp; Private)
+          </button>
+          <button type="button" class="preset-pill" onclick="selectClinicPreset('dermatology', this)">
+            🔬 Dr. Elena Georgiou — Dermatology (Nicosia • GeSY &amp; Private)
+          </button>
+          <button type="button" class="preset-pill" onclick="selectClinicPreset('cardiology', this)">
+            ❤️ Dr. Marios Petrou — Cardiology Center (Larnaca)
+          </button>
+        </div>
+        <form class="customizer-form" onsubmit="applyCustomClinicForm(event)">
+          <input
+            type="text"
+            id="custom-clinic-name-input"
+            class="customizer-input"
+            placeholder="Or type any Doctor / Clinic name (e.g. Dr. Kyprianou ENT)..."
+            aria-label="Custom Doctor or Clinic Name"
+          />
+          <button type="submit" class="customizer-apply-btn">Apply to AI</button>
+        </form>
+      </div>
+
+      <!-- Scenario Bar -->
+      <div class="scenario-bar">
+        <div class="scenario-bar-left">
+          <span class="scenario-label">Interactive Triage Cases:</span>
+          <button type="button" class="scenario-btn active" id="btn-scen-urgent" onclick="triggerScenario('urgent_fever', this)">
+            🔴 P1 Urgent: Child 39.6°C Fever + Ear Pain (Unlocks 12:30 Slot)
+          </button>
+          <button type="button" class="scenario-btn" id="btn-scen-soon" onclick="triggerScenario('soon_rash', this)">
+            🟡 P2 Soon: Spreading Skin Rash + WhatsApp Photo
+          </button>
+          <button type="button" class="scenario-btn" id="btn-scen-gesy" onclick="triggerScenario('routine_gesy', this)">
+            🟢 P3 Routine: GeSY Prescription Renewal (No Slot Wasted)
+          </button>
+          <button type="button" class="scenario-btn" id="btn-scen-greek" onclick="triggerScenario('greek_urgent', this)">
+            🇬🇷/🇨🇾 Ελληνικά: Πυρετός 39.5°C &amp; Πόνος στο Αυτί
+          </button>
+        </div>
+        <div class="scenario-bar-right">
+          <button type="button" class="tts-btn" id="tts-toggle-btn" onclick="toggleVoiceAudio()">
+            🔊 Voice Audio: Off (Tap to Hear Sofia)
+          </button>
+        </div>
+      </div>
+
+      <!-- 3-Column Live Simulator Grid -->
+      <div class="simulator-grid">
+        <!-- Column 1: Live Phone Call -->
+        <div class="phone-card" id="card-phone-call">
+          <div class="phone-notch">5G • +357 CY CLINIC LINE</div>
+          <div class="doctor-busy-pill">
+            <span>🩺 <strong id="busy-doc-name">Dr. A. Nicolaou</strong> is in Exam Room 1</span>
+            <span>⚡ AI Desk Answering</span>
+          </div>
+
+          <div class="call-header">
+            <div class="call-status-tag">
+              <span class="pulse-dot"></span>
+              <span id="call-status-label">LIVE PATIENT CALL • TRIAGE ACTIVE</span>
+            </div>
+            <div class="call-clinic-title" id="call-clinic-title">Dr. Andreas Nicolaou — Pediatrics</div>
+            <div class="call-sub" id="caller-phone-display">Patient Caller: Maria K. (+357 99 614 280)</div>
+          </div>
+
+          <div class="waveform-box">
+            <span id="sofia-voice-status">🎙️ Sofia (AI Medical Receptionist • EL/EN/RU)</span>
+            <div class="wave-bars" id="call-wave-bars">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="call-transcript" id="call-transcript-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <div class="call-quick-prompts">
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'My 4-year-old has a 39.6 fever and severe ear pain since last night.')">
+              "39.6°C fever + ear pain"
+            </button>
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'I need to renew my monthly GeSY blood pressure medication.')">
+              "Renew GeSY prescription"
+            </button>
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'Ο γιος μου έχει πυρετό 39.5, υπάρχει κενό σήμερα;')">
+              "Ελληνικά 🇬🇷"
+            </button>
+          </div>
+
+          <form class="call-input-area" onsubmit="sendCustomTurn(event, 'voice')">
+            <button type="button" class="call-mic-btn" id="btn-call-mic" onclick="startLiveMicSpeech()" title="Speak as Patient">
+              🎙️
+            </button>
+            <input
+              type="text"
+              id="voice-custom-input"
+              class="call-input"
+              placeholder="Say or type patient symptoms..."
+            />
+            <button type="submit" class="call-send-btn">Speak</button>
+          </form>
+        </div>
+
+        <!-- Column 2: Clinic WhatsApp Thread (Photo Upload, Slot Confirm & Pre-Visit Pass) -->
+        <div class="whatsapp-card" id="card-whatsapp-chat">
+          <div class="wa-header">
+            <div class="wa-header-left">
+              <img src="./assets/icon-bell.png" alt="MyDocDesk" class="wa-avatar-img" id="wa-logo-img" />
+              <div>
+                <div class="wa-title">
+                  <span id="wa-clinic-title">Dr. Andreas Nicolaou Clinic</span>
+                  <span class="wa-verified">✓ Verified Medical</span>
+                </div>
+                <div class="wa-subtitle"><span class="js-brand-name">MyDocDesk</span> • Triage, Slot Booking &amp; Photo Intake</div>
+              </div>
+            </div>
+            <span style="font-size:0.72rem; opacity:0.9;">+357 25 340 110</span>
+          </div>
+
+          <div class="wa-handoff-banner">
+            <span id="wa-handoff-status">⚡ Live Schedule Sync + Pre-Visit Photo/Lab Intake</span>
+            <span>GeSY &amp; Private</span>
+          </div>
+
+          <div class="wa-messages" id="wa-messages-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <div class="wa-quick-chips">
+            <button type="button" class="wa-chip" onclick="confirmSuggestedSlot()">
+              ✅ Confirm Suggested Slot
+            </button>
+            <button type="button" class="wa-chip" onclick="simulatePatientPhotoUpload()">
+              📷 Attach Symptom Photo / Lab PDF
+            </button>
+            <button type="button" class="wa-chip" onclick="sendQuickPrompt('whatsapp', 'We are GeSY beneficiaries (ID #948201).')">
+              🪪 Send GeSY ID
+            </button>
+            <button type="button" class="wa-chip" onclick="sendQuickPrompt('whatsapp', 'Ευχαριστώ, θα είμαστε εκεί στις 12:30!')">
+              🇬🇷 Confirm in Greek
+            </button>
+          </div>
+
+          <form class="call-input-area wa-input-bar" onsubmit="sendCustomTurn(event, 'whatsapp')">
+            <input
+              type="text"
+              id="wa-custom-input"
+              class="call-input wa-text-input"
+              placeholder="Message Sofia on WhatsApp (or send symptoms)..."
+            />
+            <button type="submit" class="call-send-btn" style="background:#128c7e;">Send</button>
+          </form>
+        </div>
+
+        <!-- Column 3: AI Triage Brain & Structured Pre-Visit Case Note -->
+        <div class="brain-panel" id="card-brain-panel">
+          <div class="brain-header">
+            <div>
+              <div class="brain-title">🧠 AI Priority Triage &amp; Doctor's Case Note Card</div>
+              <div style="font-size:0.74rem; color:#64748b;">
+                Automatically pinned to the doctor's calendar event before the patient walks in
+              </div>
+            </div>
+            <span class="code-badge" id="case-id-badge">Case #MD-409</span>
+          </div>
+
+          <!-- Dynamic Priority Banner -->
+          <div class="prio-banner prio-1" id="triage-prio-banner">
+            <div>
+              <div style="font-size:0.7rem; font-weight:800; opacity:0.85;">CLINICAL SLOT PRIORITY LEVEL</div>
+              <div style="font-size:0.88rem; font-weight:800;" id="triage-prio-headline">
+                Unlocks Hidden 12:30 PM Emergency Buffer Slot
+              </div>
+            </div>
+            <span class="prio-badge-pill" id="triage-prio-pill">🔴 PRIORITY 1 • URGENT SAME-DAY</span>
+          </div>
+
+          <!-- Structured Pre-Visit Case Note (SOAP Summary) -->
+          <div class="case-note-card">
+            <div class="case-note-header">
+              <span>📋 STRUCTURED PRE-VISIT CASE NOTE (FOR DOCTOR)</span>
+              <span id="case-note-coverage" style="color:#0d9488;">GeSY Beneficiary #948201</span>
+            </div>
+            <div class="case-grid" id="case-note-grid">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div style="font-size:0.73rem; font-weight:800; color:#475569; text-transform:uppercase;">
+            ⚡ Real-Time Schedule &amp; Triage Engine Trace
+          </div>
+          <div class="logs-list" id="execution-logs-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Clinic ROI & Doctor Time-Saved Calculator -->
+      <div class="roi-calculator-card" id="card-roi-calculator">
+        <div class="roi-header">
+          <div>
+            <div class="roi-eyebrow">💡 CLINIC ROI &amp; DOCTOR FOCUS CALCULATOR (CYPRUS &amp; GREECE)</div>
+            <h2 class="roi-title">See Why Doctors Switch to <span class="js-brand-name">MyDocDesk</span> Before Joining the Marketplace</h2>
+            <p class="roi-sub">
+              Personal Doctors (GeSY) and Private Specialists receive 40–120 calls &amp; WhatsApp messages a day. See how much time and revenue <span class="js-brand-name">MyDocDesk</span> recovers compared to a €1,400/month front-desk secretary.
+            </p>
+          </div>
+          <span class="code-badge">€149/mo AI vs €1,400/mo Secretary</span>
+        </div>
+
+        <div class="roi-grid">
+          <div class="roi-sliders-col">
+            <div class="roi-slider-group">
+              <div class="roi-slider-label">
+                <span>📞 Daily Patient Calls &amp; WhatsApp Messages</span>
+                <strong id="roi-calls-val">65 calls/day</strong>
+              </div>
+              <input type="range" id="roi-calls-slider" min="20" max="160" step="5" value="65" oninput="updateClinicRoi()" />
+              <div class="roi-range-ends"><span>20/day (Solo Practice)</span><span>160/day (Busy GeSY / Polyclinic)</span></div>
+            </div>
+
+            <div class="roi-slider-group">
+              <div class="roi-slider-label">
+                <span>💶 Average Private / Specialist Visit Value</span>
+                <strong id="roi-fee-val">€60 / visit</strong>
+              </div>
+              <input type="range" id="roi-fee-slider" min="35" max="150" step="5" value="60" oninput="updateClinicRoi()" />
+              <div class="roi-range-ends"><span>€35 (Standard)</span><span>€150 (Procedure / Specialist)</span></div>
+            </div>
+
+            <div class="roi-slider-group">
+              <div class="roi-slider-label">
+                <span>💊 Daily GeSY Prescription / Referral Calls Filtered</span>
+                <strong id="roi-gesy-val">18 admin calls/day</strong>
+              </div>
+              <input type="range" id="roi-gesy-slider" min="5" max="50" step="1" value="18" oninput="updateClinicRoi()" />
+              <div class="roi-range-ends"><span>5/day</span><span>50/day batched into 5-min EOD queue</span></div>
+            </div>
+          </div>
+
+          <div class="roi-results-col">
+            <div class="roi-result-box primary">
+              <div class="roi-res-label">Doctor Exam Interruptions Eliminated</div>
+              <div class="roi-res-value" id="roi-hours-saved">42 hrs / mo</div>
+              <div class="roi-res-note">Zero phone rings during patient exams; every case arrives pre-summarized</div>
+            </div>
+            <div class="roi-result-box">
+              <div class="roi-res-label">Recovered Missed Appointments / yr</div>
+              <div class="roi-res-value" id="roi-missed-rev">€28,800 / yr</div>
+              <div class="roi-res-note">Patients who called while busy &amp; booked via instant WhatsApp handoff</div>
+            </div>
+            <div class="roi-result-box">
+              <div class="roi-res-label">Clinic Slots Saved via GeSY Async Queue</div>
+              <div class="roi-res-value" id="roi-slots-saved">396 slots / mo</div>
+              <div class="roi-res-note">Renewals batched into 1-click End-of-Day list instead of phone chaos</div>
+            </div>
+            <div class="roi-result-box total">
+              <div class="roi-res-label">Annual Staff Savings vs Full-Time Receptionist</div>
+              <div class="roi-res-value" id="roi-staff-savings">€15,012 / yr</div>
+              <div class="roi-res-note">24/7 Greek, English &amp; Russian coverage including weekends &amp; holidays</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: DOCTOR'S LIVE SCHEDULE, TRIAGE CASE NOTES & GeSY QUEUE        -->
+    <!-- =================================================================== -->
+    <section id="tab-schedule" class="tab-panel">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Today's Triaged Bookings</div>
+          <div class="kpi-value" id="kpi-total-bookings">19 Patients</div>
+          <div class="kpi-sub">100% pre-screened with AI Case Notes</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">🔴 Urgent Buffer Slots</div>
+          <div class="kpi-value" id="kpi-urgent-slots" style="color:#dc2626;">2 / 2 Used</div>
+          <div class="kpi-sub">12:30 PM &amp; 5:00 PM unlocked for acute cases</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">🟢 Async GeSY Admin Queue</div>
+          <div class="kpi-value" id="kpi-gesy-count" style="color:#16a34a;">6 Pending</div>
+          <div class="kpi-sub">Est. 2 minutes to batch-approve all 6</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Phase 2 Network Status</div>
+          <div class="kpi-value" style="color:#0284c7;">Synced Live</div>
+          <div class="kpi-sub">Open slots visible on <span class="js-brand-name">MyDocDesk</span> App</div>
+        </div>
+      </div>
+
+      <div class="dashboard-split">
+        <div>
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">🗓️ Doctor's Prioritized Daily Schedule &amp; Pre-Visit Case Notes</div>
+                <div style="font-size:0.78rem; color:#64748b;">
+                  Every appointment includes a structured 3-bullet intake note, symptom duration, and priority level set by Sofia
+                </div>
+              </div>
+              <span class="code-badge">Live Calendar Sync</span>
+            </div>
+            <div class="schedule-slot-list" id="doctor-schedule-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">🟢 5-Minute End-of-Day GeSY Prescription &amp; Referral Queue</div>
+                <div style="font-size:0.76rem; color:#64748b;">
+                  Sofia filtered these routine admin calls out of your phone line &amp; calendar slots. Approve in 1 tap:
+                </div>
+              </div>
+              <button type="button" class="customizer-apply-btn" onclick="approveAllGesy()">✓ Approve All</button>
+            </div>
+            <div class="gesy-queue-list" id="gesy-queue-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-header">
+              <div>
+                <div class="section-title">⚙️ Doctor's Custom Priority Triage Rules</div>
+                <div style="font-size:0.76rem; color:#64748b;">
+                  Each doctor controls what counts as 🔴 Urgent vs 🟡 Soon vs 🟢 Async Admin
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:0.78rem;">
+              <div style="padding:9px 11px; border-radius:8px; background:#fef2f2; border:1px solid #fca5a5; color:#991b1b;">
+                <strong>🔴 Priority 1 (Unlocks 12:30 &amp; 17:00 Buffer Slots):</strong> Fever &gt;39.0°C in children under 6, acute ear/abdominal pain, post-op complication, acute allergic reaction.
+              </div>
+              <div style="padding:9px 11px; border-radius:8px; background:#fffbeb; border:1px solid #fcd34d; color:#92400e;">
+                <strong>🟡 Priority 2 (Books Next 24–48h Standard Slot):</strong> New rash/mole check (requests WhatsApp photo upfront), mild cough/cold &gt;3 days, specialist consultation.
+              </div>
+              <div style="padding:9px 11px; border-radius:8px; background:#f0fdf4; border:1px solid #86efac; color:#166534;">
+                <strong>🟢 Priority 3 (Routes to Async GeSY Admin Queue):</strong> Chronic prescription refills, repeat specialist referrals, routine blood test review.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: PHASE 2 PREVIEW — PATIENT FINDER MARKETPLACE NETWORK         -->
+    <!-- =================================================================== -->
+    <section id="tab-marketplace" class="tab-panel">
+      <div class="marketplace-hero">
+        <div class="guided-eyebrow">
+          <span class="pulse-dot"></span>
+          <span>PHASE 2 VISION • THE UNIFIED PATIENT DISCOVERY &amp; INSTANT BOOKING APP</span>
+        </div>
+        <h2 style="font-size:1.3rem; font-weight:800; margin-bottom:6px;">
+          <span class="js-brand-name">MyDocDesk</span> Patient Network — Find Available Doctors in Your Area by Case &amp; Urgency
+        </h2>
+        <p style="font-size:0.84rem; color:#cbd5e1; max-width:880px;">
+          Because every doctor on the network uses the <strong><span class="js-brand-name">MyDocDesk</span> AI Receptionist</strong> as their live master schedule in Phase 1, patients in Phase 2 can search by symptom or specialty and book <strong>100% real, verified same-day slots</strong> (including unlocked urgent buffer slots!).
+        </p>
+
+        <div class="marketplace-filter-bar">
+          <select id="mp-specialty-filter" class="mp-select" onchange="renderMarketplaceDoctors()" aria-label="Filter by Specialty">
+            <option value="all">🩺 All Specialties (Pediatrics, Derm, Cardio, ENT...)</option>
+            <option value="Pediatrics">👶 Pediatrics (Παιδίατρος)</option>
+            <option value="Dermatology">🔬 Dermatology (Δερματολόγος)</option>
+            <option value="Cardiology">❤️ Cardiology (Καρδιολόγος)</option>
+            <option value="ENT">👂 ENT / Otolaryngology (ΩΡΛ)</option>
+          </select>
+
+          <select id="mp-city-filter" class="mp-select" onchange="renderMarketplaceDoctors()" aria-label="Filter by City">
+            <option value="all">📍 All Cyprus Cities (Limassol, Nicosia, Larnaca, Paphos)</option>
+            <option value="Limassol">📍 Limassol (Λεμεσός)</option>
+            <option value="Nicosia">📍 Nicosia (Λευκωσία)</option>
+            <option value="Larnaca">📍 Larnaca (Λάρνακα)</option>
+            <option value="Paphos">📍 Paphos (Πάφος)</option>
+          </select>
+
+          <input
+            type="text"
+            id="mp-symptom-input"
+            class="mp-input"
+            placeholder="Describe case (e.g. 'Child fever 39.5 today' or 'Skin rash')..."
+            oninput="renderMarketplaceDoctors()"
+          />
+
+          <button type="button" class="mp-search-btn" onclick="renderMarketplaceDoctors()">
+            🔍 Search Live Slots
+          </button>
+        </div>
+      </div>
+
+      <div class="marketplace-grid" id="marketplace-doctors-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: BRAND & LOGO STUDIO (4 GENERATED LOGOS SIDE-BY-SIDE)         -->
+    <!-- =================================================================== -->
+    <section id="tab-logos" class="tab-panel">
+      <div class="section-card">
+        <div class="section-header">
+          <div>
+            <div class="section-title">🎨 Official Brand &amp; Logo Comparison: `MyDocDesk` vs `MyDocDeskAI`</div>
+            <div style="font-size:0.8rem; color:#64748b;">
+              Both <code>mydocdesk.com</code> and <code>mydocdeskai.com</code> are available (~€10–€12/year) and connect directly with <code>myvacai.com</code>. Tap any logo below to set it live across the page.
+            </div>
+          </div>
+          <span class="code-badge">All 4 Concepts Ready</span>
+        </div>
+
+        <div class="logo-studio-grid">
+          <div class="logo-studio-card active" id="studio-card-mydocdesk-bell">
+            <img src="./assets/logo-mydocdesk-bell.jpg" alt="MyDocDesk Reception Bell + Stethoscope + Speech Bubble ECG" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Option 1: MyDocDesk — Reception Bell + Stethoscope + ECG</h3>
+            <p style="font-size:0.79rem; color:#475569;">
+              Direct visual sibling to <strong>MyVacAI</strong>'s golden reception bell, swapping ocean waves for a navy medical stethoscope and teal ECG heartbeat speech bubble. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
+            </p>
+            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdesk', 'bell')">
+              ✓ Use Option 1 (`MyDocDesk` • Bell)
+            </button>
+          </div>
+
+          <div class="logo-studio-card" id="studio-card-mydocdeskai-bell">
+            <img src="./assets/logo-mydocdeskai-bell.jpg" alt="MyDocDeskAI Reception Bell + Stethoscope + Speech Bubble ECG" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Option 2: MyDocDeskAI — Reception Bell + Stethoscope + ECG</h3>
+            <p style="font-size:0.79rem; color:#475569;">
+              Same Reception Bell + Stethoscope + ECG mark with the explicit <strong>AI</strong> suffix in teal, matching the exact <code>My...AI</code> pattern of <code>MyVacAI</code>. Tagline: <code>INTELLIGENT MEDICAL RECEPTION</code>.
+            </p>
+            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdeskai', 'bell')">
+              ✓ Use Option 2 (`MyDocDeskAI` • Bell)
+            </button>
+          </div>
+
+          <div class="logo-studio-card" id="studio-card-mydocdesk-cross">
+            <img src="./assets/logo-mydocdesk-cross.jpg" alt="MyDocDesk Medical Cross + Calendar Shield + Voice Waveform" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Option 3: MyDocDesk — Medical Cross + Calendar Shield + Voice</h3>
+            <p style="font-size:0.79rem; color:#475569;">
+              Combines a navy Medical Cross, a verified Teal Calendar Shield, and AI Voice Waveform bars—ideal for both Phase 1 scheduling and Phase 2 patient booking app icon. Tagline: <code>SMART TRIAGE AND SCHEDULING</code>.
+            </p>
+            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdesk', 'cross')">
+              ✓ Use Option 3 (`MyDocDesk` • Cross Shield)
+            </button>
+          </div>
+
+          <div class="logo-studio-card" id="studio-card-mydocdeskai-cross">
+            <img src="./assets/logo-mydocdeskai-cross.jpg" alt="MyDocDeskAI Medical Cross + Calendar Shield + Voice Waveform" class="logo-studio-img" />
+            <h3 style="font-size:1.05rem; font-weight:800;">Option 4: MyDocDeskAI — Medical Cross + Calendar Shield + Voice</h3>
+            <p style="font-size:0.79rem; color:#475569;">
+              The Medical Cross + Calendar Shield + Voice Waveform emblem paired with <strong>MyDocDeskAI</strong> (`mydocdeskai.com`). Tagline: <code>SMART TRIAGE AND SCHEDULING</code>.
+            </p>
+            <button type="button" class="guided-demo-btn" onclick="setBrandVariant('mydocdeskai', 'cross')">
+              ✓ Use Option 4 (`MyDocDeskAI` • Cross Shield)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky Mobile Quick-Jump Pill Bar -->
+  <nav class="mobile-quick-jump" aria-label="Quick Jump Mobile Sections">
+    <button type="button" class="mjump-btn active" onclick="jumpToMobileSection('card-phone-call', this)">
+      📞 1. Call
+    </button>
+    <button type="button" class="mjump-btn" onclick="jumpToMobileSection('card-whatsapp-chat', this)">
+      💬 2. WhatsApp
+    </button>
+    <button type="button" class="mjump-btn" onclick="jumpToMobileSection('card-brain-panel', this)">
+      🩺 3. Triage Note
+    </button>
+    <button type="button" class="mjump-btn" onclick="switchTab('marketplace')">
+      🌍 4. App
+    </button>
+  </nav>
+
+  <script src="./app.js"></script>
+</body>
+</html>
