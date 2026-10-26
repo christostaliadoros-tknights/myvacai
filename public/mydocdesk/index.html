@@ -40,6 +40,9 @@
       <button type="button" class="nav-tab" data-tab="logos" onclick="switchTab('logos')">
         🎨 4. Official MyDocDesk Logos
       </button>
+      <button type="button" class="nav-tab" data-tab="onepager" onclick="switchTab('onepager')">
+        📄 5. Doctor 1-Pager &amp; Pitch
+      </button>
     </nav>
   </header>
 
@@ -59,7 +62,7 @@
               How <span class="js-brand-name">MyDocDesk</span> Triages Calls &amp; WhatsApp Messages, Writes Case Notes, and Protects the Doctor's Schedule
             </h1>
             <p class="guided-sub">
-              While the doctor examines a patient, <strong>Sofia (AI Medical Receptionist)</strong> answers calls &amp; WhatsApp voice notes in Greek/English, scores clinical priority (<strong>🔴 Urgent / 🟡 Soon / 🟢 GeSY Admin</strong>), attaches a <strong>3-bullet Pre-Visit Case Note</strong>, and unlocks emergency buffer slots only when needed.
+              While the doctor examines a patient, <strong>Anastasia (AI Medical Receptionist)</strong> answers calls &amp; WhatsApp voice notes in Greek/English, scores clinical priority (<strong>🔴 Urgent / 🟡 Soon / 🟢 GeSY Admin</strong>), attaches a <strong>3-bullet Pre-Visit Case Note</strong>, and unlocks emergency buffer slots only when needed.
             </p>
           </div>
           <div class="guided-cta-group">
@@ -69,6 +72,9 @@
             <button type="button" class="live-mic-hero-btn" id="btn-live-mic-hero" onclick="startLiveMicSpeech()">
               🎙️ Speak as Patient (Mic)
             </button>
+            <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" download="MyDocDesk_Doctor_Leave_Behind.pdf" class="hero-pdf-btn" onclick="switchTab('onepager')">
+              📄 Download 1-Page Doctor PDF
+            </a>
           </div>
         </div>
 
@@ -80,7 +86,7 @@
               <span class="step-action-pill">🔊 Hear Patient Call</span>
             </div>
             <div class="step-title">📞 Patient Calls While Doctor Is in Exam</div>
-            <div class="step-desc">Doctor's phone doesn't interrupt the consultation—Sofia answers in <strong id="step1-clinic-label">Dr. Nicolaou's Clinic</strong>.</div>
+            <div class="step-desc">Doctor's phone doesn't interrupt the consultation—Anastasia answers in <strong id="step1-clinic-label">Dr. Andreas Nicolaou's Clinic</strong>.</div>
           </button>
 
           <button type="button" class="story-step-card" id="step-card-2" onclick="runInteractiveStep(2)">
@@ -118,28 +124,33 @@
 
       <!-- Clinic / Doctor Customizer Bar -->
       <div class="clinic-customizer-bar">
+        <div class="customizer-top-row">
+          <span class="customizer-label">🩺 Test With Any Clinic (Select a Specialty Preset or Type Any Doctor):</span>
+          <form class="customizer-form" onsubmit="applyCustomClinicForm(event)">
+            <input
+              type="text"
+              id="custom-clinic-name-input"
+              class="customizer-input"
+              placeholder="Or type any Doctor / Clinic name (e.g. Dr. Kyprianou — ENT)..."
+              aria-label="Custom Doctor or Clinic Name"
+            />
+            <button type="submit" class="customizer-apply-btn">Apply to AI</button>
+          </form>
+        </div>
         <div class="customizer-presets">
-          <span class="customizer-label">🩺 Test With Any Clinic:</span>
-          <button type="button" class="preset-pill active" onclick="selectClinicPreset('pediatrics', this)">
+          <button type="button" class="preset-pill active" id="preset-pill-pediatrics" onclick="selectClinicPreset('pediatrics', this)">
             👶 Dr. Andreas Nicolaou — Pediatrics (Limassol • GeSY &amp; Private)
           </button>
-          <button type="button" class="preset-pill" onclick="selectClinicPreset('dermatology', this)">
+          <button type="button" class="preset-pill" id="preset-pill-dental" onclick="selectClinicPreset('dental', this)">
+            🦷 Dr. Nikos Constantinou — Dentistry (Limassol • GeSY &amp; Private)
+          </button>
+          <button type="button" class="preset-pill" id="preset-pill-dermatology" onclick="selectClinicPreset('dermatology', this)">
             🔬 Dr. Elena Georgiou — Dermatology (Nicosia • GeSY &amp; Private)
           </button>
-          <button type="button" class="preset-pill" onclick="selectClinicPreset('cardiology', this)">
-            ❤️ Dr. Marios Petrou — Cardiology Center (Larnaca)
+          <button type="button" class="preset-pill" id="preset-pill-cardiology" onclick="selectClinicPreset('cardiology', this)">
+            ❤️ Dr. Marios Petrou — Cardiology (Larnaca • GeSY &amp; Private)
           </button>
         </div>
-        <form class="customizer-form" onsubmit="applyCustomClinicForm(event)">
-          <input
-            type="text"
-            id="custom-clinic-name-input"
-            class="customizer-input"
-            placeholder="Or type any Doctor / Clinic name (e.g. Dr. Kyprianou ENT)..."
-            aria-label="Custom Doctor or Clinic Name"
-          />
-          <button type="submit" class="customizer-apply-btn">Apply to AI</button>
-        </form>
       </div>
 
       <!-- Scenario Bar -->
@@ -148,6 +159,9 @@
           <span class="scenario-label">Interactive Triage Cases:</span>
           <button type="button" class="scenario-btn active" id="btn-scen-urgent" onclick="triggerScenario('urgent_fever', this)">
             🔴 P1 Urgent: Child 39.6°C Fever + Ear Pain (Unlocks 12:30 Slot)
+          </button>
+          <button type="button" class="scenario-btn" id="btn-scen-dental" onclick="triggerScenario('dental_emergency', this)">
+            🦷 Dental Urgent: Broken Crown &amp; Acute Toothache + Photo
           </button>
           <button type="button" class="scenario-btn" id="btn-scen-soon" onclick="triggerScenario('soon_rash', this)">
             🟡 P2 Soon: Spreading Skin Rash + WhatsApp Photo
@@ -161,7 +175,7 @@
         </div>
         <div class="scenario-bar-right">
           <button type="button" class="tts-btn" id="tts-toggle-btn" onclick="toggleVoiceAudio()">
-            🔊 Voice Audio: Off (Tap to Hear Sofia)
+            🔊 Voice Audio: Off (Tap to Hear Anastasia)
           </button>
         </div>
       </div>
@@ -172,7 +186,7 @@
         <div class="phone-card" id="card-phone-call">
           <div class="phone-notch">5G • +357 CY CLINIC LINE</div>
           <div class="doctor-busy-pill">
-            <span>🩺 <strong id="busy-doc-name">Dr. A. Nicolaou</strong> is in Exam Room 1</span>
+            <span>🩺 <strong id="busy-doc-name">Dr. Andreas Nicolaou</strong> is in <span id="busy-room-label">Exam Room 1</span></span>
             <span>⚡ AI Desk Answering</span>
           </div>
 
@@ -186,7 +200,7 @@
           </div>
 
           <div class="waveform-box">
-            <span id="sofia-voice-status">🎙️ Sofia (AI Medical Receptionist • EL/EN/RU)</span>
+            <span id="anastasia-voice-status">🎙️ Anastasia (AI Medical Receptionist • EL/EN/RU)</span>
             <div class="wave-bars" id="call-wave-bars">
               <span></span><span></span><span></span><span></span><span></span>
             </div>
@@ -199,6 +213,9 @@
           <div class="call-quick-prompts">
             <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'My 4-year-old has a 39.6 fever and severe ear pain since last night.')">
               "39.6°C fever + ear pain"
+            </button>
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'I broke my upper crown biting something hard and have sharp throbbing tooth pain.')">
+              "🦷 Broken tooth &amp; sharp pain"
             </button>
             <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'I need to renew my monthly GeSY blood pressure medication.')">
               "Renew GeSY prescription"
@@ -229,13 +246,13 @@
               <img src="./assets/icon-schedule-gold-cross.png" alt="MyDocDesk" class="wa-avatar-img" id="wa-logo-img" />
               <div>
                 <div class="wa-title">
-                  <span id="wa-clinic-title">Dr. Andreas Nicolaou Clinic</span>
+                  <span id="wa-clinic-title">Dr. Andreas Nicolaou — Pediatrics</span>
                   <span class="wa-verified">✓ Verified Medical</span>
                 </div>
                 <div class="wa-subtitle"><span class="js-brand-name">MyDocDesk</span> • Triage, Slot Booking &amp; Photo Intake</div>
               </div>
             </div>
-            <span style="font-size:0.72rem; opacity:0.9;">+357 25 340 110</span>
+            <span id="wa-clinic-phone" style="font-size:0.72rem; opacity:0.9;">+357 25 340 110</span>
           </div>
 
           <div class="wa-handoff-banner">
@@ -267,7 +284,7 @@
               type="text"
               id="wa-custom-input"
               class="call-input wa-text-input"
-              placeholder="Message Sofia on WhatsApp (or send symptoms)..."
+              placeholder="Message Anastasia on WhatsApp (or send symptoms)..."
             />
             <button type="submit" class="call-send-btn" style="background:#128c7e;">Send</button>
           </form>
@@ -417,9 +434,9 @@
           <div class="section-card">
             <div class="section-header">
               <div>
-                <div class="section-title">🗓️ Doctor's Prioritized Daily Schedule &amp; Pre-Visit Case Notes</div>
-                <div style="font-size:0.78rem; color:#64748b;">
-                  Every appointment includes a structured 3-bullet intake note, symptom duration, and priority level set by Sofia
+                <div class="section-title" id="schedule-clinic-title">🗓️ Dr. Andreas Nicolaou — Pediatrics: Prioritized Daily Schedule &amp; Case Notes</div>
+                <div style="font-size:0.78rem; color:#64748b;" id="schedule-clinic-sub">
+                  Pediatrics (Παιδίατρος) • Limassol (GeSY &amp; Private) — Every appointment includes a structured 3-bullet intake note set by Anastasia
                 </div>
               </div>
               <span class="code-badge">Live Calendar Sync</span>
@@ -436,7 +453,7 @@
               <div>
                 <div class="section-title">🟢 5-Minute End-of-Day GeSY Prescription &amp; Referral Queue</div>
                 <div style="font-size:0.76rem; color:#64748b;">
-                  Sofia filtered these routine admin calls out of your phone line &amp; calendar slots. Approve in 1 tap:
+                  Anastasia filtered these routine admin calls out of your phone line &amp; calendar slots. Approve in 1 tap:
                 </div>
               </div>
               <button type="button" class="customizer-apply-btn" onclick="approveAllGesy()">✓ Approve All</button>
@@ -489,8 +506,9 @@
 
         <div class="marketplace-filter-bar">
           <select id="mp-specialty-filter" class="mp-select" onchange="renderMarketplaceDoctors()" aria-label="Filter by Specialty">
-            <option value="all">🩺 All Specialties (Pediatrics, Derm, Cardio, ENT...)</option>
+            <option value="all">🩺 All Specialties (Όλες οι Ειδικότητες)</option>
             <option value="Pediatrics">👶 Pediatrics (Παιδίατρος)</option>
+            <option value="Dental">🦷 Dentistry (Οδοντίατρος)</option>
             <option value="Dermatology">🔬 Dermatology (Δερματολόγος)</option>
             <option value="Cardiology">❤️ Cardiology (Καρδιολόγος)</option>
             <option value="ENT">👂 ENT / Otolaryngology (ΩΡΛ)</option>
@@ -563,7 +581,137 @@
         </div>
       </div>
     </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: DOCTOR 1-PAGER & FOUNDING CLINIC LEAVE-BEHIND (ENGLISH)      -->
+    <!-- =================================================================== -->
+    <section id="tab-onepager" class="tab-panel">
+      <div class="onepager-hero-card">
+        <div class="onepager-hero-top">
+          <div>
+            <div class="guided-eyebrow">
+              <span class="pulse-dot"></span>
+              <span>EXECUTIVE LEAVE-BEHIND FOR CYPRUS DOCTORS, GeSY CLINICS &amp; DENTISTS</span>
+            </div>
+            <h2 class="onepager-hero-title">
+              📄 MyDocDesk 1-Page Doctor Leave-Behind &amp; Founding Clinic Offer
+            </h2>
+            <p class="onepager-hero-sub">
+              Print-ready 1-page A4 executive PDF designed to hand to doctors and dentists in Cyprus or send directly via WhatsApp or Email.
+            </p>
+          </div>
+          <div class="onepager-cta-cluster">
+            <a
+              href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf"
+              download="MyDocDesk_Doctor_Leave_Behind.pdf"
+              class="onepager-download-btn"
+            >
+              ⬇ Download 1-Page Doctor Leave-Behind (PDF)
+            </a>
+            <a
+              href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf"
+              target="_blank"
+              rel="noopener"
+              class="onepager-open-btn"
+            >
+              🔍 Open Print-Ready PDF
+            </a>
+          </div>
+        </div>
+
+        <div class="onepager-toolbar">
+          <div class="onepager-contact-pill">
+            <span>🛡️ <strong>Engineered &amp; Supported by T-Knights Consulting Ltd (Cyprus)</strong></span>
+          </div>
+          <div class="onepager-contact-pill">
+            <span>🤝 Founding Doctor Pilot (14 Days Free → <strong>€99/mo</strong>):</span>
+            <strong>Christos Taliadoros</strong> • <a href="mailto:christos@t-knights.com">christos@t-knights.com</a> • <a href="tel:+35799429249">+357 99 429249</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- English 1-Page Executive Leave-Behind Showcase (Preview + Structured Pitch) -->
+      <div class="onepager-DualGrid" id="onepager-dual-grid">
+        <!-- LEFT: PRINT-READY A4 PREVIEW -->
+        <article class="onepager-sheet" id="onepager-sheet-en">
+          <div class="op-sheet-topbar">
+            <span class="op-sheet-badge">📄 PRINT-READY A4 1-PAGE LEAVE-BEHIND (CYPRUS CLINICS &amp; DENTISTS)</span>
+            <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" download="MyDocDesk_Doctor_Leave_Behind.pdf" class="op-mini-dl">⬇ Download PDF</a>
+          </div>
+
+          <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" target="_blank" rel="noopener" title="Click to open full print-ready 1-page PDF">
+            <img
+              src="./assets/onepager-page1-en.png"
+              alt="MyDocDesk 1-Page Doctor Leave-Behind"
+              class="op-preview-img"
+            />
+          </a>
+        </article>
+
+        <!-- RIGHT: EXECUTIVE SUMMARY & PITCH BREAKDOWN -->
+        <article class="onepager-sheet" id="onepager-sheet-summary">
+          <div class="op-sheet-topbar">
+            <span class="op-sheet-badge">🩺 EXECUTIVE PITCH SUMMARY &amp; FOUNDING CLINIC ROI</span>
+            <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" target="_blank" rel="noopener" class="op-mini-dl">🔍 View Full PDF</a>
+          </div>
+
+          <div class="op-structured-body">
+            <div class="op-sec-block">
+              <div class="op-sec-title">⚠️ The Daily Problem in Every Cyprus Medical &amp; Dental Clinic</div>
+              <p class="op-sec-text">
+                <strong>40–100+ daily calls &amp; WhatsApp messages</strong> interrupt examinations and chairside dental procedures; missed calls mean lost <strong>€60–€500+ private treatments</strong>, while routine GeSY repeat prescriptions and referrals clog up the phone line and consume urgent slots.
+              </p>
+            </div>
+
+            <div class="op-sec-block">
+              <div class="op-sec-title">⚡ How Anastasia (Your AI Medical Receptionist) Works in 4 Steps</div>
+              <ol class="op-step-list">
+                <li><strong>1. Answers Normal Calls &amp; WhatsApp 24/7 (EL / EN / RU):</strong> Works with your existing Cyta/Epic/Cablenet landline or mobile via simple "Forward When Busy / Unanswered (<code>*67*</code> / <code>*61*</code>)"—patients call your normal number or message on WhatsApp, and elderly landline callers receive standard SMS confirmations.</li>
+                <li><strong>2. 3-Tier Clinical &amp; Dental Priority Triage:</strong>
+                  <ul class="op-tier-sublist">
+                    <li><span class="op-dot-red">🔴 Priority 1 (Urgent Same-Day):</span> High pediatric fever (&gt;39°C), acute ear/abdominal pain, broken crown or acute toothache → Unlocks your protected <strong>Emergency Buffer Slot</strong> (e.g. 12:30 / 17:00).</li>
+                    <li><span class="op-dot-amber">🟡 Priority 2 (Standard 24–48h + Photo Intake):</span> Spreading rashes, dermoscopy, lab/Holter reviews, dental fillings, root canals, implant consults → Requests a WhatsApp photo/PDF and books the right slot duration (15m / 30m / 45m / 60m).</li>
+                    <li><span class="op-dot-green">🟢 Priority 3 (Routine &amp; GeSY Async Queue):</span> Repeat GeSY prescriptions, specialist referrals, and routine ultrasonic dental cleanings → Batched into your <strong>5-Minute End-of-Day Queue</strong> (or non-peak hygiene slot) without wasting an exam slot.</li>
+                  </ul>
+                </li>
+                <li><strong>3. 3-Bullet Pre-Visit Case Note on Your Calendar:</strong> Syncs directly to <strong>Google, Apple, or Outlook Calendar</strong> with chief complaint, red-flag checks, GeSY ID, and patient-uploaded WhatsApp photos/labs attached before the patient walks in.</li>
+                <li><strong>4. Phase 2 Network Advantage (Patient Finder App):</strong> Founding clinics get priority placement in the upcoming <strong>MyDocDesk Patient Discovery &amp; Instant Booking App</strong>—turning unfilled same-day calendar gaps into verified bookings.</li>
+              </ol>
+            </div>
+
+            <div class="op-sec-block">
+              <div class="op-sec-title">🔒 100% GDPR Compliant &amp; Built for Cyprus Specialties</div>
+              <p class="op-sec-text">
+                Tailored intake rules for <strong>Pediatrics, GeSY Personal Doctors, Dentists &amp; Implant Clinics, Dermatology, Cardiology, and ENT / OB-GYN</strong>. Anastasia performs safe administrative triage only (never diagnoses or prescribes) on EU-encrypted servers (Frankfurt) with automatic 112 red-flag escalation.
+              </p>
+            </div>
+
+            <div class="op-roi-footer">
+              <div><strong>Full-Time Receptionist:</strong> €1,400+/month (9am–5pm only • 1 call at a time • sick leave &amp; social insurance)</div>
+              <div class="op-roi-highlight"><strong>⭐ Founding Doctor Pilot Offer (First 20 Clinics):</strong> 14-Day Free Trial, then <strong>€99/month</strong> (locked-in Founding Rate; standard €149/month) • 1 saved private visit pays for the entire month</div>
+              <div><strong>Live Interactive Simulator &amp; Pilot Setup:</strong> <a href="https://mydocdesk.com">https://mydocdesk.com</a> • Christos Taliadoros (<code>christos@t-knights.com</code> • <code>+357 99 429249</code>)</div>
+              <div class="op-trust-line">🛡️ <strong>Engineered &amp; Supported by T-Knights Consulting Ltd (Cyprus)</strong></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
+
+  <!-- Corporate Trust & Contact Site Footer -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-brand">
+        <strong>MyDocDesk (mydocdesk.com)</strong> — Intelligent Medical Reception • AI Voice &amp; WhatsApp Triage for Cyprus Clinics &amp; Dentists
+      </div>
+      <div class="site-footer-trust">
+        🛡️ <strong>Engineered &amp; Supported by T-Knights Consulting Ltd (Cyprus)</strong>
+      </div>
+      <div class="site-footer-contact">
+        Pilot Setup &amp; Live Demo: <strong>Christos Taliadoros</strong> • <a href="mailto:christos@t-knights.com">christos@t-knights.com</a> • <a href="tel:+35799429249">+357 99 429249</a> • <a href="./assets/MyDocDesk_Doctor_Leave_Behind.pdf" download="MyDocDesk_Doctor_Leave_Behind.pdf">⬇ Download 1-Page Doctor PDF</a>
+      </div>
+    </div>
+  </footer>
 
   <!-- Sticky Mobile Quick-Jump Pill Bar -->
   <nav class="mobile-quick-jump" aria-label="Quick Jump Mobile Sections">
@@ -578,6 +726,9 @@
     </button>
     <button type="button" class="mjump-btn" onclick="switchTab('marketplace')">
       🌍 4. App
+    </button>
+    <button type="button" class="mjump-btn" onclick="switchTab('onepager')">
+      📄 5. 1-Pager
     </button>
   </nav>
 

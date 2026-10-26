@@ -55,7 +55,7 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       phone: "Hidden from routine public booking",
       priority: 0,
       prioLabel: "🔒 PROTECTED BUFFER SLOT",
-      complaint: "Automatically unlocked by Sofia only if an acute Priority 1 patient calls",
+      complaint: "Automatically unlocked by Anastasia only if an acute Priority 1 patient calls",
       notes: "Prevents routine checkups from consuming same-day emergency capacity.",
       channel: "AI Triage Guard"
     }
@@ -113,7 +113,7 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       phone: "Hidden from routine hygiene booking",
       priority: 0,
       prioLabel: "🔒 PROTECTED DENTAL BUFFER",
-      complaint: "Unlocked by Sofia only for acute pulpitis, avulsed/fractured teeth, or facial swelling",
+      complaint: "Unlocked by Anastasia only for acute pulpitis, avulsed/fractured teeth, or facial swelling",
       notes: "Protects high-margin same-day emergency chair time from routine cleanings.",
       channel: "AI Triage Guard"
     }
@@ -171,7 +171,7 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       phone: "Hidden from routine cosmetic booking",
       priority: 0,
       prioLabel: "🔒 PROTECTED BUFFER SLOT",
-      complaint: "Unlocked by Sofia only for acute dermatological flares, herpes zoster, or severe allergic rashes",
+      complaint: "Unlocked by Anastasia only for acute dermatological flares, herpes zoster, or severe allergic rashes",
       notes: "Keeps same-day urgent capacity open for Dr. Elena Georgiou.",
       channel: "AI Triage Guard"
     }
@@ -428,9 +428,9 @@ const SCENARIOS = {
     coverage: "GeSY & Private (#948201)",
     callTurns: [
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
-        text: "Good morning, Dr. Andreas Nicolaou — Pediatrics. Dr. Nicolaou is currently examining a patient in Exam Room 1, so I am his AI Medical Receptionist Sofia. How can I help your child today?"
+        text: "Good morning, Dr. Andreas Nicolaou — Pediatrics. Dr. Nicolaou is currently examining a patient in Exam Room 1, so I am his AI Medical Receptionist Anastasia. How can I help your child today?"
       },
       {
         speaker: "Maria K. (Mother)",
@@ -438,7 +438,7 @@ const SCENARIOS = {
         text: "Hi, my 4-year-old son Leo has had a 39.6°C fever since last night, he's pulling his right ear crying, and he's very lethargic this morning. Can Dr. Nicolaou see him today?"
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "I'm sorry Leo isn't feeling well. Let me quickly check 2 red-flag questions for Dr. Andreas Nicolaou: Is Leo breathing comfortably and able to drink fluids without neck stiffness?"
       },
@@ -448,7 +448,7 @@ const SCENARIOS = {
         text: "Yes, his breathing is normal and he drank water after Nurofen at 7:30 AM, just acute ear pain and high fever."
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "Got it. Because of the 39.6°C fever and acute ear pain in a 4-year-old, I have flagged Leo as Priority 1 Urgent and unlocked Dr. Andreas Nicolaou's protected 12:30 PM Emergency Buffer Slot. I just sent the confirmation and pre-visit card to your WhatsApp!"
       }
@@ -474,7 +474,7 @@ const SCENARIOS = {
       { label: "Red-Flag Screen & Meds", val: "✓ Breathing normal, drinking fluids, no neck stiffness. Last dose: Ibuprofen (Nurofen) at 07:30 AM.", full: true }
     ],
     logs: [
-      "[10:14:02] SIP_INBOUND +35799614280 → Dr. Andreas Nicolaou in Exam Room 1 → AI Sofia answered in 180ms",
+      "[10:14:02] SIP_INBOUND +35799614280 → Dr. Andreas Nicolaou in Exam Room 1 → AI Anastasia answered in 180ms",
       "[10:14:19] CLINICAL_INTAKE extracted: age=4y, temp=39.6C, sx=['acute_otalgia','lethargy'], red_flags=false",
       "[10:14:20] PRIORITY_ENGINE score=P1_URGENT (Rule: Pediatric Fever >39.0C + Acute Pain)",
       "[10:14:21] CALENDAR_GUARD unlocked hidden 12:30 PM Emergency Buffer Slot & pinned SOAP Note #MD-409"
@@ -491,9 +491,9 @@ const SCENARIOS = {
     coverage: "GeSY & Private (€120 Emergency / Crown Repair)",
     callTurns: [
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
-        text: "Good morning, Dr. Nikos Constantinou — Dentistry. Dr. Constantinou is currently in Exam Room 1 with gloves on mid-procedure, so I am his AI Medical Receptionist Sofia. How can I help with your teeth today?"
+        text: "Good morning, Dr. Nikos Constantinou — Dentistry. Dr. Constantinou is currently in Exam Room 1 with gloves on mid-procedure, so I am his AI Medical Receptionist Anastasia. How can I help with your teeth today?"
       },
       {
         speaker: "Dimitris A. (Patient)",
@@ -501,7 +501,7 @@ const SCENARIOS = {
         text: "Hi, I fractured my upper-right premolar crown biting something hard at breakfast and I have sharp throbbing pain—8 out of 10—whenever air or cold water touches it. I have client meetings all day tomorrow, can Dr. Constantinou see me today?"
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "I'm sorry you're in pain, Dimitris—let's get you into the chair today. Quick dental red-flag screen for Dr. Nikos Constantinou: Do you have any facial swelling spreading toward your eye or neck, fever, or uncontrolled bleeding? Also, can you snap a quick smartphone photo on WhatsApp so the dentist knows whether to prepare composite bonding or temporary crown cement?"
       },
@@ -511,7 +511,7 @@ const SCENARIOS = {
         text: "No facial swelling, no fever, and no bleeding—just the fractured crown piece and sharp sensitivity. I'll send a smartphone photo on WhatsApp right now."
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "Perfect. I have triaged this as a Priority 1 Dental Emergency, unlocked Dr. Nikos Constantinou's protected 12:30 PM 30-Minute Emergency Chair Slot, and sent your WhatsApp confirmation and photo upload prompt so Exam Room 1 is prepped before you walk in!"
       }
@@ -537,7 +537,7 @@ const SCENARIOS = {
       { label: "Red-Flag Screen & Tray Prep", val: "✓ No facial swelling, no fever, no bleeding. Temporary crown cement / composite bonding tray pre-flagged for nurse in Exam Room 1.", full: true }
     ],
     logs: [
-      "[10:29:04] SIP_INBOUND +35799845120 → Dr. Nikos Constantinou in Exam Room 1 (Gloves On) → AI Sofia answered in 160ms",
+      "[10:29:04] SIP_INBOUND +35799845120 → Dr. Nikos Constantinou in Exam Room 1 (Gloves On) → AI Anastasia answered in 160ms",
       "[10:29:18] DENTAL_TRIAGE extracted: site=UR4_tooth_14, sx=['crown_fracture','thermal_pain_8_10'], swelling=false",
       "[10:29:22] WA_MEDIA_INGEST attached intraoral photo 'tooth_fracture_UR4.jpg' to Case #MD-415",
       "[10:29:23] CHAIR_SCHEDULER unlocked 12:30 PM (30m Emergency Chair Slot) & flagged nurse for Crown/Composite Tray"
@@ -559,7 +559,7 @@ const SCENARIOS = {
         text: "🎙️ [WhatsApp Voice Note 0:14]: 'Hello Dr. Elena Georgiou's Dermatology clinic, I noticed a red circular rash on my forearm 2 days ago that is itchy and spreading slightly. No fever. Can I send a photo and book a check?'"
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "Hello Andreas! You've reached Dr. Elena Georgiou — Dermatology. Because you have no fever, breathing issue, or facial swelling, I have triaged this as Priority 2 (Within 24–48h). Please send a clear photo of your forearm on WhatsApp so Dr. Georgiou can inspect it alongside your booking."
       }
@@ -597,9 +597,9 @@ const SCENARIOS = {
     coverage: "GeSY & Private (#449102)",
     callTurns: [
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
-        text: "Good morning, Dr. Marios Petrou — Cardiology. Dr. Petrou is currently performing an echocardiogram in Exam Room 1, so I am his AI Medical Receptionist Sofia. How can I assist you?"
+        text: "Good morning, Dr. Marios Petrou — Cardiology. Dr. Petrou is currently performing an echocardiogram in Exam Room 1, so I am his AI Medical Receptionist Anastasia. How can I assist you?"
       },
       {
         speaker: "Costas P. (Patient)",
@@ -607,7 +607,7 @@ const SCENARIOS = {
         text: "Hello, I don't need an exam, I just need Dr. Petrou to renew my monthly GeSY blood pressure pills (Amlodipine 5mg) before I go to the pharmacy."
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "I can take care of that for Dr. Marios Petrou without making you come in or wait on hold! Confirming Costas Papadopoulos, GeSY ID #449102, Amlodipine 5mg + Atorvastatin 20mg. Any new dizziness, chest tightness, or blood pressure readings above 140/90?"
       },
@@ -617,7 +617,7 @@ const SCENARIOS = {
         text: "No, my pressure is 122/78 every morning."
       },
       {
-        speaker: "Sofia (AI Medical Receptionist)",
+        speaker: "Anastasia (AI Medical Receptionist)",
         role: "ai",
         text: "Perfect. I logged your BP reading (122/78) and added your renewal to Dr. Marios Petrou's 1-Click End-of-Day GeSY Approval Queue. You'll receive a WhatsApp message as soon as it's signed!"
       }
@@ -651,9 +651,9 @@ const SCENARIOS = {
     coverage: "ΓεΣΥ & Ιδιωτικό (#903115)",
     callTurns: [
       {
-        speaker: "Σοφία (AI Ιατρική Γραμματεία)",
+        speaker: "Αναστασία (AI Ιατρική Γραμματεία)",
         role: "ai",
-        text: "Καλημέρα σας! Καλέσατε στο ιατρείο Dr. Andreas Nicolaou — Pediatrics. Ο γιατρός εξετάζει ασθενή αυτή τη στιγμή, είμαι η Σοφία, η ψηφιακή βοηθός του. Πώς μπορώ να σας βοηθήσω;"
+        text: "Καλημέρα σας! Καλέσατε στο ιατρείο Dr. Andreas Nicolaou — Pediatrics. Ο γιατρός εξετάζει ασθενή αυτή τη στιγμή, είμαι η Αναστασία, η ψηφιακή βοηθός του. Πώς μπορώ να σας βοηθήσω;"
       },
       {
         speaker: "Ελένη Μ. (Μητέρα)",
@@ -661,7 +661,7 @@ const SCENARIOS = {
         text: "Γεια σας, ο γιος μου έχει πυρετό 39.5 από χθες το βράδυ και πονάει πολύ το αυτί του, μπορεί να μας δει ο γιατρός σήμερα;"
       },
       {
-        speaker: "Σοφία (AI Ιατρική Γραμματεία)",
+        speaker: "Αναστασία (AI Ιατρική Γραμματεία)",
         role: "ai",
         text: "Περαστικά του! Λόγω υψηλού πυρετού (39.5°C) και οξέος πόνου στο αυτί, το περιστατικό κατατάσσεται ως Προτεραιότητα 1 (Επείγον). Ξεκλείδωσα το ειδικό επείγον κενό του Dr. Andreas Nicolaou σήμερα στις 12:30 μ.μ. και σας έστειλα επιβεβαίωση στο WhatsApp!"
       }
@@ -866,7 +866,7 @@ function applyCustomClinicForm(e) {
   };
   document.querySelectorAll(".preset-pill").forEach((b) => b.classList.remove("active"));
   applyClinicBranding();
-  showToast(`🩺 AI Medical Receptionist Sofia is now answering for ${normalizedTitle}!`);
+  showToast(`🩺 AI Medical Receptionist Anastasia is now answering for ${normalizedTitle}!`);
 }
 
 function applyClinicBranding() {
@@ -890,7 +890,7 @@ function applyClinicBranding() {
   }
   const schedSub = document.getElementById("schedule-clinic-sub");
   if (schedSub) {
-    schedSub.textContent = `${c.specialty} • ${c.city} (${c.coverage}) — Every appointment includes a structured 3-bullet intake note set by Sofia`;
+    schedSub.textContent = `${c.specialty} • ${c.city} (${c.coverage}) — Every appointment includes a structured 3-bullet intake note set by Anastasia`;
   }
 }
 
@@ -971,7 +971,7 @@ function triggerScenario(scenKey, btnEl) {
 
   if (state.voiceAudioEnabled && scen.callTurns.length > 0) {
     const lastAi = [...scen.callTurns].reverse().find((t) => t.role === "ai");
-    if (lastAi) speakSofiaText(lastAi.text, scenKey === "greek_urgent" ? "el-GR" : "en-GB");
+    if (lastAi) speakAnastasiaText(lastAi.text, scenKey === "greek_urgent" ? "el-GR" : "en-GB");
   }
 }
 
@@ -1005,12 +1005,12 @@ function runInteractiveStep(stepNum) {
   if (stepNum === 1) {
     playClinicRingtone();
     triggerScenario("urgent_fever", document.getElementById("btn-scen-urgent"));
-    showToast("📞 Step 1: Patient calls while Dr. Nicolaou is in Exam Room 1 — AI Sofia answers immediately!");
+    showToast("📞 Step 1: Patient calls while Dr. Nicolaou is in Exam Room 1 — AI Anastasia answers immediately!");
   } else if (stepNum === 2) {
-    showToast("🩺 Step 2: Sofia screens red flags & scores Leo (39.6°C fever + acute ear pain) as 🔴 PRIORITY 1!");
+    showToast("🩺 Step 2: Anastasia screens red flags & scores Leo (39.6°C fever + acute ear pain) as 🔴 PRIORITY 1!");
     document.getElementById("triage-prio-banner")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   } else if (stepNum === 3) {
-    showToast("🔓 Step 3: Sofia unlocks Dr. Nicolaou's hidden 12:30 PM Emergency Buffer Slot!");
+    showToast("🔓 Step 3: Anastasia unlocks Dr. Nicolaou's hidden 12:30 PM Emergency Buffer Slot!");
   } else if (stepNum === 4) {
     confirmSuggestedSlot();
   }
@@ -1149,7 +1149,7 @@ function handlePatientTurn(channel, text) {
     callList.insertAdjacentHTML(
       "beforeend",
       `<div class="turn-bubble caller"><span class="turn-speaker">Patient Caller</span><div>${text}</div></div>
-       <div class="turn-bubble ai"><span class="turn-speaker">Sofia (AI Medical Receptionist)</span><div>${aiReply}</div></div>`
+       <div class="turn-bubble ai"><span class="turn-speaker">Anastasia (AI Medical Receptionist)</span><div>${aiReply}</div></div>`
     );
     callList.scrollTop = callList.scrollHeight;
   } else {
@@ -1157,7 +1157,7 @@ function handlePatientTurn(channel, text) {
     waList.insertAdjacentHTML(
       "beforeend",
       `<div class="wa-msg outgoing">${text}</div>
-       <div class="wa-msg incoming"><strong>🩺 Sofia (AI Triage):</strong> ${aiReply}</div>`
+       <div class="wa-msg incoming"><strong>🩺 Anastasia (AI Triage):</strong> ${aiReply}</div>`
     );
     waList.scrollTop = waList.scrollHeight;
   }
@@ -1177,7 +1177,7 @@ function handlePatientTurn(channel, text) {
   `;
 
   if (state.voiceAudioEnabled) {
-    speakSofiaText(aiReply, isGreek ? "el-GR" : "en-GB");
+    speakAnastasiaText(aiReply, isGreek ? "el-GR" : "en-GB");
   }
 }
 
@@ -1190,12 +1190,12 @@ function toggleVoiceAudio() {
   if (btn) {
     btn.classList.toggle("active", state.voiceAudioEnabled);
     btn.textContent = state.voiceAudioEnabled
-      ? "🔊 Voice Audio: ON (Sofia Speaking)"
-      : "🔊 Voice Audio: Off (Tap to Hear Sofia)";
+      ? "🔊 Voice Audio: ON (Anastasia Speaking)"
+      : "🔊 Voice Audio: Off (Tap to Hear Anastasia)";
   }
   if (state.voiceAudioEnabled) {
-    speakSofiaText(
-      `Hello, I am Sofia, the AI Medical Receptionist for ${state.activeClinic.doctorName}. I triage patient calls, take clinical case notes, and manage urgent buffer slots.`,
+    speakAnastasiaText(
+      `Hello, I am Anastasia, the AI Medical Receptionist for ${state.activeClinic.doctorName}. I triage patient calls, take clinical case notes, and manage urgent buffer slots.`,
       "en-GB"
     );
   } else if ("speechSynthesis" in window) {
@@ -1203,7 +1203,7 @@ function toggleVoiceAudio() {
   }
 }
 
-function speakSofiaText(text, lang = "en-GB") {
+function speakAnastasiaText(text, lang = "en-GB") {
   if (!("speechSynthesis" in window)) return;
   try {
     window.speechSynthesis.cancel();
@@ -1328,7 +1328,7 @@ function approveGesyItem(id) {
   if (!item) return;
   item.approved = true;
   renderGesyQueue();
-  showToast(`✅ Approved GeSY request for ${item.patient} — Sofia automatically notified the patient on WhatsApp!`);
+  showToast(`✅ Approved GeSY request for ${item.patient} — Anastasia automatically notified the patient on WhatsApp!`);
 }
 
 function approveAllGesy() {
@@ -1402,7 +1402,7 @@ function renderMarketplaceDoctors() {
 }
 
 function bookMarketplaceSlot(docName, slotLabel) {
-  showToast(`🎉 Booked ${slotLabel} with ${docName}! Sofia sent your WhatsApp confirmation & Pre-Visit Case Note.`);
+  showToast(`🎉 Booked ${slotLabel} with ${docName}! Anastasia sent your WhatsApp confirmation & Pre-Visit Case Note.`);
 }
 
 // ============================================================================
