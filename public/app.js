@@ -1195,7 +1195,7 @@ function renderSimulator() {
                 ? `<button class="wa-pay-btn paid" disabled>
                      ✅ Paid €${msg.totalRate} • Confirmed (${msg.reservationCode})
                    </button>`
-                : `<button class="wa-pay-btn" onclick="handleInstantCheckout()">
+                : `<button class="wa-pay-btn" onclick="openApplePayCheckoutSheet()">
                       Pay / JCC 3DS — Pay €${msg.totalRate} Now (1-Tap)
                    </button>`
             }
@@ -1204,13 +1204,25 @@ function renderSimulator() {
       }
 
       if (msg.type === "booking_confirmed_concierge") {
+        const currentHotel = window.activeHotelConfig ? window.activeHotelConfig.shortName : "Aphrodite Bay Resort";
         return `
           <div class="wa-bubble" style="border: 1.5px solid #22c55e;">
             <div style="font-weight:800; color:#15803d; margin-bottom:4px;">
               🎉 Reservation Locked in Protel PMS (${msg.reservationCode})
             </div>
-            <div style="font-size:0.78rem; color:#334155; margin-bottom:8px;">
-              <strong>${msg.roomName}</strong> • ${msg.checkIn} → ${msg.checkOut}<br/>
+            <div class="wa-booking-pass">
+              <div>
+                <div style="font-size:0.68rem; color:#7dd3fc; font-weight:800; text-transform:uppercase;">Digital Express Check-In Pass</div>
+                <div style="font-size:0.84rem; font-weight:800;">${currentHotel} • ${msg.reservationCode}</div>
+                <div style="font-size:0.72rem; color:#cbd5e1;">${msg.roomName} (${msg.checkIn} → ${msg.checkOut})</div>
+              </div>
+              <div class="wa-pass-qr" title="Express Check-In QR Pass">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div style="font-size:0.78rem; color:#334155; margin:8px 0;">
               Tap any <strong>MyVacAI Vacation Concierge</strong> experience below to add it straight to your room folio:
             </div>
             <div class="wa-addons-grid">
@@ -1468,4 +1480,452 @@ window.addEventListener("DOMContentLoaded", () => {
   try {
     localStorage.removeItem("myvacai_brand_logo");
   } catch (e) {}
+});
+
+
+// ============================================================================
+// INTERACTIVE WALKTHROUGH, LIVE MIC, APPLE PAY SHEET, HOTEL CUSTOMIZER & ROI
+// ============================================================================
+
+window.activeHotelConfig = {
+  key: "aphrodite",
+  name: "Aphrodite Bay Resort & Spa",
+  shortName: "Aphrodite Bay Resort",
+  location: "• Limassol, Cyprus (5★ Demo)",
+  baseRate: 240,
+  roomsCount: 85
+};
+
+const HOTEL_PRESETS = {
+  aphrodite: {
+    key: "aphrodite",
+    name: "Aphrodite Bay Resort & Spa",
+    shortName: "Aphrodite Bay Resort",
+    location: "• Limassol, Cyprus (5★ Demo)",
+    baseRate: 240,
+    roomsCount: 85
+  },
+  nissiblu: {
+    key: "nissiblu",
+    name: "Nissi Blu Beach Resort",
+    shortName: "Nissi Blu Beach Resort",
+    location: "• Ayia Napa, Cyprus (5★ Beachfront)",
+    baseRate: 280,
+    roomsCount: 160
+  },
+  elysium: {
+    key: "elysium",
+    name: "Elysium Paphos Palace",
+    shortName: "Elysium Paphos Palace",
+    location: "• Paphos, Cyprus (5★ Luxury)",
+    baseRate: 310,
+    roomsCount: 210
+  }
+};
+
+function showLiveToast(message, durationMs = 5500) {
+  const banner = document.getElementById("live-toast-banner");
+  const textEl = document.getElementById("live-toast-text");
+  if (!banner || !textEl) return;
+  textEl.textContent = message;
+  banner.hidden = false;
+  if (window._toastTimer) clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => {
+    banner.hidden = true;
+  }, durationMs);
+}
+
+function setActiveStepCard(stepNum) {
+  for (let i = 1; i <= 4; i++) {
+    const card = document.getElementById(`step-card-${i}`);
+    if (card) card.classList.toggle("active", i === stepNum);
+  }
+}
+
+function playRealisticRingtone() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+    [0, 0.35].forEach(offset => {
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc1.frequency.value = 440;
+      osc2.frequency.value = 480;
+      gain.gain.setValueAtTime(0.08, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.25);
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(ctx.destination);
+      osc1.start(now + offset);
+      osc2.start(now + offset);
+      osc1.stop(now + offset + 0.26);
+      osc2.stop(now + offset + 0.26);
+    });
+  } catch (e) {}
+}
+
+async function runInteractiveStep(stepNum) {
+  setActiveStepCard(stepNum);
+  const hotel = window.activeHotelConfig.shortName;
+
+  if (stepNum === 1) {
+    playRealisticRingtone();
+    appState.voiceAudioEnabled = true;
+    const ttsBtn = document.getElementById("tts-toggle-btn");
+    if (ttsBtn) {
+      ttsBtn.classList.add("active");
+      ttsBtn.textContent = "🔊 Voice Audio: On (Speaking)";
+    }
+    await triggerScenario("en_seaview", document.getElementById("btn-scen-en"));
+    applyHotelBrandingToDom();
+    showLiveToast(`📞 Step 1: Inbound call answered in 0.3s by Elena (${hotel} AI Receptionist)!`);
+    if (window.innerWidth <= 820) {
+      jumpToMobileSection("card-phone-call", document.getElementById("mjump-call"));
+    }
+    return;
+  }
+
+  if (stepNum === 2) {
+    if (!appState.session) {
+      await triggerScenario("en_seaview", document.getElementById("btn-scen-en"));
+    }
+    applyHotelBrandingToDom();
+    const waBanner = document.getElementById("wa-handoff-banner");
+    if (waBanner) {
+      waBanner.style.background = "#0284c7";
+      waBanner.style.color = "#ffffff";
+      setTimeout(() => {
+        waBanner.style.background = "";
+        waBanner.style.color = "";
+      }, 1400);
+    }
+    const room = appState.pms?.rooms?.[0];
+    const total = room ? room.ratePerNight * 3 : 720;
+    showLiveToast(`⚡ Step 2: Elena checked WebHotelier (112ms) & pushed a €${total} direct quote card to the guest's WhatsApp!`);
+    if (window.innerWidth <= 820) {
+      jumpToMobileSection("card-whatsapp-chat", document.getElementById("mjump-wa"));
+    }
+    return;
+  }
+
+  if (stepNum === 3) {
+    if (window.innerWidth <= 820) {
+      jumpToMobileSection("card-whatsapp-chat", document.getElementById("mjump-wa"));
+    }
+    await openApplePayCheckoutSheet();
+    return;
+  }
+
+  if (stepNum === 4) {
+    if (!appState.session || appState.session.paymentStatus !== "PAID") {
+      await handleInstantCheckout();
+    }
+    if (window.innerWidth <= 820) {
+      jumpToMobileSection("card-whatsapp-chat", document.getElementById("mjump-wa"));
+    }
+    await showWhatsAppTyping(550);
+    await handleBookAddon("larnaca-vclass");
+    applyHotelBrandingToDom();
+    showLiveToast("🚐 Step 4: Added Larnaca Airport Private Mercedes V-Class Transfer (+€65) via WhatsApp Concierge!");
+  }
+}
+
+let guidedTourRunning = false;
+async function startGuidedTour() {
+  const btn = document.getElementById("btn-guided-demo");
+  if (guidedTourRunning) return;
+  guidedTourRunning = true;
+  if (btn) {
+    btn.classList.add("playing");
+    btn.textContent = "⏳ Running Guided Demo (Step 1 of 4)...";
+  }
+
+  await runInteractiveStep(1);
+  await new Promise(r => setTimeout(r, 1100));
+
+  if (btn) btn.textContent = "⏳ Step 2/4: Sending WhatsApp Quote...";
+  await runInteractiveStep(2);
+  await new Promise(r => setTimeout(r, 1100));
+
+  if (btn) btn.textContent = "⏳ Step 3/4: 1-Tap Apple Pay / JCC 3DS...";
+  await runInteractiveStep(3);
+  await new Promise(r => setTimeout(r, 1100));
+
+  if (btn) btn.textContent = "⏳ Step 4/4: AI Concierge Airport Upsell...";
+  await runInteractiveStep(4);
+
+  if (btn) {
+    btn.classList.remove("playing");
+    btn.textContent = "✓ Guided Demo Complete — Tap to Replay";
+  }
+  guidedTourRunning = false;
+}
+
+function showWhatsAppTyping(ms = 600) {
+  const ind = document.getElementById("wa-typing-indicator");
+  if (!ind) return Promise.resolve();
+  ind.hidden = false;
+  const waBox = document.getElementById("wa-messages-list");
+  if (waBox) waBox.scrollTop = waBox.scrollHeight;
+  return new Promise(resolve => {
+    setTimeout(() => {
+      ind.hidden = true;
+      resolve();
+    }, ms);
+  });
+}
+
+async function openApplePayCheckoutSheet() {
+  setActiveStepCard(3);
+  const sheet = document.getElementById("apple-pay-sheet");
+  const ring = document.getElementById("ap-faceid-ring");
+  const statusText = document.getElementById("ap-status-text");
+  const amountEl = document.getElementById("ap-total-amount");
+  const merchantEl = document.getElementById("ap-hotel-name");
+
+  const quoteMsg = (appState.session?.whatsappMessages || []).find(m => m.type === "room_quote_card");
+  const amount = quoteMsg ? quoteMsg.totalRate : 720;
+  const savings = quoteMsg ? quoteMsg.savingsVsOta : 135;
+
+  if (merchantEl) merchantEl.textContent = window.activeHotelConfig.name;
+  if (amountEl) amountEl.textContent = `€${amount}.00`;
+  if (ring) {
+    ring.classList.remove("verified");
+    ring.textContent = "🔒";
+  }
+  if (statusText) statusText.textContent = "Confirming Face ID & JCC Smart 3DS2 Token...";
+  if (sheet) sheet.hidden = false;
+
+  await new Promise(r => setTimeout(r, 550));
+
+  if (ring) {
+    ring.classList.add("verified");
+    ring.textContent = "✓";
+  }
+  if (statusText) statusText.textContent = "Approved • Writing Reservation to Protel PMS...";
+
+  await new Promise(r => setTimeout(r, 400));
+  if (sheet) sheet.hidden = true;
+
+  await handleInstantCheckout();
+  applyHotelBrandingToDom();
+  const resCode = appState.session?.reservationCode || "MV-8492";
+  showLiveToast(`✅ Reservation #${resCode} written to Protel PMS — Saved €${savings} in Booking.com commission!`);
+}
+
+function closeApplePaySheet() {
+  const sheet = document.getElementById("apple-pay-sheet");
+  if (sheet) sheet.hidden = true;
+}
+
+async function sendQuickPrompt(channel, text) {
+  if (channel === "whatsapp") {
+    const input = document.getElementById("wa-custom-input");
+    if (input) input.value = text;
+    await showWhatsAppTyping(550);
+    await sendCustomTurn({ preventDefault: () => {} }, "whatsapp");
+    applyHotelBrandingToDom();
+  } else {
+    const input = document.getElementById("voice-custom-input");
+    if (input) input.value = text;
+    await sendCustomTurn({ preventDefault: () => {} }, "voice");
+    applyHotelBrandingToDom();
+  }
+}
+
+async function simulateWhatsAppVoiceNote() {
+  setActiveStepCard(1);
+  await showWhatsAppTyping(500);
+  await triggerScenario("wa_voicenote_villa", document.getElementById("btn-scen-vn"));
+  applyHotelBrandingToDom();
+  showLiveToast("🎙️ WhatsApp Voice Note transcribed in 290ms — Pool Villa quote + Airport Van sent!");
+}
+
+function startLiveMicSpeech() {
+  const heroBtn = document.getElementById("btn-live-mic-hero");
+  const callMicBtn = document.getElementById("btn-call-mic");
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  appState.voiceAudioEnabled = true;
+  const ttsBtn = document.getElementById("tts-toggle-btn");
+  if (ttsBtn) {
+    ttsBtn.classList.add("active");
+    ttsBtn.textContent = "🔊 Voice Audio: On (Speaking)";
+  }
+
+  if (SpeechRec) {
+    try {
+      const rec = new SpeechRec();
+      rec.lang = "en-US";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+
+      if (heroBtn) {
+        heroBtn.classList.add("listening");
+        heroBtn.textContent = "🔴 Listening... Speak to Elena now";
+      }
+      if (callMicBtn) callMicBtn.classList.add("listening");
+      showLiveToast("🎙️ Microphone active — Ask Elena about room availability, airport pickup, or rates!");
+
+      rec.onresult = async event => {
+        const transcript = event.results[0][0].transcript;
+        if (heroBtn) {
+          heroBtn.classList.remove("listening");
+          heroBtn.textContent = "🎙️ Speak to AI Receptionist";
+        }
+        if (callMicBtn) callMicBtn.classList.remove("listening");
+        await sendQuickPrompt("voice", transcript);
+      };
+
+      rec.onerror = async () => {
+        if (heroBtn) {
+          heroBtn.classList.remove("listening");
+          heroBtn.textContent = "🎙️ Speak to AI Receptionist";
+        }
+        if (callMicBtn) callMicBtn.classList.remove("listening");
+        await sendQuickPrompt("voice", "Do you have a Sea View Suite for 3 nights and airport pickup?");
+      };
+
+      rec.start();
+      return;
+    } catch (e) {}
+  }
+
+  sendQuickPrompt("voice", "Do you have a Sea View Suite for 3 nights with breakfast included?");
+  showLiveToast("🎙️ Simulated Live Voice Turn: Do you have a Sea View Suite for 3 nights with breakfast included?");
+}
+
+function applyHotelBrandingToDom() {
+  const cfg = window.activeHotelConfig;
+  const topName = document.getElementById("topbar-hotel-name");
+  const topLoc = document.getElementById("topbar-hotel-loc");
+  const callTitle = document.getElementById("call-hotel-title");
+  const waTitle = document.getElementById("wa-hotel-title");
+  const step1Label = document.getElementById("step1-hotel-label");
+  const roiName = document.getElementById("roi-hotel-name");
+
+  if (topName) topName.textContent = cfg.name;
+  if (topLoc) topLoc.textContent = cfg.location;
+  if (callTitle) callTitle.textContent = `${cfg.shortName} Front Desk AI`;
+  if (waTitle) waTitle.textContent = cfg.shortName;
+  if (step1Label) step1Label.textContent = cfg.shortName;
+  if (roiName) roiName.textContent = cfg.shortName;
+
+  if (cfg.shortName !== "Aphrodite Bay Resort") {
+    document.querySelectorAll("#call-transcript-list .transcript-turn div, #wa-messages-list .wa-bubble div").forEach(el => {
+      if (el.children.length === 0 && el.textContent.includes("Aphrodite Bay")) {
+        el.textContent = el.textContent
+          .replace(/Aphrodite Bay Resort & Spa/g, cfg.name)
+          .replace(/Aphrodite Bay Resort/g, cfg.shortName)
+          .replace(/Aphrodite Bay/g, cfg.shortName);
+      }
+    });
+  }
+}
+
+async function selectHotelPreset(presetKey, btnEl) {
+  const preset = HOTEL_PRESETS[presetKey] || HOTEL_PRESETS.aphrodite;
+  window.activeHotelConfig = { ...preset };
+
+  document.querySelectorAll(".preset-pill").forEach(b => b.classList.remove("active"));
+  if (btnEl) btnEl.classList.add("active");
+
+  updateHotelRatesAndRoi(preset.baseRate, preset.roomsCount);
+  applyHotelBrandingToDom();
+  showLiveToast(`🏨 Switched live simulator to ${preset.name} (€${preset.baseRate}/night base ADR)!`);
+}
+
+async function applyCustomHotelForm(event) {
+  event.preventDefault();
+  const nameInput = document.getElementById("custom-hotel-name-input");
+  const rateInput = document.getElementById("custom-hotel-rate-input");
+  const rawName = (nameInput?.value || "").trim();
+  if (!rawName) return;
+
+  const customRate = parseInt(rateInput?.value, 10) || 260;
+  window.activeHotelConfig = {
+    key: "custom",
+    name: rawName,
+    shortName: rawName,
+    location: "• Custom Hotel Live Preview",
+    baseRate: customRate,
+    roomsCount: 110
+  };
+
+  document.querySelectorAll(".preset-pill").forEach(b => b.classList.remove("active"));
+  updateHotelRatesAndRoi(customRate, 110);
+  applyHotelBrandingToDom();
+  showLiveToast(`🏨 Customized MyVacAI for "${rawName}" at €${customRate}/night!`);
+}
+
+function updateHotelRatesAndRoi(baseRate, roomsCount) {
+  if (appState.pms && appState.pms.rooms && appState.pms.rooms.length > 0) {
+    const r0 = appState.pms.rooms[0];
+    r0.ratePerNight = baseRate;
+    r0.otaRatePerNight = Math.round(baseRate * 1.18);
+    if (appState.session && appState.session.whatsappMessages) {
+      appState.session.whatsappMessages.forEach(m => {
+        if (m.type === "room_quote_card") {
+          const nights = appState.session.nights || 3;
+          m.ratePerNight = baseRate;
+          m.totalRate = baseRate * nights;
+          m.otaTotal = Math.round(baseRate * 1.18) * nights;
+          m.savingsVsOta = m.otaTotal - m.totalRate;
+        }
+      });
+    }
+    renderAll();
+  }
+
+  const adrSlider = document.getElementById("roi-adr-slider");
+  const roomsSlider = document.getElementById("roi-rooms-slider");
+  if (adrSlider) adrSlider.value = Math.min(600, Math.max(80, baseRate));
+  if (roomsSlider && roomsCount) roomsSlider.value = roomsCount;
+  updateRoiCalculator();
+}
+
+function updateRoiCalculator() {
+  const rooms = parseInt(document.getElementById("roi-rooms-slider")?.value || "85", 10);
+  const adr = parseInt(document.getElementById("roi-adr-slider")?.value || "240", 10);
+  const shiftPct = parseInt(document.getElementById("roi-shift-slider")?.value || "22", 10);
+
+  const roomsVal = document.getElementById("roi-rooms-val");
+  const adrVal = document.getElementById("roi-adr-val");
+  const shiftVal = document.getElementById("roi-shift-val");
+  if (roomsVal) roomsVal.textContent = `${rooms} Rooms`;
+  if (adrVal) adrVal.textContent = `€${adr} / night`;
+  if (shiftVal) shiftVal.textContent = `${shiftPct}% Direct Shift`;
+
+  const annualRoomNights = Math.round(rooms * 365 * 0.68);
+  const shiftedRevenue = annualRoomNights * adr * (shiftPct / 100);
+  const commissionSaved = Math.round(shiftedRevenue * 0.18);
+  const extraUpsellRev = Math.round(rooms * 565 * (shiftPct / 22));
+  const callsAnswered = Math.round(rooms * 75);
+  const totalBoost = commissionSaved + extraUpsellRev;
+
+  const commEl = document.getElementById("roi-commission-saved");
+  const upsellEl = document.getElementById("roi-upsell-rev");
+  const callsEl = document.getElementById("roi-calls-answered");
+  const totalEl = document.getElementById("roi-total-boost");
+
+  if (commEl) commEl.textContent = `€${commissionSaved.toLocaleString()}`;
+  if (upsellEl) upsellEl.textContent = `€${extraUpsellRev.toLocaleString()}`;
+  if (callsEl) callsEl.textContent = `${callsAnswered.toLocaleString()} calls`;
+  if (totalEl) totalEl.textContent = `€${totalBoost.toLocaleString()} / yr`;
+}
+
+function jumpToMobileSection(sectionId, btnEl) {
+  const target = document.getElementById(sectionId);
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  document.querySelectorAll(".mjump-btn").forEach(b => b.classList.remove("active"));
+  if (btnEl) btnEl.classList.add("active");
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  updateRoiCalculator();
 });

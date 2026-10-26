@@ -22,10 +22,10 @@
           <div class="brand-tagline">INTELLIGENT HOSPITALITY • AI Voice &amp; WhatsApp Receptionist</div>
         </div>
       </div>
-      <div class="property-badge">
+      <div class="property-badge" id="topbar-property-badge">
         <span>🇨🇾</span>
-        <strong>Aphrodite Bay Resort &amp; Spa</strong>
-        <span style="opacity:0.7">• Limassol, Cyprus (5★ Demo)</span>
+        <strong id="topbar-hotel-name">Aphrodite Bay Resort &amp; Spa</strong>
+        <span id="topbar-hotel-loc" style="opacity:0.7">• Limassol, Cyprus (5★ Demo)</span>
       </div>
     </div>
 
@@ -50,6 +50,108 @@
   <main class="main-container">
     <!-- TAB 1: LIVE INTERACTIVE SIMULATOR -->
     <section id="tab-simulator" class="tab-panel active">
+      <!-- Interactive "How It Works — Try It Yourself" Guided Hero & 4-Step StoryStepper -->
+      <div class="guided-hero-banner" id="guided-hero-banner">
+        <div class="guided-hero-top">
+          <div class="guided-hero-copy">
+            <div class="guided-eyebrow">
+              <span class="pulse-dot"></span>
+              <span>INTERACTIVE SANDBOX • TRY IT YOURSELF ON PHONE OR DESKTOP</span>
+            </div>
+            <h1 class="guided-title">How MyVacAI Turns Hotel Calls into Instant WhatsApp Direct Bookings</h1>
+            <p class="guided-sub">
+              Tap any step below, press <strong>▶ Start Guided Live Demo</strong>, or use your microphone to talk directly to <strong>Elena</strong>, our multilingual AI Receptionist.
+            </p>
+          </div>
+          <div class="guided-cta-group">
+            <button type="button" class="guided-demo-btn" id="btn-guided-demo" onclick="startGuidedTour()">
+              ▶ Start Guided Live Demo
+            </button>
+            <button type="button" class="live-mic-hero-btn" id="btn-live-mic-hero" onclick="startLiveMicSpeech()">
+              🎙️ Speak to AI Receptionist
+            </button>
+          </div>
+        </div>
+
+        <!-- 4-Step Clickable StoryStepper -->
+        <div class="story-stepper-grid" role="tablist" aria-label="4-Step Interactive Walkthrough">
+          <button type="button" class="story-step-card active" id="step-card-1" onclick="runInteractiveStep(1)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 1</span>
+              <span class="step-action-pill">🔊 Tap to Hear Call</span>
+            </div>
+            <div class="step-title">📞 Guest Calls or Sends Voice Note</div>
+            <div class="step-desc">Hear the realistic ringtone &amp; Elena answering in <strong id="step1-hotel-label">Aphrodite Bay</strong> with live voice waveform.</div>
+          </button>
+
+          <button type="button" class="story-step-card" id="step-card-2" onclick="runInteractiveStep(2)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 2</span>
+              <span class="step-action-pill">⚡ Trigger Handoff</span>
+            </div>
+            <div class="step-title">💬 Live PMS Check → WhatsApp Quote</div>
+            <div class="step-desc">Elena checks WebHotelier/Protel rates &amp; pushes an interactive room card to the caller's WhatsApp during the call.</div>
+          </button>
+
+          <button type="button" class="story-step-card" id="step-card-3" onclick="runInteractiveStep(3)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 3</span>
+              <span class="step-action-pill"> Simulate 1-Tap Pay</span>
+            </div>
+            <div class="step-title">💳 1-Tap Apple Pay / JCC 3DS Checkout</div>
+            <div class="step-desc">Guest pays deposit in 1 tap via Apple Pay / JCC 3DS. Writes reservation to PMS with <strong>0% OTA commission</strong>.</div>
+          </button>
+
+          <button type="button" class="story-step-card" id="step-card-4" onclick="runInteractiveStep(4)">
+            <div class="step-num-row">
+              <span class="step-badge">STEP 4</span>
+              <span class="step-action-pill">🛥️ Test Concierge</span>
+            </div>
+            <div class="step-title">🥂 AI Vacation Concierge Upsells</div>
+            <div class="step-desc">Chat on WhatsApp to add Larnaca Airport Mercedes V-Class pickup, Catamaran cruise, or Thalasso Spa.</div>
+          </button>
+        </div>
+
+        <!-- Live Notification Banner (Flashes on Handoff / PMS Write-back / Upsell) -->
+        <div class="live-toast-banner" id="live-toast-banner" hidden>
+          <span id="live-toast-text">✅ Reservation #MV-8492 written to Protel PMS — Saved €135 in Booking.com commission!</span>
+        </div>
+      </div>
+
+      <!-- "Test It With Your Own Hotel" Live B2B Customizer Bar -->
+      <div class="hotel-customizer-bar" id="hotel-customizer-bar">
+        <div class="customizer-presets">
+          <span class="customizer-label">🏨 Test With Your Own Hotel:</span>
+          <button type="button" class="preset-pill active" data-preset="aphrodite" onclick="selectHotelPreset('aphrodite', this)">
+            🇨🇾 Aphrodite Bay Resort (Limassol • €240/n)
+          </button>
+          <button type="button" class="preset-pill" data-preset="nissiblu" onclick="selectHotelPreset('nissiblu', this)">
+            🏖️ Nissi Blu Beach Resort (Ayia Napa • €280/n)
+          </button>
+          <button type="button" class="preset-pill" data-preset="elysium" onclick="selectHotelPreset('elysium', this)">
+            🏛️ Elysium Paphos Palace (Paphos • €310/n)
+          </button>
+        </div>
+        <form class="customizer-form" onsubmit="applyCustomHotelForm(event)">
+          <input
+            type="text"
+            id="custom-hotel-name-input"
+            class="customizer-input"
+            placeholder="Or type any hotel name (e.g. Sunrise Pearl Protaras)..."
+            aria-label="Custom Hotel Name"
+          />
+          <input
+            type="number"
+            id="custom-hotel-rate-input"
+            class="customizer-rate-input"
+            placeholder="€260"
+            min="60"
+            max="2000"
+            aria-label="Nightly Rate in EUR"
+          />
+          <button type="submit" class="customizer-apply-btn">Apply to AI</button>
+        </form>
+      </div>
       <div class="scenario-bar">
         <div class="scenario-bar-left">
           <span class="scenario-label">Interactive Scenarios:</span>
@@ -72,20 +174,20 @@
 
       <div class="simulator-grid">
         <!-- Column 1: Live Phone Call -->
-        <div class="phone-card">
+        <div class="phone-card" id="card-phone-call">
           <div class="phone-notch">5G • +357 CY SIP</div>
           <div class="call-header">
             <div class="call-status-tag">
               <span class="pulse-dot"></span>
               <span id="call-status-label">LIVE INBOUND CALL • 00:18</span>
             </div>
-            <div class="call-hotel-title">Aphrodite Bay Front Desk AI</div>
+            <div class="call-hotel-title" id="call-hotel-title">Aphrodite Bay Front Desk AI</div>
             <div class="call-sub" id="caller-phone-display">Caller: +357 99 482 190</div>
           </div>
 
-          <div class="waveform-box">
-            <span>🎙️ Elena (AI Receptionist • EN/EL/RU)</span>
-            <div class="wave-bars">
+          <div class="waveform-box" id="waveform-box">
+            <span id="elena-voice-status">🎙️ Elena (AI Receptionist • EN/EL/RU)</span>
+            <div class="wave-bars" id="call-wave-bars">
               <span></span><span></span><span></span><span></span><span></span>
             </div>
           </div>
@@ -94,25 +196,47 @@
             <!-- Populated by JS -->
           </div>
 
+          <!-- Quick Voice Prompts + Live Mic Button -->
+          <div class="call-quick-prompts">
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'Do you have a Sea View Suite for 3 nights?')">
+              "Sea View for 3 nights?"
+            </button>
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'Can you send me the booking link on WhatsApp?')">
+              "Send link on WhatsApp"
+            </button>
+            <button type="button" class="call-chip" onclick="sendQuickPrompt('voice', 'Έχετε σουίτα με θέα θάλασσα για 2 βράδια;')">
+              "Ελληνικά 🇬🇷"
+            </button>
+          </div>
+
           <form class="call-input-area" onsubmit="sendCustomTurn(event, 'voice')">
+            <button
+              type="button"
+              class="call-mic-btn"
+              id="btn-call-mic"
+              onclick="startLiveMicSpeech()"
+              title="Speak with your microphone"
+            >
+              🎙️
+            </button>
             <input
               type="text"
               id="voice-custom-input"
               class="call-input"
-              placeholder="Say something on the call (e.g. 'Do you have a Villa for 4 nights?')..."
+              placeholder="Say or type on the call (e.g. 'Villa for 4 nights?')..."
             />
             <button type="submit" class="call-send-btn">Speak</button>
           </form>
         </div>
 
         <!-- Column 2: Instant WhatsApp Business Thread -->
-        <div class="whatsapp-card">
+        <div class="whatsapp-card" id="card-whatsapp-chat">
           <div class="wa-header">
             <div class="wa-header-left">
               <img src="./assets/logo-bell-icon.png" alt="MyVacAI" class="wa-avatar-img" id="wa-logo-img" />
               <div>
                 <div class="wa-title">
-                  Aphrodite Bay Resort
+                  <span id="wa-hotel-title">Aphrodite Bay Resort</span>
                   <span class="wa-verified">✓ Official</span>
                 </div>
                 <div class="wa-subtitle">MyVacAI Instant Checkout &amp; Vacation Concierge</div>
@@ -121,8 +245,8 @@
             <span style="font-size:0.74rem; opacity:0.9;">+357 25 000 890</span>
           </div>
 
-          <div class="wa-handoff-banner">
-            <span>⚡ In-Call 3DS Checkout Handoff Active</span>
+          <div class="wa-handoff-banner" id="wa-handoff-banner">
+            <span id="wa-handoff-status">⚡ In-Call 3DS Checkout Handoff Active</span>
             <span>JCC Smart / Apple Pay</span>
           </div>
 
@@ -130,20 +254,68 @@
             <!-- Populated by JS -->
           </div>
 
-          <form class="call-input-area" style="background:#f0f2f5; padding:10px 12px; margin:0;" onsubmit="sendCustomTurn(event, 'whatsapp')">
+          <!-- Typing Indicator Bubble -->
+          <div class="wa-typing-indicator" id="wa-typing-indicator" hidden>
+            <span class="typing-dots"><span></span><span></span><span></span></span>
+            <span>Elena (AI Receptionist) is typing a reply...</span>
+          </div>
+
+          <!-- Interactive Apple Pay / JCC 3DS Slide-Up Modal Sheet -->
+          <div class="apple-pay-sheet" id="apple-pay-sheet" hidden>
+            <div class="apple-pay-sheet-header">
+              <span class="apple-pay-logo"> Pay • JCC Smart 3DS2</span>
+              <button type="button" class="apple-pay-cancel" onclick="closeApplePaySheet()">Cancel</button>
+            </div>
+            <div class="apple-pay-sheet-body">
+              <div class="apple-pay-merchant">
+                <strong id="ap-hotel-name">Aphrodite Bay Resort &amp; Spa</strong>
+                <span id="ap-room-summary">Direct Reservation • 0% OTA Fee</span>
+              </div>
+              <div class="apple-pay-amount" id="ap-total-amount">€720.00</div>
+              <div class="apple-pay-status" id="ap-status-box">
+                <div class="faceid-ring" id="ap-faceid-ring">🔒</div>
+                <span id="ap-status-text">Confirming Face ID &amp; JCC 3DS2 Token...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick-Tap Guest Chips inside WhatsApp -->
+          <div class="wa-quick-chips">
+            <button type="button" class="wa-chip" onclick="sendQuickPrompt('whatsapp', 'Do you have a Sea View Suite for 4 nights?')">
+              🏖️ Sea View (4n)
+            </button>
+            <button type="button" class="wa-chip" onclick="sendQuickPrompt('whatsapp', 'Can you arrange airport pickup from Larnaca?')">
+              🚐 Larnaca Pickup
+            </button>
+            <button type="button" class="wa-chip" onclick="sendQuickPrompt('whatsapp', 'Is breakfast &amp; spa included?')">
+              🥐 Breakfast &amp; Spa?
+            </button>
+            <button type="button" class="wa-chip" onclick="sendQuickPrompt('whatsapp', 'Μπορώ να κάνω κράτηση στα Ελληνικά;')">
+              🇬🇷 Speak in Greek
+            </button>
+          </div>
+
+          <form class="call-input-area wa-input-bar" onsubmit="sendCustomTurn(event, 'whatsapp')">
+            <button
+              type="button"
+              class="wa-vn-btn"
+              onclick="simulateWhatsAppVoiceNote()"
+              title="Send simulated WhatsApp Voice Note"
+            >
+              🎙️
+            </button>
             <input
               type="text"
               id="wa-custom-input"
-              class="call-input"
-              style="background:#ffffff; color:#0f172a; border-color:#cbd5e1;"
-              placeholder="Reply on WhatsApp (e.g. 'Add airport pickup from Larnaca')..."
+              class="call-input wa-text-input"
+              placeholder="Type a WhatsApp message to Elena..."
             />
             <button type="submit" class="call-send-btn" style="background:#128c7e;">Send</button>
           </form>
         </div>
 
         <!-- Column 3: Real-Time Receptionist Brain & PMS Execution Log -->
-        <div class="brain-panel">
+        <div class="brain-panel" id="card-brain-panel">
           <div class="brain-header">
             <div>
               <div class="brain-title">🧠 Receptionist Brain &amp; Live PMS Execution Trace</div>
@@ -169,6 +341,74 @@
 
           <div class="logs-list" id="execution-logs-list">
             <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive ROI & Commission Savings Calculator (For Hoteliers) -->
+      <div class="roi-calculator-card" id="card-roi-calculator">
+        <div class="roi-header">
+          <div>
+            <div class="roi-eyebrow">💰 INTERACTIVE HOTELIER ROI &amp; OTA SAVINGS CALCULATOR</div>
+            <h2 class="roi-title">See How Much <span id="roi-hotel-name">Aphrodite Bay Resort</span> Saves by Shifting Calls &amp; WhatsApp Direct</h2>
+            <p class="roi-sub">
+              Drag the sliders below to match your property size and nightly rate. MyVacAI captures 24/7 phone &amp; WhatsApp inquiries at <strong>0% OTA commission</strong> vs 18% Booking.com/Expedia fees.
+            </p>
+          </div>
+          <span class="code-badge" style="font-size:0.82rem; padding:6px 12px;">18% OTA Commission Benchmark</span>
+        </div>
+
+        <div class="roi-grid">
+          <div class="roi-sliders-col">
+            <div class="roi-slider-group">
+              <div class="roi-slider-label">
+                <span>🏨 Number of Rooms / Suites</span>
+                <strong id="roi-rooms-val">85 Rooms</strong>
+              </div>
+              <input type="range" id="roi-rooms-slider" min="10" max="500" step="5" value="85" oninput="updateRoiCalculator()" />
+              <div class="roi-range-ends"><span>10 rooms (Boutique)</span><span>500 rooms (5★ Resort)</span></div>
+            </div>
+
+            <div class="roi-slider-group">
+              <div class="roi-slider-label">
+                <span>💶 Average Nightly Rate (ADR)</span>
+                <strong id="roi-adr-val">€240 / night</strong>
+              </div>
+              <input type="range" id="roi-adr-slider" min="80" max="600" step="10" value="240" oninput="updateRoiCalculator()" />
+              <div class="roi-range-ends"><span>€80/night</span><span>€600/night</span></div>
+            </div>
+
+            <div class="roi-slider-group">
+              <div class="roi-slider-label">
+                <span>📈 Direct Call &amp; WhatsApp Shift / Recovery</span>
+                <strong id="roi-shift-val">22% Direct Shift</strong>
+              </div>
+              <input type="range" id="roi-shift-slider" min="5" max="45" step="1" value="22" oninput="updateRoiCalculator()" />
+              <div class="roi-range-ends"><span>5% conservative</span><span>45% high-volume voice</span></div>
+            </div>
+          </div>
+
+          <div class="roi-results-col">
+            <div class="roi-result-box primary">
+              <div class="roi-res-label">Annual OTA Commission Saved (18% Kept)</div>
+              <div class="roi-res-value" id="roi-commission-saved">€164,890</div>
+              <div class="roi-res-note">Direct bookings via Apple Pay / JCC 3DS instead of OTAs</div>
+            </div>
+            <div class="roi-result-box">
+              <div class="roi-res-label">Extra AI Concierge Upsell Revenue / yr</div>
+              <div class="roi-res-value" id="roi-upsell-rev" style="color:#38bdf8;">€48,200</div>
+              <div class="roi-res-note">Automated airport transfers, spa, dining &amp; yacht charters</div>
+            </div>
+            <div class="roi-result-box">
+              <div class="roi-res-label">24/7 Calls &amp; Voice Notes Answered / yr</div>
+              <div class="roi-res-value" id="roi-calls-answered" style="color:#a7f3d0;">6,420 calls</div>
+              <div class="roi-res-note">Zero missed after-hours or peak check-in calls (EN/EL/RU/DE)</div>
+            </div>
+            <div class="roi-result-box total">
+              <div class="roi-res-label">Total Estimated Annual Profit Boost</div>
+              <div class="roi-res-value" id="roi-total-boost">€213,090 / yr</div>
+              <div class="roi-res-note">Combined commission savings + high-margin concierge add-ons</div>
+            </div>
           </div>
         </div>
       </div>
@@ -352,6 +592,19 @@ VIVA_WALLET_SOURCE_CODE=8492</pre>
       </div>
     </section>
   </main>
+
+  <!-- Sticky Mobile Quick-Jump Bar (Visible on Mobile Viewports) -->
+  <nav class="mobile-quick-jump" id="mobile-quick-jump" aria-label="Quick Jump Mobile Sections">
+    <button type="button" class="mjump-btn active" id="mjump-call" onclick="jumpToMobileSection('card-phone-call', this)">
+      📞 1. Phone Call
+    </button>
+    <button type="button" class="mjump-btn" id="mjump-wa" onclick="jumpToMobileSection('card-whatsapp-chat', this)">
+      💬 2. WhatsApp
+    </button>
+    <button type="button" class="mjump-btn" id="mjump-roi" onclick="jumpToMobileSection('card-roi-calculator', this)">
+      🧠 3. PMS &amp; ROI
+    </button>
+  </nav>
 
   <script src="./app.js"></script>
 </body>
