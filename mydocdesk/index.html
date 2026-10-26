@@ -80,7 +80,7 @@
               <span class="step-action-pill">🔊 Hear Patient Call</span>
             </div>
             <div class="step-title">📞 Patient Calls While Doctor Is in Exam</div>
-            <div class="step-desc">Doctor's phone doesn't interrupt the consultation—Sofia answers in <strong id="step1-clinic-label">Dr. Nicolaou's Clinic</strong>.</div>
+            <div class="step-desc">Doctor's phone doesn't interrupt the consultation—Sofia answers in <strong id="step1-clinic-label">Dr. Andreas Nicolaou's Clinic</strong>.</div>
           </button>
 
           <button type="button" class="story-step-card" id="step-card-2" onclick="runInteractiveStep(2)">
@@ -118,31 +118,33 @@
 
       <!-- Clinic / Doctor Customizer Bar -->
       <div class="clinic-customizer-bar">
+        <div class="customizer-top-row">
+          <span class="customizer-label">🩺 Test With Any Clinic (Select a Specialty Preset or Type Any Doctor):</span>
+          <form class="customizer-form" onsubmit="applyCustomClinicForm(event)">
+            <input
+              type="text"
+              id="custom-clinic-name-input"
+              class="customizer-input"
+              placeholder="Or type any Doctor / Clinic name (e.g. Dr. Kyprianou — ENT)..."
+              aria-label="Custom Doctor or Clinic Name"
+            />
+            <button type="submit" class="customizer-apply-btn">Apply to AI</button>
+          </form>
+        </div>
         <div class="customizer-presets">
-          <span class="customizer-label">🩺 Test With Any Clinic:</span>
-          <button type="button" class="preset-pill active" onclick="selectClinicPreset('pediatrics', this)">
+          <button type="button" class="preset-pill active" id="preset-pill-pediatrics" onclick="selectClinicPreset('pediatrics', this)">
             👶 Dr. Andreas Nicolaou — Pediatrics (Limassol • GeSY &amp; Private)
           </button>
-          <button type="button" class="preset-pill" onclick="selectClinicPreset('dental', this)">
-            🦷 Dr. Nikos Constantinou — Dental &amp; Implant Clinic (Limassol • Private &amp; GeSY)
+          <button type="button" class="preset-pill" id="preset-pill-dental" onclick="selectClinicPreset('dental', this)">
+            🦷 Dr. Nikos Constantinou — Dentistry (Limassol • GeSY &amp; Private)
           </button>
-          <button type="button" class="preset-pill" onclick="selectClinicPreset('dermatology', this)">
+          <button type="button" class="preset-pill" id="preset-pill-dermatology" onclick="selectClinicPreset('dermatology', this)">
             🔬 Dr. Elena Georgiou — Dermatology (Nicosia • GeSY &amp; Private)
           </button>
-          <button type="button" class="preset-pill" onclick="selectClinicPreset('cardiology', this)">
-            ❤️ Dr. Marios Petrou — Cardiology Center (Larnaca)
+          <button type="button" class="preset-pill" id="preset-pill-cardiology" onclick="selectClinicPreset('cardiology', this)">
+            ❤️ Dr. Marios Petrou — Cardiology (Larnaca • GeSY &amp; Private)
           </button>
         </div>
-        <form class="customizer-form" onsubmit="applyCustomClinicForm(event)">
-          <input
-            type="text"
-            id="custom-clinic-name-input"
-            class="customizer-input"
-            placeholder="Or type any Doctor / Clinic name (e.g. Dr. Kyprianou ENT)..."
-            aria-label="Custom Doctor or Clinic Name"
-          />
-          <button type="submit" class="customizer-apply-btn">Apply to AI</button>
-        </form>
       </div>
 
       <!-- Scenario Bar -->
@@ -178,7 +180,7 @@
         <div class="phone-card" id="card-phone-call">
           <div class="phone-notch">5G • +357 CY CLINIC LINE</div>
           <div class="doctor-busy-pill">
-            <span>🩺 <strong id="busy-doc-name">Dr. A. Nicolaou</strong> is in Exam Room 1</span>
+            <span>🩺 <strong id="busy-doc-name">Dr. Andreas Nicolaou</strong> is in <span id="busy-room-label">Exam Room 1</span></span>
             <span>⚡ AI Desk Answering</span>
           </div>
 
@@ -238,13 +240,13 @@
               <img src="./assets/icon-schedule-gold-cross.png" alt="MyDocDesk" class="wa-avatar-img" id="wa-logo-img" />
               <div>
                 <div class="wa-title">
-                  <span id="wa-clinic-title">Dr. Andreas Nicolaou Clinic</span>
+                  <span id="wa-clinic-title">Dr. Andreas Nicolaou — Pediatrics</span>
                   <span class="wa-verified">✓ Verified Medical</span>
                 </div>
                 <div class="wa-subtitle"><span class="js-brand-name">MyDocDesk</span> • Triage, Slot Booking &amp; Photo Intake</div>
               </div>
             </div>
-            <span style="font-size:0.72rem; opacity:0.9;">+357 25 340 110</span>
+            <span id="wa-clinic-phone" style="font-size:0.72rem; opacity:0.9;">+357 25 340 110</span>
           </div>
 
           <div class="wa-handoff-banner">
@@ -426,9 +428,9 @@
           <div class="section-card">
             <div class="section-header">
               <div>
-                <div class="section-title">🗓️ Doctor's Prioritized Daily Schedule &amp; Pre-Visit Case Notes</div>
-                <div style="font-size:0.78rem; color:#64748b;">
-                  Every appointment includes a structured 3-bullet intake note, symptom duration, and priority level set by Sofia
+                <div class="section-title" id="schedule-clinic-title">🗓️ Dr. Andreas Nicolaou — Pediatrics: Prioritized Daily Schedule &amp; Case Notes</div>
+                <div style="font-size:0.78rem; color:#64748b;" id="schedule-clinic-sub">
+                  Pediatrics (Παιδίατρος) • Limassol (GeSY &amp; Private) — Every appointment includes a structured 3-bullet intake note set by Sofia
                 </div>
               </div>
               <span class="code-badge">Live Calendar Sync</span>
@@ -498,9 +500,9 @@
 
         <div class="marketplace-filter-bar">
           <select id="mp-specialty-filter" class="mp-select" onchange="renderMarketplaceDoctors()" aria-label="Filter by Specialty">
-            <option value="all">🩺 All Specialties (Pediatrics, Dental, Derm, Cardio, ENT...)</option>
-            <option value="Dental">🦷 Dental &amp; Implantology (Οδοντίατρος)</option>
+            <option value="all">🩺 All Specialties (Όλες οι Ειδικότητες)</option>
             <option value="Pediatrics">👶 Pediatrics (Παιδίατρος)</option>
+            <option value="Dental">🦷 Dentistry (Οδοντίατρος)</option>
             <option value="Dermatology">🔬 Dermatology (Δερματολόγος)</option>
             <option value="Cardiology">❤️ Cardiology (Καρδιολόγος)</option>
             <option value="ENT">👂 ENT / Otolaryngology (ΩΡΛ)</option>
