@@ -1047,7 +1047,7 @@ function showToast(msg) {
 // Initialize on DOMContentLoaded
 // ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  setBrandVariant("mydocdesk", "bell");
+  setBrandVariant("mydocdesk", "schedule_navy");
   triggerScenario("urgent_fever", document.getElementById("btn-scen-urgent"));
   updateClinicRoi();
   renderDoctorSchedule();
