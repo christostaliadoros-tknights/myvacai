@@ -49,6 +49,19 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       channel: "WhatsApp Photo Triage"
     },
     {
+      id: "slot-1330-busy",
+      time: "01:30 PM – 02:30 PM (MULTI-CALENDAR BUSY HOLD)",
+      patient: "🔒 Personal & Hospital Rounds Hold (Read-Only Sync)",
+      phone: "Google Calendar + Outlook Busy-Read",
+      priority: -1,
+      calLayer: "busy_hold",
+      calBadge: "🔒 Personal / Surgery Busy Hold",
+      prioLabel: "🔒 BUSY HOLD • ZERO DOUBLE-BOOKING",
+      complaint: "Synced from Dr. Andreas Nicolaou's Personal & Limassol Hospital Rounds Calendar (Private event title hidden)",
+      notes: "Anastasia reads busy blocks across all connected calendars so she never books over hospital rounds or family pickup.",
+      channel: "Multi-Calendar Read"
+    },
+    {
       id: "slot-1700",
       time: "05:00 PM (EMERGENCY BUFFER)",
       patient: "🔒 Reserved for 🔴 Priority 1 Urgent Cases Only",
@@ -105,6 +118,19 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       complaint: "6-month routine ultrasonic scaling, airflow polishing & annual GeSY preventive checkup",
       notes: "GeSY & Private • Routed to non-peak afternoon hygiene slot to preserve morning surgery hours.",
       channel: "WhatsApp Booking"
+    },
+    {
+      id: "slot-1330-dent-busy",
+      time: "01:30 PM – 02:30 PM (MULTI-CALENDAR BUSY HOLD)",
+      patient: "🔒 Dental Lab & Personal Calendar Busy Hold (Read-Only Sync)",
+      phone: "Google Calendar + Clinic PMS Busy-Read",
+      priority: -1,
+      calLayer: "busy_hold",
+      calBadge: "🔒 Personal / Surgery Busy Hold",
+      prioLabel: "🔒 BUSY HOLD • ZERO DOUBLE-BOOKING",
+      complaint: "Synced from Dr. Nikos Constantinou's Personal & Prosthodontic Lab Calendar (Private details hidden)",
+      notes: "Anastasia reads busy blocks across all connected calendars so chairside slots never conflict with personal or surgical blocks.",
+      channel: "Multi-Calendar Read"
     },
     {
       id: "slot-1700-dent",
@@ -165,6 +191,19 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       channel: "Phone Call"
     },
     {
+      id: "slot-1330-derm-busy",
+      time: "01:30 PM – 02:30 PM (MULTI-CALENDAR BUSY HOLD)",
+      patient: "🔒 Personal & Hospital Ward Consults Hold (Read-Only Sync)",
+      phone: "Google Calendar + Outlook Busy-Read",
+      priority: -1,
+      calLayer: "busy_hold",
+      calBadge: "🔒 Personal / Surgery Busy Hold",
+      prioLabel: "🔒 BUSY HOLD • ZERO DOUBLE-BOOKING",
+      complaint: "Synced from Dr. Elena Georgiou's Personal & Inpatient Consult Calendar (Private event title hidden)",
+      notes: "Anastasia reads busy blocks across all connected calendars while writing AI bookings only to the Anastasia AI sub-calendar.",
+      channel: "Multi-Calendar Read"
+    },
+    {
       id: "slot-1700-derm",
       time: "05:00 PM (EMERGENCY BUFFER)",
       patient: "🔒 Reserved for 🔴 Priority 1 Acute Drug Rash / Infection",
@@ -223,6 +262,19 @@ const SCHEDULE_SLOTS_BY_SPECIALTY = {
       channel: "WhatsApp Booking"
     },
     {
+      id: "slot-1330-card-busy",
+      time: "01:30 PM – 02:30 PM (MULTI-CALENDAR BUSY HOLD)",
+      patient: "🔒 Cath Lab & Personal Calendar Busy Hold (Read-Only Sync)",
+      phone: "Google Calendar + Hospital Rounds Busy-Read",
+      priority: -1,
+      calLayer: "busy_hold",
+      calBadge: "🔒 Personal / Surgery Busy Hold",
+      prioLabel: "🔒 BUSY HOLD • ZERO DOUBLE-BOOKING",
+      complaint: "Synced from Dr. Marios Petrou's Hospital Cath Lab & Personal Google Calendar (Private details hidden)",
+      notes: "Anastasia checks all connected calendars for real availability and writes AI bookings onto a dedicated color-coded sub-calendar.",
+      channel: "Multi-Calendar Read"
+    },
+    {
       id: "slot-1700-card",
       time: "05:00 PM (EMERGENCY BUFFER)",
       patient: "🔒 Reserved for 🔴 Priority 1 Urgent Cardiac Cases",
@@ -252,6 +304,7 @@ const state = {
     roomLabel: "Exam Room 1"
   },
   activeScenarioKey: "urgent_fever",
+  activeScheduleLayer: "all",
   scheduleSlots: SCHEDULE_SLOTS_BY_SPECIALTY.pediatrics.map((s) => ({ ...s })),
   gesyQueue: [
     {
@@ -969,6 +1022,9 @@ function triggerScenario(scenKey, btnEl) {
   const logsList = document.getElementById("execution-logs-list");
   logsList.innerHTML = scen.logs.map((l) => `<div class="log-item">${l}</div>`).join("");
 
+  // Update Doctor Lock-Screen Quick-Approval Digest & Sub-Calendar Layer Strip
+  updateSimulatorAbcdCard(scenKey, scen);
+
   if (state.voiceAudioEnabled && scen.callTurns.length > 0) {
     const lastAi = [...scen.callTurns].reverse().find((t) => t.role === "ai");
     if (lastAi) speakAnastasiaText(lastAi.text, scenKey === "greek_urgent" ? "el-GR" : "en-GB");
@@ -1267,35 +1323,222 @@ function updateClinicRoi() {
 // ============================================================================
 // Tab 2: Doctor's Live Schedule & GeSY Queue Rendering
 // ============================================================================
+function getSlotCalendarLayerMeta(s, idx) {
+  if (s.calLayer === "busy_hold" || s.priority === -1) {
+    return {
+      layer: "busy_hold",
+      badgeText: "🔒 Personal / Surgery Busy Hold",
+      badgeClass: "cal-pill-busy"
+    };
+  }
+  if (s.priority === 1 || s.priority === 0) {
+    return {
+      layer: "ai_buffer",
+      badgeText: s.priority === 1 ? "🔴 📅 AI Priority 1 Unlock" : "🔴 📅 AI Protected Buffer",
+      badgeClass: "cal-pill-buffer"
+    };
+  }
+  if (idx === 1) {
+    return {
+      layer: "clinic_main",
+      badgeText: "⚪ 📅 Clinic Main Desk",
+      badgeClass: "cal-pill-clinic"
+    };
+  }
+  return {
+    layer: "ai_subcal",
+    badgeText: "🟣 📅 Anastasia AI Layer",
+    badgeClass: "cal-pill-ai"
+  };
+}
+
+function filterScheduleLayer(layerKey, btnEl) {
+  state.activeScheduleLayer = layerKey || "all";
+  if (btnEl) {
+    document.querySelectorAll(".cal-filter-btn").forEach((b) => b.classList.remove("active"));
+    btnEl.classList.add("active");
+  }
+  renderDoctorSchedule();
+  const layerNames = {
+    all: "All Connected Calendar Layers (Anastasia AI Sub-Calendar + Emergency Buffers + Busy Holds + Clinic Main)",
+    ai_subcal: "Dedicated Color-Coded 'Anastasia AI Reception' Google Calendar Layer",
+    ai_buffer: "Protected AI Priority 1 Emergency Buffer Layer",
+    busy_hold: "Multi-Calendar Busy-Read Holds (Personal + Hospital/Surgery Rounds)",
+    clinic_main: "Main Clinic Desk Calendar Layer"
+  };
+  showToast(`📅 Showing: ${layerNames[state.activeScheduleLayer] || layerNames.all}`);
+}
+
 function renderDoctorSchedule() {
   const container = document.getElementById("doctor-schedule-list");
   if (!container) return;
 
-  container.innerHTML = state.scheduleSlots
+  const annotated = state.scheduleSlots.map((s, idx) => ({
+    ...s,
+    _meta: getSlotCalendarLayerMeta(s, idx)
+  }));
+
+  const countAll = annotated.length;
+  const countAi = annotated.filter((s) => s._meta.layer === "ai_subcal").length;
+  const countBuf = annotated.filter((s) => s._meta.layer === "ai_buffer").length;
+  const countBusy = annotated.filter((s) => s._meta.layer === "busy_hold").length;
+  const countClinic = annotated.filter((s) => s._meta.layer === "clinic_main").length;
+
+  const setCnt = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(val);
+  };
+  setCnt("count-layer-all", countAll);
+  setCnt("count-layer-ai", countAi);
+  setCnt("count-layer-buffer", countBuf);
+  setCnt("count-layer-busy", countBusy);
+  setCnt("count-layer-clinic", countClinic);
+
+  const activeLayer = state.activeScheduleLayer || "all";
+  const visibleSlots =
+    activeLayer === "all"
+      ? annotated
+      : annotated.filter((s) => s._meta.layer === activeLayer);
+
+  container.innerHTML = visibleSlots
     .map((s) => {
       const cls =
         s.priority === 1
           ? "prio-1"
+          : s.priority === -1
+          ? "busy-hold-slot"
           : s.priority === 2
           ? "prio-2"
           : "buffer-locked";
       return `
-      <div class="schedule-slot-item ${cls}">
+      <div class="schedule-slot-item ${cls}" data-cal-layer="${s._meta.layer}">
         <div class="slot-top-row">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span class="slot-time-badge">${s.time}</span>
             <strong style="font-size:0.86rem; color:#0f172a;">${s.patient}</strong>
             <span style="font-size:0.74rem; color:#64748b;">(${s.phone})</span>
           </div>
-          <span class="code-badge" style="${s.priority === 1 ? "background:#dc2626;color:#fff;border-color:#dc2626;" : ""}">${s.prioLabel}</span>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span class="cal-layer-pill ${s._meta.badgeClass}">${s._meta.badgeText}</span>
+            <span class="code-badge" style="${s.priority === 1 ? "background:#dc2626;color:#fff;border-color:#dc2626;" : ""}">${s.prioLabel}</span>
+          </div>
         </div>
         <div class="slot-notes-box">
-          <div><strong>🩺 Chief Complaint:</strong> ${s.complaint}</div>
-          <div style="margin-top:3px; color:#475569;"><strong>📋 AI Pre-Visit Note:</strong> ${s.notes}</div>
+          <div><strong>🩺 ${s.priority === -1 ? "Calendar Sync Source:" : "Chief Complaint:"}</strong> ${s.complaint}</div>
+          <div style="margin-top:3px; color:#475569;"><strong>📋 ${s.priority === -1 ? "Privacy & Availability Rule:" : "AI Pre-Visit Note:"}</strong> ${s.notes}</div>
         </div>
       </div>`;
     })
     .join("");
+}
+
+function updateSimulatorAbcdCard(scenKey, scen) {
+  const digestEl = document.getElementById("abcd-digest-preview-text");
+  const badgeEl = document.getElementById("abcd-sim-badge");
+  const statusEl = document.getElementById("abcd-sim-status");
+  const stripEl = document.getElementById("triage-subcal-strip");
+
+  const DIGEST_BY_SCEN = {
+    urgent_fever: `🩺 <strong>[Anastasia Digest #MD-409]</strong> Leo K. (4y, GeSY #948201): 39.6°C fever + R ear pain. Unlocked 12:30 PM Emergency Buffer. Reply <strong>A / B / C / D</strong>:`,
+    dental_emergency: `🦷 <strong>[Anastasia Digest #MD-415]</strong> Dimitris A. (38y, GeSY #704118): Fractured UR4 crown + 8/10 thermal pain (photo attached). Held 12:30 PM Chair Buffer. Reply <strong>A / B / C / D</strong>:`,
+    soon_rash: `🩺 <strong>[Anastasia Digest #MD-410]</strong> Andreas M. (34y, GeSY #839104): Forearm rash 48h, afebrile + photo attached. Offered Tomorrow 10:15 AM (P2). Reply <strong>A / B / C / D</strong>:`,
+    routine_gesy: `💊 <strong>[Anastasia Digest #MD-411]</strong> Costas P. (GeSY #449102): Chronic refill Amlodipine 5mg + Atorvastatin 20mg (Home BP 122/78). Queued in EOD Batch. Reply <strong>A / B / C / D</strong>:`,
+    greek_urgent: `🩺 <strong>[Anastasia Digest #MD-412]</strong> Γιώργος Μ. (5 ετών, ΓεΣΥ #903115): Πυρετός 39.5°C + οξύς πόνος στο αυτί. Κρατήθηκε το Επείγον Ραντεβού 12:30 μ.μ. Απαντήστε <strong>A / B / C / D</strong>:`
+  };
+
+  if (digestEl) {
+    digestEl.innerHTML = DIGEST_BY_SCEN[scenKey] || DIGEST_BY_SCEN.urgent_fever;
+  }
+  if (badgeEl) {
+    badgeEl.textContent = "📲 Lock-Screen Ready";
+    badgeEl.style.background = "";
+    badgeEl.style.color = "";
+  }
+  if (statusEl) {
+    statusEl.innerHTML = `💡 Tap <strong>[A]</strong>, <strong>[B]</strong>, <strong>[C]</strong>, or <strong>[D]</strong> above to simulate replying from ${state.activeClinic.doctorName}'s phone lock screen—Anastasia executes it on WhatsApp immediately.`;
+  }
+  if (stripEl) {
+    const layerText =
+      scenKey === "routine_gesy"
+        ? `📅 Routed to: <strong>5-Min End-of-Day GeSY Batch Queue</strong> (0 Calendar Slots Consumed)`
+        : `📅 Written to: <strong>Anastasia AI Sub-Calendar</strong> (Color-Coded Cyan-Teal Layer)`;
+    stripEl.innerHTML = `
+      <span class="subcal-tag ai-layer">${layerText}</span>
+      <span class="subcal-busy-pill">🔒 Checked 3 Calendars (Clinic + Personal + Hospital Rounds)</span>
+    `;
+  }
+  document.querySelectorAll("#simulator-abcd-card .abcd-btn").forEach((b) => b.classList.remove("selected"));
+}
+
+function triggerDoctorQuickReply(optionKey, context, btnEl, itemId) {
+  const docName = state.activeClinic.doctorName;
+  const ACTIONS = {
+    A: {
+      short: "Approved & Sent",
+      simStatus: `✅ <strong>Doctor Replied "A" from Lock Screen:</strong> Anastasia confirmed the recommended slot/prescription on WhatsApp & locked the event on the <strong>Anastasia AI Sub-Calendar</strong>.`,
+      waHtml: `✅ <strong>[Doctor Quick-Reply "A" Executed by Anastasia]</strong><br/>${docName} approved your case directly via 1-tap lock-screen reply. Your appointment/prescription is confirmed and synced to the clinic calendar!`,
+      gesyNote: "✓ Replied [A]: Approved & Sent Pharmacy Code on WhatsApp"
+    },
+    B: {
+      short: "Next Morning Slot Offered",
+      simStatus: `🗓️ <strong>Doctor Replied "B" from Lock Screen:</strong> Anastasia moved the booking to <strong>Tomorrow 09:15 AM Morning Slot</strong> on the AI Sub-Calendar & messaged the patient on WhatsApp.`,
+      waHtml: `🗓️ <strong>[Doctor Quick-Reply "B" Executed by Anastasia]</strong><br/>${docName} reviewed your case note and offered our priority morning slot tomorrow at <strong>09:15 AM</strong>. Tap below to confirm!`,
+      gesyNote: "🗓️ Replied [B]: Booked Next Morning 09:15 AM Brief Check Slot"
+    },
+    C: {
+      short: "Requested Lab / Photo on WhatsApp",
+      simStatus: `📷 <strong>Doctor Replied "C" from Lock Screen:</strong> Anastasia automatically messaged the patient on WhatsApp requesting a recent lab PDF / close-up symptom photo before final sign-off.`,
+      waHtml: `📷 <strong>[Doctor Quick-Reply "C" Executed by Anastasia]</strong><br/>${docName} reviewed your request and asked if you can reply here on WhatsApp with a quick photo / latest lab result so we can attach it to your chart right away.`,
+      gesyNote: "📷 Replied [C]: Anastasia Requested Latest BP/Lab Photo on WhatsApp"
+    },
+    D: {
+      short: "Escalated — Doctor Calls Back",
+      simStatus: `📞 <strong>Doctor Replied "D" from Lock Screen:</strong> Anastasia notified the patient that ${docName} will call them personally right after the current exam.`,
+      waHtml: `📞 <strong>[Doctor Quick-Reply "D" Executed by Anastasia]</strong><br/>${docName} saw your triage summary and asked me to let you know they will call you directly on your mobile in ~10 minutes as soon as the current examination finishes.`,
+      gesyNote: "📞 Replied [D]: Flagged for Direct 2-Min Doctor Callback"
+    }
+  };
+
+  const act = ACTIONS[optionKey] || ACTIONS.A;
+
+  if (context === "simulator") {
+    document.querySelectorAll("#simulator-abcd-card .abcd-btn").forEach((b) => b.classList.remove("selected"));
+    if (btnEl) btnEl.classList.add("selected");
+    const badgeEl = document.getElementById("abcd-sim-badge");
+    if (badgeEl) {
+      badgeEl.textContent = `✓ Replied "${optionKey}" (${act.short})`;
+      badgeEl.style.background = "#0d9488";
+      badgeEl.style.color = "#ffffff";
+    }
+    const statusEl = document.getElementById("abcd-sim-status");
+    if (statusEl) statusEl.innerHTML = act.simStatus;
+
+    const waList = document.getElementById("wa-messages-list");
+    if (waList) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "wa-msg incoming";
+      msgDiv.innerHTML = act.waHtml;
+      waList.appendChild(msgDiv);
+      waList.scrollTop = waList.scrollHeight;
+    }
+    showToast(`📲 Doctor replied "${optionKey}" — Anastasia executed "${act.short}" & updated the patient on WhatsApp!`);
+    return;
+  }
+
+  if (context === "gesy" && itemId) {
+    const item = state.gesyQueue.find((x) => x.id === itemId);
+    if (!item) return;
+    item.approved = true;
+    item.quickReplyChoice = optionKey;
+    item.quickReplyStatus = act.gesyNote;
+    renderGesyQueue();
+    const pendingCount = state.gesyQueue.filter((g) => !g.approved).length;
+    const kpi = document.getElementById("kpi-gesy-count");
+    if (kpi) {
+      kpi.textContent = pendingCount === 0 ? "0 Pending (All Done!)" : `${pendingCount} Pending (5-Min Batch)`;
+    }
+    showToast(`📲 Replied [${optionKey}] for ${item.patient} — ${act.gesyNote}!`);
+  }
 }
 
 function renderGesyQueue() {
@@ -1304,19 +1547,34 @@ function renderGesyQueue() {
   box.innerHTML = state.gesyQueue
     .map(
       (g) => `
-      <div class="gesy-item">
-        <div style="flex:1; min-width:200px;">
-          <div style="font-size:0.82rem; font-weight:800; color:#0f172a;">
-            ${g.patient} <span style="color:#0d9488; font-size:0.73rem;">(${g.gesyId})</span>
+      <div class="gesy-item ${g.approved ? "gesy-item-resolved" : ""}">
+        <div style="flex:1; min-width:220px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+            <div style="font-size:0.83rem; font-weight:800; color:#0f172a;">
+              ${g.patient} <span style="color:#0d9488; font-size:0.73rem;">(${g.gesyId})</span>
+            </div>
+            <span class="code-badge" style="font-size:0.68rem;">${g.timeSaved || "Saved 15m slot"}</span>
           </div>
-          <div style="font-size:0.75rem; color:#475569; margin-top:2px;">${g.request}</div>
+          <div style="font-size:0.75rem; color:#475569; margin-top:3px;">${g.request}</div>
+          <div class="gesy-abcd-row">
+            <span class="gesy-abcd-label">📲 Quick Reply:</span>
+            <button type="button" class="gesy-abcd-chip ${g.quickReplyChoice === "A" ? "active" : ""}" onclick="triggerDoctorQuickReply('A', 'gesy', this, '${g.id}')" title="Approve & Send on WhatsApp">[A] Approve &amp; Send</button>
+            <button type="button" class="gesy-abcd-chip ${g.quickReplyChoice === "B" ? "active" : ""}" onclick="triggerDoctorQuickReply('B', 'gesy', this, '${g.id}')" title="Book Next Morning Slot">[B] Morning Slot</button>
+            <button type="button" class="gesy-abcd-chip ${g.quickReplyChoice === "C" ? "active" : ""}" onclick="triggerDoctorQuickReply('C', 'gesy', this, '${g.id}')" title="Request Lab / Photo on WhatsApp">[C] Ask Lab/Photo</button>
+            <button type="button" class="gesy-abcd-chip ${g.quickReplyChoice === "D" ? "active" : ""}" onclick="triggerDoctorQuickReply('D', 'gesy', this, '${g.id}')" title="Escalate — Doctor Will Call Back">[D] Call Back</button>
+          </div>
+          ${
+            g.quickReplyStatus
+              ? `<div class="gesy-reply-outcome">${g.quickReplyStatus}</div>`
+              : ""
+          }
         </div>
         <button
           type="button"
           class="gesy-approve-btn ${g.approved ? "approved" : ""}"
           onclick="approveGesyItem('${g.id}')"
         >
-          ${g.approved ? "✓ Approved & Sent on WhatsApp" : "✓ 1-Click Approve"}
+          ${g.approved ? "✓ Action Sent on WhatsApp" : "✓ 1-Click Approve [A]"}
         </button>
       </div>`
     )
@@ -1324,15 +1582,15 @@ function renderGesyQueue() {
 }
 
 function approveGesyItem(id) {
-  const item = state.gesyQueue.find((x) => x.id === id);
-  if (!item) return;
-  item.approved = true;
-  renderGesyQueue();
-  showToast(`✅ Approved GeSY request for ${item.patient} — Anastasia automatically notified the patient on WhatsApp!`);
+  triggerDoctorQuickReply("A", "gesy", null, id);
 }
 
 function approveAllGesy() {
-  state.gesyQueue.forEach((g) => (g.approved = true));
+  state.gesyQueue.forEach((g) => {
+    g.approved = true;
+    g.quickReplyChoice = g.quickReplyChoice || "A";
+    g.quickReplyStatus = g.quickReplyStatus || "✓ Replied [A]: Approved & Sent Pharmacy Code on WhatsApp";
+  });
   renderGesyQueue();
   const kpi = document.getElementById("kpi-gesy-count");
   if (kpi) kpi.textContent = "0 Pending (All Done!)";

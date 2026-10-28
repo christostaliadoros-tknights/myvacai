@@ -1335,17 +1335,46 @@ function renderDashboard() {
     </div>
   `;
 
-  // Bookings table
-  document.getElementById("bookings-table-body").innerHTML = pms.bookings
+  // Bookings table with Multi-Calendar Color-Coded AI Booking Layer badge & A/B/C/D Quick-Approval
+  const activeLayer = appState.activeBookingLayer || "all";
+  const annotatedBookings = pms.bookings.map((b, idx) => {
+    const hasVip = (b.addons && b.addons.length > 0) || b.totalPaid >= 900;
+    const layer = idx === 2 ? "pms_desk" : hasVip ? "vip_concierge" : "ai_direct";
+    const layerBadge =
+      layer === "vip_concierge"
+        ? `<span class="mv-layer-badge vip">🟡 ⭐ VIP AI Concierge Layer</span>`
+        : layer === "pms_desk"
+        ? `<span class="mv-layer-badge desk">⚪ 🏨 Front Desk / PMS Sync</span>`
+        : `<span class="mv-layer-badge ai">🟣 📅 Elena AI Direct Layer</span>`;
+    return { ...b, _layer: layer, _layerBadge: layerBadge };
+  });
+
+  const filteredBookings =
+    activeLayer === "all"
+      ? annotatedBookings
+      : annotatedBookings.filter(b => b._layer === activeLayer);
+
+  document.getElementById("bookings-table-body").innerHTML = filteredBookings
     .map(
       b => `
-      <tr>
-        <td data-label="Res Code"><span class="code-badge">${b.reservationCode}</span></td>
+      <tr data-booking-layer="${b._layer}">
+        <td data-label="Res Code">
+          <span class="code-badge">${b.reservationCode}</span>
+          <div style="margin-top:4px;">${b._layerBadge}</div>
+        </td>
         <td data-label="Guest & Phone">
           <strong>${b.guestName}</strong>
           <div style="font-size:0.73rem; color:#64748b;">${b.phone} (${b.language})</div>
         </td>
-        <td data-label="Channel Path"><span style="font-size:0.77rem; font-weight:600;">${b.channel}</span></td>
+        <td data-label="Channel Path">
+          <span style="font-size:0.77rem; font-weight:600;">${b.channel}</span>
+          <div class="mv-row-abcd">
+            <button type="button" class="mv-mini-abcd" onclick="triggerHotelierQuickReply('A', 'dashboard', this, '${b.reservationCode}')" title="Confirm & Send Payment Link">[A]</button>
+            <button type="button" class="mv-mini-abcd" onclick="triggerHotelierQuickReply('B', 'dashboard', this, '${b.reservationCode}')" title="Offer Alternative Room/Time">[B]</button>
+            <button type="button" class="mv-mini-abcd" onclick="triggerHotelierQuickReply('C', 'dashboard', this, '${b.reservationCode}')" title="Add Complimentary Perk">[C]</button>
+            <button type="button" class="mv-mini-abcd" onclick="triggerHotelierQuickReply('D', 'dashboard', this, '${b.reservationCode}')" title="Front Desk Manager Call Back">[D]</button>
+          </div>
+        </td>
         <td data-label="Room & Stay">
           <strong>${b.roomName}</strong>
           <div style="font-size:0.73rem; color:#64748b;">${b.nights} Nights (${b.checkIn})</div>
@@ -1356,6 +1385,7 @@ function renderDashboard() {
               ? b.addons.map(a => `<div style="font-size:0.74rem; color:#0369a1; font-weight:600;">+ ${a}</div>`).join("")
               : `<span style="color:#94a3b8; font-size:0.74rem;">None yet</span>`
           }
+          ${b._quickNote ? `<div style="font-size:0.71rem; color:#0f766e; font-weight:700; margin-top:3px;">${b._quickNote}</div>` : ""}
         </td>
         <td data-label="Total Paid"><strong style="font-size:0.9rem;">€${b.totalPaid}</strong></td>
         <td data-label="OTA Saved"><span class="status-confirmed">Saved €${b.otaSaved}</span></td>
@@ -1929,3 +1959,90 @@ function jumpToMobileSection(sectionId, btnEl) {
 window.addEventListener("DOMContentLoaded", () => {
   updateRoiCalculator();
 });
+
+
+// ============================================================================
+// Hotelier Lock-Screen Quick-Approval (Reply A / B / C / D) & Calendar Layers
+// ============================================================================
+function filterHotelBookingLayer(layerKey, btnEl) {
+  appState.activeBookingLayer = layerKey || "all";
+  if (btnEl) {
+    document.querySelectorAll(".mv-cal-filter-btn").forEach(b => b.classList.remove("active"));
+    btnEl.classList.add("active");
+  }
+  renderDashboard();
+  const labels = {
+    all: "All Connected PMS & Calendar Layers",
+    ai_direct: "🟣 Elena AI Direct Booking Sub-Calendar Layer",
+    vip_concierge: "🟡 VIP Concierge & Late Check-Out Layer",
+    pms_desk: "⚪ Front Desk / Owner Hold Calendar Layer"
+  };
+  showLiveToast(`📅 Showing: ${labels[appState.activeBookingLayer] || labels.all}`);
+}
+
+function triggerHotelierQuickReply(optionKey, context, btnEl, resCode) {
+  const hotelName = (window.activeHotelConfig && window.activeHotelConfig.shortName) || "Aphrodite Bay Resort";
+  const ACTIONS = {
+    A: {
+      short: "Confirmed & Sent Payment Link",
+      statusHtml: `✅ <strong>Hotelier Replied "A" from Lock Screen:</strong> Elena confirmed the VIP room/rate, dispatched the 1-tap Apple Pay / JCC 3DS link on WhatsApp, and locked the block on the <strong>Elena AI Direct Layer</strong>.`,
+      waText: `✅ **[Manager Quick-Reply "A" Executed by Elena AI]** Great news! Our Front-Desk Manager approved your VIP rate & 2:00 PM late check-out at ${hotelName}. Tap the Apple Pay / JCC 3DS link above to lock in your suite at 0% OTA fee!`,
+      rowNote: "✓ Replied [A]: VIP Rate + Payment Link Sent"
+    },
+    B: {
+      short: "Offered Alternative Room / Time",
+      statusHtml: `🗓️ <strong>Hotelier Replied "B" from Lock Screen:</strong> Elena offered our Panoramic Junior Suite / alternative check-in window on WhatsApp and held the slot on the AI Sub-Calendar.`,
+      waText: `🗓️ **[Manager Quick-Reply "B" Executed by Elena AI]** Our Front-Desk Manager checked our live PMS calendar and can offer our Panoramic Sea-View Suite (or 1:30 PM check-out) at the same direct preferred rate. Reply YES to lock it in!`,
+      rowNote: "🗓️ Replied [B]: Alternative Suite / Time Offered"
+    },
+    C: {
+      short: "Added Complimentary VIP Perk",
+      statusHtml: `🍾 <strong>Hotelier Replied "C" from Lock Screen:</strong> Elena added a Complimentary Sunset Spa Pass &amp; Welcome Champagne to the reservation card and notified the guest on WhatsApp.`,
+      waText: `🍾 **[Manager Quick-Reply "C" Executed by Elena AI]** Wonderful news! Our Manager added a **Complimentary Sunset Spa Thermal Pass & Welcome Prosecco** to your direct booking at ${hotelName}!`,
+      rowNote: "🍾 Replied [C]: Added Complimentary Spa & Prosecco Perk"
+    },
+    D: {
+      short: "Front Desk Manager Calls Back",
+      statusHtml: `📞 <strong>Hotelier Replied "D" from Lock Screen:</strong> Elena notified the guest on WhatsApp that the Duty Manager will call them personally within 5 minutes.`,
+      waText: `📞 **[Manager Quick-Reply "D" Executed by Elena AI]** Our Front-Desk Duty Manager at ${hotelName} reviewed your custom request and will call you directly on this number in ~5 minutes to finalize your VIP arrangements.`,
+      rowNote: "📞 Replied [D]: Duty Manager Callback Scheduled"
+    }
+  };
+
+  const act = ACTIONS[optionKey] || ACTIONS.A;
+
+  if (context === "simulator") {
+    document.querySelectorAll("#myvacai-abcd-card .mv-abcd-btn").forEach(b => b.classList.remove("selected"));
+    if (btnEl) btnEl.classList.add("selected");
+    const badgeEl = document.getElementById("mv-abcd-badge");
+    if (badgeEl) {
+      badgeEl.textContent = `✓ Replied "${optionKey}" (${act.short})`;
+      badgeEl.style.background = "#0284c7";
+      badgeEl.style.color = "#ffffff";
+    }
+    const statusEl = document.getElementById("mv-abcd-status");
+    if (statusEl) statusEl.innerHTML = act.statusHtml;
+
+    if (appState.session && Array.isArray(appState.session.whatsappMessages)) {
+      appState.session.whatsappMessages.push({
+        id: "wa-abcd-" + Date.now(),
+        sender: "ai",
+        type: "text",
+        text: act.waText,
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      });
+      renderSimulator();
+    }
+    showLiveToast(`📲 Hotelier replied "${optionKey}" — Elena executed "${act.short}" on WhatsApp & PMS!`);
+    return;
+  }
+
+  if (context === "dashboard" && resCode && appState.pms && Array.isArray(appState.pms.bookings)) {
+    const booking = appState.pms.bookings.find(b => b.reservationCode === resCode);
+    if (booking) {
+      booking._quickNote = act.rowNote;
+      renderDashboard();
+    }
+    showLiveToast(`📲 Replied [${optionKey}] for Reservation #${resCode} — ${act.short}!`);
+  }
+}

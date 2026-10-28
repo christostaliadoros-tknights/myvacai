@@ -101,19 +101,19 @@
           <button type="button" class="story-step-card" id="step-card-3" onclick="runInteractiveStep(3)">
             <div class="step-num-row">
               <span class="step-badge">STEP 3</span>
-              <span class="step-action-pill">🔓 Unlock Buffer Slot</span>
+              <span class="step-action-pill">📅 AI Sub-Calendar Layer</span>
             </div>
-            <div class="step-title">🗓️ Smart Schedule &amp; Buffer Slot Unlock</div>
-            <div class="step-desc">Unlocks hidden <strong>12:30 PM Emergency Buffer Slot</strong> for 🔴 P1 cases (or routes renewals to End-of-Day GeSY queue).</div>
+            <div class="step-title">🗓️ Multi-Calendar Read &amp; Buffer Unlock</div>
+            <div class="step-desc">Reads busy blocks across personal/hospital calendars &amp; writes AI bookings to a <strong>Color-Coded "Anastasia AI" Layer</strong>.</div>
           </button>
 
           <button type="button" class="story-step-card" id="step-card-4" onclick="runInteractiveStep(4)">
             <div class="step-num-row">
               <span class="step-badge">STEP 4</span>
-              <span class="step-action-pill">📋 Attach Case Note</span>
+              <span class="step-action-pill">📲 A/B/C/D Quick-Reply</span>
             </div>
-            <div class="step-title">💬 WhatsApp Pass &amp; Doctor Case Card</div>
-            <div class="step-desc">Sends WhatsApp confirmation + photo upload link to patient &amp; pins the structured SOAP note on the doctor's calendar.</div>
+            <div class="step-title">💬 Case Card &amp; 1-Tap A/B/C/D Approval</div>
+            <div class="step-desc">Pins SOAP note to calendar &amp; lets the doctor reply <strong>A / B / C / D</strong> from a WhatsApp notification—zero app needed.</div>
           </button>
         </div>
 
@@ -322,6 +322,45 @@
             <div class="case-grid" id="case-note-grid">
               <!-- Populated by JS -->
             </div>
+            <div class="subcal-sync-strip" id="triage-subcal-strip">
+              <span class="subcal-tag ai-layer">📅 Written to: <strong>Anastasia AI Sub-Calendar</strong> (Cyan-Teal Layer)</span>
+              <span class="subcal-busy-pill">🔒 Checked 3 Calendars (Clinic + Personal + Hospital Rounds)</span>
+            </div>
+          </div>
+
+          <!-- Interactive A/B/C/D Doctor Lock-Screen Quick-Reply Card -->
+          <div class="abcd-quick-card" id="simulator-abcd-card">
+            <div class="abcd-card-header">
+              <div>
+                <span class="abcd-eyebrow">📲 ZERO-DASHBOARD DOCTOR NOTIFICATION • 1-TAP LOCK-SCREEN ACTION</span>
+                <div class="abcd-title">Anastasia WhatsApp/SMS Digest → Reply <code>A</code>, <code>B</code>, <code>C</code>, or <code>D</code></div>
+              </div>
+              <span class="code-badge" id="abcd-sim-badge">Awaiting Doctor Reply</span>
+            </div>
+            <div class="abcd-digest-preview" id="abcd-digest-preview-text">
+              "🩺 <strong>[Anastasia Digest #MD-409]</strong> Leo K. (4y, GeSY #948201): 39.6°C fever + R ear pain. Held 12:30 PM Emergency Buffer. Reply <strong>A / B / C / D</strong>:"
+            </div>
+            <div class="abcd-btn-grid">
+              <button type="button" class="abcd-btn opt-a" onclick="triggerDoctorQuickReply('A', 'simulator', this)">
+                <span class="abcd-key">[A]</span>
+                <span>Approve &amp; Send (Confirm Slot)</span>
+              </button>
+              <button type="button" class="abcd-btn opt-b" onclick="triggerDoctorQuickReply('B', 'simulator', this)">
+                <span class="abcd-key">[B]</span>
+                <span>Book Next Morning / Alt Slot</span>
+              </button>
+              <button type="button" class="abcd-btn opt-c" onclick="triggerDoctorQuickReply('C', 'simulator', this)">
+                <span class="abcd-key">[C]</span>
+                <span>Request Lab / Photo on WhatsApp</span>
+              </button>
+              <button type="button" class="abcd-btn opt-d" onclick="triggerDoctorQuickReply('D', 'simulator', this)">
+                <span class="abcd-key">[D]</span>
+                <span>Escalate — Doctor Calls Back</span>
+              </button>
+            </div>
+            <div class="abcd-status-bar" id="abcd-sim-status">
+              💡 Tap <strong>[A]</strong>, <strong>[B]</strong>, <strong>[C]</strong>, or <strong>[D]</strong> above to simulate replying from the doctor's phone lock screen—Anastasia executes it on WhatsApp immediately.
+            </div>
           </div>
 
           <div style="font-size:0.73rem; font-weight:800; color:#475569; text-transform:uppercase;">
@@ -439,8 +478,38 @@
                   Pediatrics (Παιδίατρος) • Limassol (GeSY &amp; Private) — Every appointment includes a structured 3-bullet intake note set by Anastasia
                 </div>
               </div>
-              <span class="code-badge">Live Calendar Sync</span>
+              <span class="code-badge">Multi-Calendar Sync Active</span>
             </div>
+
+            <!-- Dedicated Color-Coded Google Calendar / Outlook Layer Architecture Bar -->
+            <div class="calendar-layer-bar" id="calendar-layer-bar">
+              <div class="cal-layer-top">
+                <div class="cal-layer-copy">
+                  <div class="cal-layer-title">📅 Dedicated Color-Coded "Anastasia AI Reception" Sub-Calendar + Multi-Calendar Busy-Read</div>
+                  <div class="cal-layer-desc">
+                    <strong>Reads Busy Blocks Across All Connected Calendars:</strong> Doctor's Personal Calendar + Hospital/Surgery Rounds + Main Clinic Calendar (never double-books, never leaks private event details). <strong>Writes AI Bookings to a Dedicated Color-Coded Sub-Calendar</strong> so you see at a glance what Anastasia booked vs. manual desk entries.
+                  </div>
+                </div>
+              </div>
+              <div class="cal-layer-filters" role="tablist" aria-label="Filter Schedule by Calendar Layer">
+                <button type="button" class="cal-filter-btn active" data-layer="all" onclick="filterScheduleLayer('all', this)">
+                  🗂️ All Layers (<span id="count-layer-all">6</span>)
+                </button>
+                <button type="button" class="cal-filter-btn layer-ai" data-layer="ai_subcal" onclick="filterScheduleLayer('ai_subcal', this)">
+                  🟣 📅 Anastasia AI Sub-Calendar (<span id="count-layer-ai">3</span>)
+                </button>
+                <button type="button" class="cal-filter-btn layer-buffer" data-layer="ai_buffer" onclick="filterScheduleLayer('ai_buffer', this)">
+                  🔴 📅 AI Emergency Buffers (<span id="count-layer-buffer">2</span>)
+                </button>
+                <button type="button" class="cal-filter-btn layer-busy" data-layer="busy_hold" onclick="filterScheduleLayer('busy_hold', this)">
+                  🔒 Personal / Surgery Busy Hold (<span id="count-layer-busy">1</span>)
+                </button>
+                <button type="button" class="cal-filter-btn layer-clinic" data-layer="clinic_main" onclick="filterScheduleLayer('clinic_main', this)">
+                  ⚪ 📅 Clinic Main Desk (<span id="count-layer-clinic">1</span>)
+                </button>
+              </div>
+            </div>
+
             <div class="schedule-slot-list" id="doctor-schedule-list">
               <!-- Populated by JS -->
             </div>
@@ -451,13 +520,24 @@
           <div class="section-card">
             <div class="section-header">
               <div>
-                <div class="section-title">🟢 5-Minute End-of-Day GeSY Prescription &amp; Referral Queue</div>
+                <div class="section-title">🟢 5-Minute End-of-Day GeSY Queue &amp; Lock-Screen <code>A/B/C/D</code> Quick-Reply</div>
                 <div style="font-size:0.76rem; color:#64748b;">
-                  Anastasia filtered these routine admin calls out of your phone line &amp; calendar slots. Approve in 1 tap:
+                  Anastasia sends a concise WhatsApp/SMS digest so the doctor can reply <strong>A / B / C / D</strong> from their lock screen without opening any dashboard:
                 </div>
               </div>
               <button type="button" class="customizer-apply-btn" onclick="approveAllGesy()">✓ Approve All</button>
             </div>
+
+            <div class="gesy-abcd-legend">
+              <div class="gesy-abcd-legend-title">📲 Doctor Lock-Screen Quick-Reply Legend (Tap A / B / C / D on any patient item below):</div>
+              <div class="gesy-abcd-pills">
+                <span class="gesy-legend-pill"><strong>[A]</strong> Approve &amp; Send on WhatsApp</span>
+                <span class="gesy-legend-pill"><strong>[B]</strong> Book Next Morning Slot</span>
+                <span class="gesy-legend-pill"><strong>[C]</strong> Request Lab / Photo on WhatsApp</span>
+                <span class="gesy-legend-pill"><strong>[D]</strong> Escalate — Doctor Calls Back</span>
+              </div>
+            </div>
+
             <div class="gesy-queue-list" id="gesy-queue-box">
               <!-- Populated by JS -->
             </div>
@@ -674,8 +754,8 @@
                     <li><span class="op-dot-green">🟢 Priority 3 (Routine &amp; GeSY Async Queue):</span> Repeat GeSY prescriptions, specialist referrals, and routine ultrasonic dental cleanings → Batched into your <strong>5-Minute End-of-Day Queue</strong> (or non-peak hygiene slot) without wasting an exam slot.</li>
                   </ul>
                 </li>
-                <li><strong>3. 3-Bullet Pre-Visit Case Note on Your Calendar:</strong> Syncs directly to <strong>Google, Apple, or Outlook Calendar</strong> with chief complaint, red-flag checks, GeSY ID, and patient-uploaded WhatsApp photos/labs attached before the patient walks in.</li>
-                <li><strong>4. Phase 2 Network Advantage (Patient Finder App):</strong> Founding clinics get priority placement in the upcoming <strong>MyDocDesk Patient Discovery &amp; Instant Booking App</strong>—turning unfilled same-day calendar gaps into verified bookings.</li>
+                <li><strong>3. Dedicated Color-Coded "Anastasia AI" Calendar Layer + 3-Bullet Case Note:</strong> Reads busy blocks across all your connected <strong>Google, Apple, or Outlook Calendars</strong> (Personal + Hospital Rounds + Clinic Main—never double-books or exposes private details) and writes AI-triaged bookings onto a dedicated <strong>color-coded "Anastasia AI Reception" sub-calendar</strong> with chief complaint, GeSY ID, and WhatsApp photos attached.</li>
+                <li><strong>4. Zero-App <code>A / B / C / D</code> WhatsApp Quick-Reply Approval + Phase 2 Patient App:</strong> For Priority 2/3 items or GeSY renewals where you want final say, Anastasia texts you a concise digest with <strong>1-tap <code>Reply A / B / C / D</code> options</strong> (<code>[A] Approve &amp; Send</code>, <code>[B] Next Morning Slot</code>, <code>[C] Request Lab/Photo</code>, <code>[D] Doctor Call Back</code>) so you can act from your lock screen—plus priority placement in the Phase 2 <strong>MyDocDesk Patient Finder App</strong>.</li>
               </ol>
             </div>
 

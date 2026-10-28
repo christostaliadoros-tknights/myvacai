@@ -337,6 +337,45 @@
             <div class="memory-grid" id="memory-grid-box">
               <!-- Populated by JS -->
             </div>
+            <div class="mv-subcal-strip" id="mv-subcal-strip">
+              <span class="mv-subcal-pill ai-layer">📅 Written to: <strong>Elena AI Direct Layer</strong> (Color-Coded PMS + Google Cal)</span>
+              <span class="mv-subcal-pill busy-read">🔒 Checked Protel PMS + Owner/VIP Hold + Spa/Transfer Calendars</span>
+            </div>
+          </div>
+
+          <!-- Interactive Hotelier / Front-Desk Manager Quick-Approval (Reply A / B / C / D) Card -->
+          <div class="mv-abcd-card" id="myvacai-abcd-card">
+            <div class="mv-abcd-header">
+              <div>
+                <span class="mv-abcd-eyebrow">📲 HOTELIER LOCK-SCREEN DIGEST • ZERO-DASHBOARD 1-TAP ACTION</span>
+                <div class="mv-abcd-title">VIP Upgrade / Late Check-Out / Custom Rate → Reply <code>A / B / C / D</code></div>
+              </div>
+              <span class="code-badge" id="mv-abcd-badge">📲 Lock-Screen Ready</span>
+            </div>
+            <div class="mv-abcd-digest" id="mv-abcd-digest-text">
+              "🏨 <strong>[Elena AI Digest #MV-8492]</strong> Guest Andreas Georgiou (+357 99 482 190) requests Deluxe Sea View Suite (3n, €720 Direct vs €855 OTA) + 2:00 PM Late Check-Out. Reply <strong>A / B / C / D</strong>:"
+            </div>
+            <div class="mv-abcd-grid">
+              <button type="button" class="mv-abcd-btn" onclick="triggerHotelierQuickReply('A', 'simulator', this)">
+                <span class="mv-abcd-key">[A]</span>
+                <span>Confirm &amp; Send Payment Link</span>
+              </button>
+              <button type="button" class="mv-abcd-btn" onclick="triggerHotelierQuickReply('B', 'simulator', this)">
+                <span class="mv-abcd-key">[B]</span>
+                <span>Offer Alternative Room/Time</span>
+              </button>
+              <button type="button" class="mv-abcd-btn" onclick="triggerHotelierQuickReply('C', 'simulator', this)">
+                <span class="mv-abcd-key">[C]</span>
+                <span>Add Complimentary Perk</span>
+              </button>
+              <button type="button" class="mv-abcd-btn" onclick="triggerHotelierQuickReply('D', 'simulator', this)">
+                <span class="mv-abcd-key">[D]</span>
+                <span>Front Desk Manager Call Back</span>
+              </button>
+            </div>
+            <div class="mv-abcd-status" id="mv-abcd-status">
+              💡 Tap <strong>[A]</strong>, <strong>[B]</strong>, <strong>[C]</strong>, or <strong>[D]</strong> above to simulate replying from the GM / Front-Desk Manager's lock screen—Elena executes it on WhatsApp immediately.
+            </div>
           </div>
 
           <div class="logs-list" id="execution-logs-list">
@@ -425,13 +464,26 @@
           <div class="section-card">
             <div class="section-header">
               <div>
-                <div class="section-title">📋 Live Direct Reservations &amp; Call-to-WhatsApp Conversions</div>
+                <div class="section-title">📋 Live Direct Reservations &amp; Color-Coded AI Booking Layers</div>
                 <div style="font-size:0.78rem; color:#64748b;">
-                  Every booking below was closed automatically via Voice/WhatsApp and written back to Protel PMS
+                  Reads busy blocks across Protel PMS, WebHotelier, Owner Holds &amp; Spa/Yacht Calendars — writes AI bookings to a dedicated color-coded layer
                 </div>
               </div>
-              <span class="code-badge">0% OTA Commission</span>
+              <span class="code-badge">Multi-Calendar Sync • 0% OTA Fee</span>
             </div>
+
+            <div class="mv-cal-layer-bar">
+              <div class="mv-cal-layer-info">
+                <strong>📅 Multi-Calendar Sync &amp; Color-Coded AI Booking Layer:</strong> Hoteliers see at a glance which reservations &amp; concierge blocks were auto-booked by <strong>Elena AI</strong> vs. manual Front Desk / PMS entries vs. Owner/Maintenance Busy Holds.
+              </div>
+              <div class="mv-cal-filter-row">
+                <button type="button" class="mv-cal-filter-btn active" onclick="filterHotelBookingLayer('all', this)">🗂️ All Calendar Layers</button>
+                <button type="button" class="mv-cal-filter-btn" onclick="filterHotelBookingLayer('ai_direct', this)">🟣 📅 Elena AI Direct Layer</button>
+                <button type="button" class="mv-cal-filter-btn" onclick="filterHotelBookingLayer('vip_concierge', this)">🟡 ⭐ VIP Concierge + Perk Layer</button>
+                <button type="button" class="mv-cal-filter-btn" onclick="filterHotelBookingLayer('pms_desk', this)">⚪ 🏨 Front Desk / Owner Hold</button>
+              </div>
+            </div>
+
             <table class="data-table">
               <thead>
                 <tr>

@@ -2291,3 +2291,327 @@ button {
 .site-footer-contact a:hover {
   text-decoration: underline;
 }
+
+/* ============================================================================
+   A/B/C/D Lock-Screen Quick-Reply Card & Multi-Calendar Sub-Calendar Layer UI
+   ============================================================================ */
+.subcal-sync-strip {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #cbd5e1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 0.72rem;
+}
+
+.subcal-tag.ai-layer {
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.subcal-busy-pill {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.abcd-quick-card {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 11px 12px;
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+}
+
+.abcd-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.abcd-eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #2dd4bf;
+  text-transform: uppercase;
+}
+
+.abcd-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.abcd-title code {
+  background: rgba(45, 212, 191, 0.18);
+  color: #5eead4;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.abcd-digest-preview {
+  background: rgba(255, 255, 255, 0.07);
+  border-left: 3px solid #2dd4bf;
+  border-radius: 7px;
+  padding: 7px 9px;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: #e2e8f0;
+}
+
+.abcd-btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.abcd-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  color: #f8fafc;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.abcd-btn:hover {
+  background: rgba(45, 212, 191, 0.18);
+  border-color: #2dd4bf;
+  transform: translateY(-1px);
+}
+
+.abcd-btn.selected {
+  background: #0d9488;
+  border-color: #5eead4;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(94, 234, 212, 0.35);
+}
+
+.abcd-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 5px;
+  background: #f59e0b;
+  color: #0f172a;
+  font-weight: 900;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.abcd-status-bar {
+  font-size: 0.71rem;
+  line-height: 1.38;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.55);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+/* Calendar Layer Bar in Tab 2 */
+.calendar-layer-bar {
+  background: linear-gradient(135deg, #f0fdfa 0%, #f8fafc 100%);
+  border: 1px solid #99f6e4;
+  border-radius: 11px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal-layer-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cal-layer-desc {
+  font-size: 0.74rem;
+  color: #334155;
+  line-height: 1.42;
+  margin-top: 2px;
+}
+
+.cal-layer-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cal-filter-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cal-filter-btn:hover {
+  border-color: #0d9488;
+  color: #0f766e;
+}
+
+.cal-filter-btn.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.cal-layer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.69rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.cal-pill-ai {
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #5eead4;
+}
+
+.cal-pill-buffer {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.cal-pill-busy {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #94a3b8;
+}
+
+.cal-pill-clinic {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.schedule-slot-item.busy-hold-slot {
+  background: repeating-linear-gradient(
+    -45deg,
+    #f8fafc,
+    #f8fafc 10px,
+    #f1f5f9 10px,
+    #f1f5f9 20px
+  );
+  border-left: 4px solid #64748b;
+}
+
+/* GeSY A/B/C/D Quick-Reply Legend & Chips */
+.gesy-abcd-legend {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.gesy-abcd-legend-title {
+  font-size: 0.73rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 5px;
+}
+
+.gesy-abcd-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gesy-legend-pill {
+  font-size: 0.7rem;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.gesy-abcd-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+}
+
+.gesy-abcd-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #0f766e;
+}
+
+.gesy-abcd-chip {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-size: 0.69rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.gesy-abcd-chip:hover {
+  background: #ccfbf1;
+  border-color: #0d9488;
+  color: #0f766e;
+}
+
+.gesy-abcd-chip.active {
+  background: #0d9488;
+  border-color: #0f766e;
+  color: #ffffff;
+}
+
+.gesy-reply-outcome {
+  margin-top: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0f766e;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 6px;
+  padding: 3px 7px;
+}
